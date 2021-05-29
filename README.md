@@ -6,7 +6,7 @@ pyIsotopomer is a Python toolbox for performing data corrections for N2O isotopo
 
 ## Overview
 
-Below is a flowchart which illustrates the N2O isotopocule data correction pipeline. Each step in this pipeline can be accomplished with part of the pyisotopomer package.
+Below is a flowchart which illustrates the N2O isotopocule data correction pipeline. The pyisotopomer package provides capabilities to perform the scrambling calibration and isotopocule calculation steps in this pipeline.
 
 ![](flowchart.jpg)
 
@@ -22,7 +22,7 @@ In this document, we will go over:
 
 The import convention for pyIsotopomer is:
 
-```
+```ipython
 from pyIsotopomer import Scrambling, Isotopomers
 ```
 
