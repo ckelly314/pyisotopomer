@@ -2,17 +2,17 @@
 
 Hello!
 
-pyIsotopomer is a Python toolbox for performing data corrections for N2O isotopomer data. Its core is a package of scripts to correct for scrambling in the ion source during isotope ratio mass spectrometry. An alternate version of this package exists for [MATLAB](https://link-to-MATLAB-README.md).
+pyisotopomer is a Python toolbox for performing data corrections for nitrous oxide (N<sub>2</sub>O) isotopomer data. Its core is a package of scripts to correct for scrambling in the ion source during isotope ratio mass spectrometry. An alternate version of this package exists for [MATLAB](https://link-to-MATLAB-README.md).
 
-## Overview
+## Intro
 
-Below is a flowchart which illustrates the N2O isotopocule data correction pipeline. The pyisotopomer package provides capabilities to perform the scrambling calibration and isotopocule calculation steps in this pipeline.
+While the scrambling calibration is an integral part of the N<sub>2</sub>O data processing, this calibration is part of a larger data processing pipeline. Below is a flowchart which illustrates the full suite of steps requisite to obtaining high-quality N<sub>2</sub>O  isotopocule data with isotope ratio mass spectrometry. The scrambling calibration and isotopocule calculation steps can be performed in pyisotopomer.
 
 ![](flowchart.jpg)
 
 In this document, we will go over:
 
-1. Basic use of the pyIsotopomer package
+1. Basic use of the pyisotopomer package
 2. Configuring Python on your computer
 3. Correcting IRMS data for the effect of peak area on isotope ratios
 4. Calibrating your instrument for scrambling with pyIsotopomer
@@ -22,20 +22,20 @@ In this document, we will go over:
 
 The import convention for pyIsotopomer is:
 
-```ipython
-from pyIsotopomer import Scrambling, Isotopomers
+```
+from pyisotopomer import Scrambling, Isotopomers
 ```
 
 To calculate scrambling coefficients, the only function you need is:
 
 ```
-gk = Scrambling(inputfile='FILENAME.csv', ref1="NAME", ref2="NAME", **kwargs)
+Scrambling(inputfile='FILENAME.csv', ref1="NAME", ref2="NAME", **kwargs)
 ```
 
 To calculate isotopomers, the only function you need is:
 
 ```
-deltavals = Isotopomers(inputfile = 'FILENAME.csv', scrambling = [0.1..., 0.0...], **kwargs)
+Isotopomers(inputfile = 'FILENAME.csv', scrambling = [0.1..., 0.0...], **kwargs)
 ```
 
 ## Configuring Python on your computer: macOS
