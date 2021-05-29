@@ -2,11 +2,11 @@
 
 Hello!
 
-pyisotopomer is a Python toolbox for performing data corrections for nitrous oxide (N<sub>2</sub>O) isotopomer data. Its core is a package of scripts to correct for scrambling in the ion source during isotope ratio mass spectrometry. An alternate version of this package exists for [MATLAB](https://link-to-MATLAB-README.md).
+pyisotopomer is a Python toolbox for processing nitrous oxide (N<sub>2</sub>O) isotopomer data. Its core is a package of scripts to correct for scrambling in the ion source during isotope ratio mass spectrometry. An alternate version of this package exists for [MATLAB](https://link-to-MATLAB-README.md).
 
 ## Intro
 
-While the scrambling calibration is an integral part of the N<sub>2</sub>O data processing, this calibration is part of a larger data processing pipeline. Below is a flowchart which illustrates the full suite of steps requisite to obtaining high-quality N<sub>2</sub>O  isotopocule data with isotope ratio mass spectrometry. The scrambling calibration and isotopocule calculation steps can be performed in pyisotopomer.
+While the scrambling calibration is an integral part of the N<sub>2</sub>O data processing, this calibration is part of a larger data processing pipeline. Below is a flowchart which illustrates the full suite of steps requisite to obtaining high-quality N<sub>2</sub>O  isotopocule data from isotope ratio mass spectrometry. The scrambling calibration and isotopocule calculation steps can be performed in pyisotopomer.
 
 ![](flowchart.jpg)
 
@@ -83,7 +83,7 @@ The 31R, 45R, and 46R for each sample, normalized to the common reference inject
 
 ## Calibrating your instrument for scrambling with pyIsotopomer:
 
-Here, two coefficients, $\gamma$ and $\kappa$, are used to describe scrambling in the ion source. This is described in further detail in [Frame and Casciotti, 2010](https://www.biogeosciences.net/7/2695/2010/). Below is a description of how to calculate these coefficients in pyIsotopomer.
+Here, two coefficients, γ and κ, are used to describe scrambling in the ion source. This is described in further detail in [Frame and Casciotti, 2010](https://www.biogeosciences.net/7/2695/2010/). Below is a description of how to calculate these coefficients in pyIsotopomer.
 
 Run two reference gases with known 15R-alpha and 15R-beta, prepared in the same format as samples (i.e., some amount of N2O reference gas injected into a bottle of seawater or DI water that has been purged with He or N2 gas). Export and size-correct these data in the excel correction template, as above.
 
