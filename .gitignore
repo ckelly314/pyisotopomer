@@ -1,3 +1,3 @@
 .DS_Store
-.ipynb_checkpoints
-__pycache__
+pyisotopomer/.ipynb_checkpoints
+pyisotopomer/__pycache__
