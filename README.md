@@ -1,10 +1,14 @@
-# pyIsotopomer
+# pyisotopomer
 
 Hello!
 
 pyIsotopomer is a Python toolbox for performing data corrections for N2O isotopomer data. Its core is a package of scripts to correct for scrambling in the ion source during isotope ratio mass spectrometry. An alternate version of this package exists for [MATLAB](https://link-to-MATLAB-README.md).
 
 ## Overview
+
+Below is a flowchart which illustrates the N2O isotopocule data correction pipeline. Each step in this pipeline can be accomplished with part of the pyisotopomer package.
+
+![](flowchart.jpg)
 
 In this document, we will go over:
 
