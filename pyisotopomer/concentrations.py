@@ -1,7 +1,7 @@
 """
 File: concentrations.py
 ---------------------------
-Created on Mon May 3rd, 2021
+Created on May 28th, 2021
 
 Functions to convert mass 44 peak area to N2O concentration,
 and use 45/44 and 46/44 ratios to calculate concentrations of heavy
