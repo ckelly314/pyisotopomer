@@ -14,6 +14,7 @@ import datetime as dt
 import automate_gk_solver as scramblingsolver
 import calcSPmain
 import calcdeltaSP
+import concentrations
 
 
 class Scrambling:
@@ -201,6 +202,16 @@ class Isotopomers:
         # Create a commma delimited text file containing the output data
         # The columns from left to right are gamma and kappa
         deltavals.to_csv(path_or_buf=f"{outputfile}", header=True, index=False)
+        
+    def get_concentrations(self, peakarea44, sampleweight, conversionslope, conversionint=None):
+        # obtain concentrations of masses 44, 45alpha, 45beta, and 46N2O
+        allconcentrations = concentrations.concentrations(peakarea44, sampleweight,
+            conversionslope, conversionint, isotoperatios=self.isol)
+        
+        keys = {'15Ralpha':'45N2Oalpha', '15Rbeta':'45N2Obeta', '17R':'N217O','18R':'46N2O'}
+        allconcentrations = allconcentrations.rename(columns = keys)
+
+        return allconcentrations
 
     def __repr__(self):
         
