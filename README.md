@@ -1,29 +1,29 @@
-# pyisotopomer
+# ```pyisotopomer```
 
 Hello!
 
-pyisotopomer is a Python toolbox for processing nitrous oxide (N<sub>2</sub>O) isotopomer data. Its core is a package of scripts to correct for scrambling in the ion source during isotope ratio mass spectrometry. An alternate version of this package exists for [MATLAB](https://link-to-MATLAB-README.md).
+```pyisotopomer``` is a Python toolbox for processing nitrous oxide (N<sub>2</sub>O) isotopomer data. Its core is a package of scripts to correct for scrambling in the ion source during isotope ratio mass spectrometry. An alternate version of this package exists for [MATLAB](https://link-to-MATLAB-README.md).
 
 ## Intro
 
-While the scrambling calibration is an integral part of the N<sub>2</sub>O data processing, this calibration is part of a larger data processing pipeline. Below is a flowchart which illustrates the full suite of steps requisite to obtaining high-quality N<sub>2</sub>O  isotopocule data from isotope ratio mass spectrometry. The scrambling calibration and isotopocule calculation steps can be performed in pyisotopomer.
+While the scrambling calibration is an integral part of the N<sub>2</sub>O data processing, this calibration is part of a larger data processing pipeline. Below is a flowchart which illustrates the full suite of steps requisite to obtaining high-quality N<sub>2</sub>O  isotopocule data from isotope ratio mass spectrometry. The scrambling calibration and isotopocule calculation steps can be performed in ```pyisotopomer```.
 
 ![](flowchart.jpg)
 
 In this document, we will go over:
 
-1. Basic use of the pyisotopomer package
+1. Basic use of the ```pyisotopomer``` package
 2. Configuring Python on your computer
 3. Correcting IRMS data for the effect of peak area on isotope ratios
-4. Calibrating your instrument for scrambling with pyIsotopomer
-5. Correcting raw Isodat files for isotopomers with pyIsotopomer
+4. Calibrating your instrument for scrambling with ```pyisotopomer```
+5. Correcting raw Isodat files for isotopomers with ```pyisotopomer```
 
 ## Basic use
 
-The import convention for pyIsotopomer is:
+The import convention for ```pyisotopomer``` is:
 
 ```
-from pyisotopomer import Scrambling, Isotopomers
+from ```pyisotopomer``` import Scrambling, Isotopomers
 ```
 
 To calculate scrambling coefficients, the only function you need is:
@@ -52,9 +52,9 @@ This should output something like:
 Python 3.9.2
 ```
 
-Note that the text before the dollar sign will vary based on the user and computer. If python3 is not yet installed on your computer, try this [helpful guide](https://github.com/stanfordpython/python-handouts/blob/master/installing-python-macos.md) for installing Python as well as working with virtual environments.
+Note that the text before the dollar sign will vary based on the user and computer. Additionally, the dollar sign may be replaced by a percent sign if your terminal is in zshell (zsh) instead of bash, but this is not an important difference for the code below. If python3 is not yet installed on your computer, try this [helpful guide](https://github.com/stanfordpython/python-handouts/blob/master/installing-python-macos.md) for installing Python as well as working with virtual environments.
 
-Install the packages necessary to run pyIsotopomer. Run:
+Install the packages necessary to run ```pyisotopomer```. Run:
 
 ```bash
 colette$ pip install --upgrade pip
@@ -65,7 +65,39 @@ This may take a while; pip (the Python package manager) will check if these pack
 
 ## Configuring Python on your computer: Windows
 
-[...]
+Requires: 64-bit Windows 10, updated to the 2016 Anniversary build or later. *If you regularly download updates, you'll be fine.*
+
+Windows 10 has added a subsystem called Ubuntu that allows you to open a bash shell. If you don't know what a bash shell is, that's totally fine — just follow the instructions below.
+
+First, follow [these instructions](https://www.howtogeek.com/249966/how-to-install-and-use-the-linux-bash-shell-on-windows-10/) from HowToGeek. These will help you activate the "Windows Subsystem for Linux," get Ubuntu from the Microsoft Store, and launch a `bash` shell on Ubuntu.
+
+Once you're in the `bash` shell, run the following commands to install Python 3.9 on your computer:
+
+```
+$ sudo add-apt-repository ppa:deadsnakes/ppa
+$ sudo apt-get update
+$ sudo apt-get install python3.9
+```
+
+You can check which version of Python you've installed by running:
+
+```
+$ python3 --version
+```
+
+This should output something like:
+
+```bash
+Python 3.9.2
+```
+
+Install the packages necessary to run ```pyisotopomer```. Run:
+
+```
+$ pip install "prompt-toolkit==2.0.10" "ipython[all]" jupyter jupyterlab numpy scipy pandas
+```
+
+This may take a while; pip (the Python package manager) will check if these packages have already been installed, and if not, download them from the cloud and install them on your machine.
 
 ## Size correction
 
@@ -77,16 +109,34 @@ In the "sample" tab, bring all fragment data in line, then delete extra rows. Do
 
 Open the data correction template "00_excel_template.xlsx". Copy the raw sample data from columns A-O in the sample tab into columns B-P in the correction template. Copy the "rR" columns from the standards tab (columns M, N, O) into columns R, S, T in the correction template. Save the correction template with a new name.
 
-Check to make sure all references in columns V, W, X are correct. Note that the 31R, 45R, and 46R in columns V-X are specific to the Casciotti Lab's N2O reference gas. Note also that the size correction slopes in columns V-X are specific to the linearity of the Casciotti Lab Delta V, as of February-March 2021.
+Replace the values in row 3, columns V-X with the appropriate 31R, 45R, and 46R for your N<sub>2</sub>O reference gas (the reference gas used for on-offs/direct injections). The values in the template spreadsheet are specific to the Casciotti Lab's N<sub>2</sub>O reference gas. 
 
-The 31R, 45R, and 46R for each sample, normalized to the common reference injection and normalized to a peak area of 20 Vs, are found in columns AH-AJ.
+Replace the values in row 7, columns V-X, with your size correction slopes. Ensure that these size correction slopes are normalized to the m/z 44 peak area. Ensure that they apply to the raw "ratio of ratios" 31rR/31rR, 45rR/45rR, and 45rR/45rR in columns Z-AB. The values in the template spreadsheet are specific to the linearity of the Casciotti Lab Delta V, as of February-March 2021.
 
-## Calibrating your instrument for scrambling with pyIsotopomer:
+The 31R, 45R, and 46R for each sample, normalized to the common reference injection and normalized to a m/z 44 peak area of 20 Vs, are found in columns AH-AJ.
 
-Here, two coefficients, γ and κ, are used to describe scrambling in the ion source. This is described in further detail in [Frame and Casciotti, 2010](https://www.biogeosciences.net/7/2695/2010/). Below is a description of how to calculate these coefficients in pyIsotopomer.
+## Calibrating your instrument for scrambling with ```pyisotopomer```:
 
-Run two reference gases with known 15R-alpha and 15R-beta, prepared in the same format as samples (i.e., some amount of N2O reference gas injected into a bottle of seawater or DI water that has been purged with He or N2 gas). Export and size-correct these data in the excel correction template, as above.
+Here, two coefficients, γ and κ, are used to describe scrambling in the ion source. This is described in further detail in [Frame and Casciotti, 2010](https://www.biogeosciences.net/7/2695/2010/). Below is a description of how to calculate these coefficients in ```pyisotopomer```.
 
-From the correction template, copy and paste the size-corrected 31R, 45R, and 46R (columns AH, AI, AJ) from the size_correction tab into the scrambling_input tab, columns C-E. 
+Run two reference gases with known 15R-alpha and 15R-beta, prepared in the same format as samples (i.e., some amount of N<sub>2</sub>O reference gas injected into a bottle of seawater or DI water that has been purged with He or N2 gas). Export and size-correct these data in the excel correction template, as above. The placeholder samples in the template spreadsheet are arranged in the right order 1-7, but this may not necessarily be the case, depending on how one performs step 2 above. The order is not important to what follows, as long as the samples (columns B-P) and reference peaks (columns R-T) are in the same order.
 
-Reorganize the size corrected data...
+From the correction template, copy and paste the size-corrected 31R, 45R, and 46R (columns AH, AI, AJ) from the size_correction tab into the scrambling_template tab, columns C-E. 
+
+Reorganize the size corrected data into pairs of reference materials by copy-pasting into columns H-M of the scrambling input template. The columns should be in the following order: 31R, 45R, 46R for reference #1, then 31R, 45R, 46R for reference #2. If there are three sets of standards, break them into three different pairings to feed into ```pyisotopomer```.
+
+Copy and paste columns H-M in the scrambling input template into their own .csv file, with no heading. Delete blank rows. Save the .csv file into the ```pyisotopomer``` directory. Note that it is important to save as the simple “comma-separated values (.csv)” file format. More complicated versions of the .csv format, such as CSV UTF-8, will not work.
+
+Open a terminal window. Launch Jupyter Notebook:
+
+```
+colette$ jupyter notebook
+```
+
+This should open Jupyter in a new browser window. In Jupyter, navigate to the ```pyisotopomer``` directory. 
+
+In Jupyter, rrom the ```pyisotopomer``` directory, open ```constants.py```. Note that we specify named reference materials in lines 50-53. If the reference materials used to calibrate scrambling are not in this list, add them, following the format of the existing lines. Save ```constants.py```.
+
+In Jupyter, rrom the ```pyisotopomer``` directory, click on ```run_```pyisotopomer```.ipynb``` to open the Jupyter Notebook containing the code to run ```pyisotopomer```.
+
+Follow the instructions in the Jupyter Notebook to run ```pyisotopomer``` and obtain scrambling coefficients. This will create an output .csv file, e.g., “210520_scramblingoutput.csv”.
