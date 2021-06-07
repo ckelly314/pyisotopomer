@@ -23,7 +23,7 @@ In this document, we will go over:
 The import convention for ```pyisotopomer``` is:
 
 ```
-from ```pyisotopomer``` import Scrambling, Isotopomers
+from pyisotopomer import Scrambling, Isotopomers
 ```
 
 To calculate scrambling coefficients, the only function you need is:
