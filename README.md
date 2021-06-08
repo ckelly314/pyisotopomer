@@ -16,7 +16,7 @@ In this document, we will go over:
 2. Configuring Python on your computer
 3. Correcting IRMS data for the effect of peak area on isotope ratios
 4. Calibrating your instrument for scrambling with pyisotopomer
-5. Correcting raw Isodat files for isotopomers with pyisotopomer
+5. Calculating isotopomers with pyisotopomer
 
 ## Basic use
 
@@ -139,4 +139,40 @@ In Jupyter, from the pyisotopomer directory, open ```constants.py```. Note that 
 
 In Jupyter, from the pyisotopomer directory, click on ```run_pyisotopomer.ipynb``` to open the Jupyter Notebook containing the code to run pyisotopomer.
 
-Follow the instructions in the Jupyter Notebook to run pyisotopomer and obtain scrambling coefficients. This will create an output .csv file, e.g., “210520_scramblingoutput.csv”.
+Follow the instructions in the Jupyter Notebook to run pyisotopomer for one pairing of reference materials and obtain scrambling coefficients. This will create an output .csv file, e.g., “210520_scramblingoutput.csv”. Repeat this process for any additional pairings of reference materials.
+
+Copy and paste these back into the correction template, columns P-Q. 
+
+## Calculating isotopomers with pyisotopomer
+
+Size-correct your data (including all samples and standards), as above. Copy and paste columns AH, AI, and AJ (size corrected R’s) into a separate spreadsheet, making sure to ‘paste special’, ‘values’. This will become your input file. Make sure your data columns are in the following order: 31R, 45R, 46R, then remove the headings. Save input file in .csv format, e.g. example_isotopomer_input.csv, into the pyIsotopomer directory. 
+
+Open a terminal window. Launch Jupyter Notebook:
+
+```
+colette$ jupyter notebook
+```
+
+This should open Jupyter in a new browser window. In Jupyter, navigate to the pyisotopomer directory. Click on ```run_pyIsotopomer.ipynb``` to open the Jupyter Notebook containing the code to run pyisotopomer.
+
+Follow the instructions in the Jupyter Notebook to run pyIsotopomer and obtain sample isotopocule values in delta notation. You will need to edit the name of the input file to match yours. 
+
+### How to think about scrambling when calculating isotopomers
+
+You will also need to enter the appropriate scrambling coefficients in the call to the Isotopomers function. These scrambling coefficients should represent a running average of γ and κ calculated from at least 10 pairings of reference materials (e.g. a week's worth, if unknowns are bookended by reference materials) run alongside unknowns. 
+
+The scrambling coefficients should not be those calculated alongside one run of unknowns. This is because a 1% standard deviation in the scrambling coefficients leads to an error of ~4‰ in site preference, so it is advisable to run sufficient reference materials to bring the standard deviation of γ and κ below this threshold.
+
+### __
+
+The ‘deltavals’ function will create an output .csv file, i.e., “210520_isotopeoutput.csv”. Copy and paste output data back into working (size correction) spreadsheet in olive-highlighted cells (columns AM-AR).
+
+Note that a scale decompression may be applied after the isotopomer calculation. This is calculated in the “scale-decompression” tab of the excel worksheet, and is applied in columns AU-AZ of the size_correction tab.
+
+## Calculating concentrations of <sup>44</sup>N<sub>2</sub>O, <sup>45</sup>N<sub>2</sub>O-alpha, <sup>45</sup>N<sub>2</sub>O-beta, and <sup>46</sup>N<sub>2</sub>O
+
+Calculate the amount (nmol) of <sup>44</sup>N<sub>2</sub>O in your sample from the ratio of mass 44 peak area to N<sub>2</sub>O (nmol/Vs) for your instrument. For high levels of <sup>15</sup>N enrichment, account for masses 45 and 46 as well when calculating the total N<sub>2</sub>O.
+
+Use the weight difference of the bottle pre- and post-analysis to determine the volume of sample run, and thus the concentration of <sup>44</sup>N<sub>2</sub>O.
+
+We calculate the concentrations of 45N2O-&alpha, 45N2O-beta, and 46N2O (for tracer experiments) from the delta value and associated 15/14 ratios. For high levels of <sup>15</sup>N enrichment, use atom fraction <sup>15</sup>N and 14</sup>N rather than isotope ratios.
