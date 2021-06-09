@@ -107,25 +107,25 @@ Open the .xls file containing Isodat output. Note that the spreadsheet contains 
 
 In the "sample" tab, bring all fragment data in line, then delete extra rows. Do the same in the "standard" tab.
 
-Open the data correction template "00_excel_template.xlsx". Copy the raw sample data from columns A-O in the sample tab into columns B-P in the correction template. Copy the "rR" columns from the standards tab (columns M, N, O) into columns R, S, T in the correction template. Save the correction template with a new name.
+Open the data correction template ```00_Python_template.xlsx```. Copy the raw sample data from columns A-O in the sample tab into columns C-Q in the correction template. Copy the "rR" columns from the standards tab (columns M, N, O) into columns S, T, U in the correction template. Save the correction template with a new name.
 
-Replace the values in row 3, columns V-X with the appropriate 31R, 45R, and 46R for your N<sub>2</sub>O reference gas (the reference gas used for on-offs/direct injections). The values in the template spreadsheet are specific to the Casciotti Lab's N<sub>2</sub>O reference gas. 
+Replace the values in row 3, columns W-Y with the appropriate 31R, 45R, and 46R for your N<sub>2</sub>O reference gas (the reference gas used for on-offs/direct injections). The values in the template spreadsheet are specific to the Casciotti Lab's N<sub>2</sub>O reference gas. 
 
-Replace the values in row 7, columns V-X, with your size correction slopes. Ensure that these size correction slopes are normalized to the m/z 44 peak area. Ensure that they apply to the raw "ratio of ratios" 31rR/31rR, 45rR/45rR, and 45rR/45rR in columns Z-AB. The values in the template spreadsheet are specific to the linearity of the Casciotti Lab Delta V, as of February-March 2021.
+Replace the values in row 7, columns W-Y, with your size correction slopes. Ensure that these size correction slopes are normalized to the m/z 44 peak area. Ensure that they apply to the raw "ratio of ratios" 31rR/31rR, 45rR/45rR, and 45rR/45rR in columns Z-AB. The values in the template spreadsheet are specific to the linearity of the Casciotti Lab Delta V, as of February-March 2021.
 
-The 31R, 45R, and 46R for each sample, normalized to the common reference injection and normalized to a m/z 44 peak area of 20 Vs, are found in columns AH-AJ.
+The 31R, 45R, and 46R for each sample, normalized to the common reference injection and normalized to a m/z 44 peak area of 20 Vs, are found in columns AI-AK.
 
 ## Calibrating your instrument for scrambling with pyisotopomer:
 
 Here, two coefficients, γ and κ, are used to describe scrambling in the ion source. This is described in further detail in [Frame and Casciotti, 2010](https://www.biogeosciences.net/7/2695/2010/). Below is a description of how to calculate these coefficients in pyisotopomer.
 
-Run two reference gases with known 15R-alpha and 15R-beta, prepared in the same format as samples (i.e., some amount of N<sub>2</sub>O reference gas injected into a bottle of seawater or DI water that has been purged with He or N2 gas). Export and size-correct these data in the excel correction template, as above. The placeholder samples in the template spreadsheet are arranged in the right order 1-7, but this may not necessarily be the case, depending on how one performs step 2 above. The order is not important to what follows, as long as the samples (columns B-P) and reference peaks (columns R-T) are in the same order.
+Run two reference gases with known 15R-alpha and 15R-beta, prepared in the same format as samples (i.e., some amount of N<sub>2</sub>O reference gas injected into a bottle of seawater or DI water that has been purged with He or N2 gas). 
 
-From the correction template, copy and paste the size-corrected 31R, 45R, and 46R (columns AH, AI, AJ) from the size_correction tab into the scrambling_template tab, columns C-E. 
+Export and size-correct these data in the excel correction template, as above. The placeholder samples in the template spreadsheet are arranged in the right order 1-7, but this may not necessarily be the case, depending on how one performs step 2 above. The order is not important to what follows, as long as the samples (columns C-Q) and reference peaks (columns S-U) are in the same order.
 
-Reorganize the size corrected data into pairs of reference materials by copy-pasting into columns H-M of the scrambling input template. The columns should be in the following order: 31R, 45R, 46R for reference #1, then 31R, 45R, 46R for reference #2. If there are three sets of standards, break them into three different pairings to feed into pyisotopomer.
+Each row of the correction template represents one reference material. In column B, "ref_tag", add the names of the reference materials, as they appear in ```constants.py``` (for example, here, atmosphere-equilibrated seawater is named "ATM").
 
-Copy and paste columns H-M in the scrambling input template into their own .csv file, with no heading. Delete blank rows. Save the .csv file into the pyisotopomer directory. Note that it is important to save as the simple “comma-separated values (.csv)” file format. More complicated versions of the .csv format, such as CSV UTF-8, will not work.
+DO NOT MODIFY COLUMN HEADERS IN THE CORRECTION TEMPLATE. Save the correction template into the same directory as pyisotopomer.
 
 Open a terminal window. Launch Jupyter Notebook:
 
@@ -139,13 +139,11 @@ In Jupyter, from the pyisotopomer directory, open ```constants.py```. Note that 
 
 In Jupyter, from the pyisotopomer directory, click on ```run_pyisotopomer.ipynb``` to open the Jupyter Notebook containing the code to run pyisotopomer.
 
-Follow the instructions in the Jupyter Notebook to run pyisotopomer for one pairing of reference materials and obtain scrambling coefficients. This will create an output .csv file, e.g., “210520_scramblingoutput.csv”. Repeat this process for any additional pairings of reference materials.
-
-Copy and paste these back into the correction template, columns P-Q. 
+Follow the instructions in the Jupyter Notebook to run pyisotopomer and obtain scrambling coefficients for all possible pairings of reference materials. This will create an output file entitled ```{date}_scrambling_output.xlsx``` with scrambling output.
 
 ## Calculating isotopomers with pyisotopomer
 
-Size-correct your data (including all samples and standards), as above. Copy and paste columns AH, AI, and AJ (size corrected R’s) into a separate spreadsheet, making sure to ‘paste special’, ‘values’. This will become your input file. Make sure your data columns are in the following order: 31R, 45R, 46R, then remove the headings. Save input file in .csv format, e.g. example_isotopomer_input.csv, into the pyIsotopomer directory. 
+Size-correct your data (including all samples and standards), as above. DO NOT MODIFY COLUMN HEADERS IN THE CORRECTION TEMPLATE. Save the correction template into the same directory as pyisotopomer.
 
 Open a terminal window. Launch Jupyter Notebook:
 
@@ -155,7 +153,7 @@ colette$ jupyter notebook
 
 This should open Jupyter in a new browser window. In Jupyter, navigate to the pyisotopomer directory. Click on ```run_pyIsotopomer.ipynb``` to open the Jupyter Notebook containing the code to run pyisotopomer.
 
-Follow the instructions in the Jupyter Notebook to run pyIsotopomer and obtain sample isotopocule values in delta notation. You will need to edit the name of the input file to match yours. 
+Follow the instructions in the Jupyter Notebook to run pyisotopomer and obtain sample isotopocule values in delta notation, as well as isotope ratios.
 
 ### How to think about scrambling when calculating isotopomers
 
@@ -163,9 +161,9 @@ You will also need to enter the appropriate scrambling coefficients in the call 
 
 The scrambling coefficients should not be those calculated alongside one run of unknowns. This is because a 1% standard deviation in the scrambling coefficients leads to an error of ~4‰ in site preference, so it is advisable to run sufficient reference materials to bring the standard deviation of γ and κ below this threshold.
 
-### __
+### ---
 
-The ‘deltavals’ function will create an output .csv file, i.e., “210520_isotopeoutput.csv”. Copy and paste output data back into working (size correction) spreadsheet in olive-highlighted cells (columns AM-AR).
+The ‘deltavals’ function will create an output .csv file, i.e., ```{date}_isotopeoutput.csv```. Copy and paste output data back into working (size correction) spreadsheet in olive-highlighted cells (columns AM-AR).
 
 Note that a scale decompression may be applied after the isotopomer calculation. This is calculated in the “scale-decompression” tab of the excel worksheet, and is applied in columns AU-AZ of the size_correction tab. The scale decompression should be applied as an average 
 
