@@ -111,7 +111,7 @@ Open the data correction template ```00_Python_template.xlsx```. Copy the raw sa
 
 Replace the values in row 3, columns W-Y with the appropriate 31R, 45R, and 46R for your N<sub>2</sub>O reference gas (the reference gas used for on-offs/direct injections). The values in the template spreadsheet are specific to the Casciotti Lab's N<sub>2</sub>O reference gas. 
 
-Replace the values in row 7, columns W-Y, with your size correction slopes. Ensure that these size correction slopes are normalized to the m/z 44 peak area. Ensure that they apply to the raw "ratio of ratios" 31rR/31rR, 45rR/45rR, and 45rR/45rR in columns Z-AB. The values in the template spreadsheet are specific to the linearity of the Casciotti Lab Delta V, as of February-March 2021.
+Replace the values in row 7, columns W-Y, with your size correction slopes. Ensure that these size correction slopes are normalized to the m/z 44 peak area. Ensure that they apply to the raw "ratio of ratios" 31rR/31rR, 45rR/45rR, and 45rR/45rR in columns AA-AC. The values in the template spreadsheet are specific to the linearity of the Casciotti Lab Delta V, as of February-March 2021.
 
 The 31R, 45R, and 46R for each sample, normalized to the common reference injection and normalized to a m/z 44 peak area of 20 Vs, are found in columns AI-AK.
 
@@ -119,9 +119,11 @@ The 31R, 45R, and 46R for each sample, normalized to the common reference inject
 
 Here, two coefficients, γ and κ, are used to describe scrambling in the ion source. This is described in further detail in [Frame and Casciotti, 2010](https://www.biogeosciences.net/7/2695/2010/). Below is a description of how to calculate these coefficients in pyisotopomer.
 
-Run two reference gases with known 15R-alpha and 15R-beta, prepared in the same format as samples (i.e., some amount of N<sub>2</sub>O reference gas injected into a bottle of seawater or DI water that has been purged with He or N2 gas). 
+Run two (or more) reference gases with known 15R-alpha and 15R-beta, prepared in the same format as samples (i.e., some amount of N<sub>2</sub>O reference gas injected into a bottle of seawater or DI water that has been purged with He or N2 gas).
 
-Export and size-correct these data in the excel correction template, as above. The placeholder samples in the template spreadsheet are arranged in the right order 1-7, but this may not necessarily be the case, depending on how one performs step 2 above. The order is not important to what follows, as long as the samples (columns C-Q) and reference peaks (columns S-U) are in the same order.
+Open ```constants.py``` in a text editor. Note that we specify named reference materials in lines 50-53. If the reference materials used to calibrate scrambling are not in this list, add them, following the format of the existing lines. Save ```constants.py```.
+
+Export and size-correct these data in the excel correction template, as above. The placeholder samples in the template spreadsheet are arranged in the right order 1-7, but this may not necessarily be the case, depending on how one performs the steps above. The order is not important to what follows, as long as the samples (columns C-Q) and reference peaks (columns S-U) are in the same order.
 
 Each row of the correction template represents one reference material. In column B, "ref_tag", add the names of the reference materials, as they appear in ```constants.py``` (for example, here, atmosphere-equilibrated seawater is named "ATM").
 
@@ -133,11 +135,7 @@ Open a terminal window. Launch Jupyter Notebook:
 colette$ jupyter notebook
 ```
 
-This should open Jupyter in a new browser window. In Jupyter, navigate to the pyisotopomer directory. 
-
-In Jupyter, from the pyisotopomer directory, open ```constants.py```. Note that we specify named reference materials in lines 50-53. If the reference materials used to calibrate scrambling are not in this list, add them, following the format of the existing lines. Save ```constants.py```.
-
-In Jupyter, from the pyisotopomer directory, click on ```run_pyisotopomer.ipynb``` to open the Jupyter Notebook containing the code to run pyisotopomer.
+This should open Jupyter in a new browser window. In Jupyter, navigate to the pyisotopomer directory. Click on ```run_pyisotopomer.ipynb``` to open the Jupyter Notebook containing the code to run pyisotopomer.
 
 Follow the instructions in the Jupyter Notebook to run pyisotopomer and obtain scrambling coefficients for all possible pairings of reference materials. This will create an output file entitled ```{date}_scrambling_output.xlsx``` with scrambling output.
 
