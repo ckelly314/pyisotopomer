@@ -29,13 +29,13 @@ from pyisotopomer import Scrambling, Isotopomers
 To calculate scrambling coefficients, the only function you need is:
 
 ```
-Scrambling(inputfile='FILENAME.csv', ref1="NAME", ref2="NAME", **kwargs)
+Scrambling(inputfile='FILENAME.xlsx, ref1="NAME", ref2="NAME", **kwargs)
 ```
 
 To calculate isotopomers, the only function you need is:
 
 ```
-Isotopomers(inputfile = 'FILENAME.csv', scrambling = [0.1..., 0.0...], **kwargs)
+Isotopomers(inputfile = 'FILENAME.xlsx', scrambling = [0.1..., 0.0...], **kwargs)
 ```
 
 ## Configuring Python on your computer: macOS
