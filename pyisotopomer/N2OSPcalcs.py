@@ -13,17 +13,19 @@ import numpy as np
 import pandas as pd
 import calcSPmain
 import calcdeltaSP
+import parseinput
 
 ###############
 # USER INPUTS #
 ###############
 
-# USER INPUT: Input data used to solve equation.
-# Columns are 31R, 45R and 46R (x, y and z) from left to right.
-# Each row is the data for one sample.
+# USER INPUT: Input data used to calculate isotopomers
+# Enter data into "00_Python_template.xlsx" and save with a different name. 
+# Each row is one sample.
+# Do not change the column headers.
 # Input data should include at least six significant figures for accurate 
 # results.
-inputfilename = 'example_isotopomer_input.csv'
+inputfilename = "00_Python_template.xlsx"
 
 # USER INPUT: isotopomers output filename
 # Create a commma delimited file containing the isotope data
@@ -34,13 +36,14 @@ outputfilename = 'example_isotopomer_output.csv'
 # USER INPUT: scrambling coefficients
 # These are calculated with the package of scrambling scripts:
 # automate_gk_setinputs.py, automate_gk_solver.py, automate_gk_eqns.py, and constants.py
-gamma_kappa = np.array([0.1722, 0.0794])
+gamma_kappa = np.array([0.172, 0.0796])
 
 ##################################################
 # RUN SOLVER - NO NEED TO MODIFY BELOW THIS LINE #
 ##################################################
 # read in data
-R = np.array(pd.read_csv(inputfilename, header=None))
+#R = np.array(pd.read_csv(inputfilename, header=None))
+R = parseinput.Input(inputfilename).sizecorrected
 
 # Run function that iteratively solves for 15Ralpha and 15Rbeta (a and b) 
 # and then calculates 17R and 18R (c and d) by substitution

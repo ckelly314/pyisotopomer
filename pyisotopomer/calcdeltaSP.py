@@ -36,8 +36,8 @@ def calcdeltaSP(isol):
 
     # Calculate delta values of 15Nalpha and 15Nbeta referenced to the
     # Casciotti lab standard
-    d15NalphaStd = 1000 * (isol[0]/0.003677014710 - 1)
-    d15NbetaStd = 1000 * (isol[1]/0.003676389705 - 1)
+    d15NalphaStd = 1000 * (isol['15Ralpha']/0.003677014710 - 1)
+    d15NbetaStd = 1000 * (isol['15Rbeta']/0.003676389705 - 1)
 
     # Convert delta values of 15N so that they are referenced to AIR instead of 
     # the Casciotti lab standard; **is this necessary or advisable?**
@@ -51,8 +51,8 @@ def calcdeltaSP(isol):
     d15Nbulk = (d15NalphaAir + d15NbetaAir)/2
 
     # Calculate d17O and d18O referenced to VSMOW
-    d17O = 1000*(isol[2]/0.0003799 - 1)
-    d18O = 1000*(isol[3]/0.0020052 - 1)
+    d17O = 1000*(isol['17R']/0.0003799 - 1)
+    d18O = 1000*(isol['18R']/0.0020052 - 1)
 
     # Create array of isotope data and return
     deltaVals = np.array([d15NalphaAir, d15NbetaAir, SP, d15Nbulk,  d17O, d18O]).T

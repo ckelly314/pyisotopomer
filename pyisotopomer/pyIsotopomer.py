@@ -15,140 +15,136 @@ import automate_gk_solver as scramblingsolver
 import calcSPmain
 import calcdeltaSP
 import concentrations
+import parseinput
+import parseoutput
 
 
 class Scrambling:
     """
+    Read in input spreadsheet of reference materials & calculate scrambling coefficients.
+    
+    USAGE: gk = Scrambling(inputfile="00_Python_template.xlsx", ref1='ATM', ref2='S2', ref3='B6')
+
     DESCRIPTION:
+        Takes an input spreadsheet of size-corrected reference materials,
+        following the format of the template "00_Python_template.xlsx".
+        Generates all possible pairings of reference materials.
         Uses paired reference materials to calculate IRMS
         scrambling coefficients.
-    
-    EXAMPLE:
-    gk = Scrambling(inputfile='test_cases/2012_atm_s2.csv', ref1='ATM', ref2='S2', saveout=False)
 
     INPUT:
-        -   inputfile: .csv file with dimensions n x 6 where n is the number of
-            measurements.  The three columns are 31R, 45R and 46R from
-            left to right for the first reference material, then 31R,
-            45R and 46R from left to right for the first reference material.
-            inputfile.csv should have no headers or index.
-        -   saveout: If True, save scrambling coefficients to output .csv file.
-            Default = True.
-        -   outputfile: Output filename. If None and saveout=True, default to
-            "{date}_output.csv"
-        -   initialguess: Initial guess for gamma and kappa. If None, default to
-            [0.17, 0.08].
-        -   lowerbounds: Lower bounds for the solver. If None, default to [0.0, 0.0]
-        -   upperbounds: Upper bounds for the solver. If None, default to [1.0, 1.0]
+        :param inputfile: Spreadsheet of size-corrected reference materials,
+        following the format of "00_Python_template.xlsx".
+        :type inputfile: .xlsx file
+        :param **Refs: Reference materials included in input spreadsheet:
+        e.g., ref1="NAME", ref2="NAME", ref3="NAME"
+        :type **Refs: Variadic kwargs
+        :param saveout: If True, save output .xlsx file of scrambling results.
+        :type saveout: Bool
+        :param outputfile: Output filename. If None and saveout=True, default to
+            "{date}_scrambling_output.xlsx"
+        :type outputfile: String
+        :param initialguess: Initial guess for gamma and kappa.
+        If None, default to [0.17, 0.08].
+        :type initialguess: list or Numpy array
+        :param lowerbounds: Lower bounds for automate_gk_solver.
+        If None, default to [0.0, 0.0].
+        :type lowerbounds: list or Numpy array
+        :param upperbounds: Upper bounds for automate_gk_solver.
+        If None, default to [1.0, 1.0].
+        :type upperbounds: list or Numpy array
 
     OUTPUT:
-        -   Scrambling.R: Array of input data, read in from inputfile.
-        -   Scrambling.scrambling: Pandas DataFrame object with dimensions
-            n x 2, where n is the number of measurements. The two columns are
-            gamma and kappa from left to right.
-        -   Scrambling.scrambling_mean: Pandas DataFrame object with mean of
-            gamma and kappa values.
-        -   Scrambling.scrambling_std: Pandas DataFrame object with standard deviation of
-            gamma and kappa values.
+        :param inputobj: Input class from parseinput.py
+        :type inputobj: Class
+        :param outputs: Tables of scrambling coefficients for each pairing of ref. materials.
+        :type outputs: List of Pandas DataFrames
+        :param pairings: List of ref. material pairings generated from parseinputs
+        :type pairings: List of tuples
+        :param alloutputs: One table of all scrambling coefficients for all pairings.
+        :type alloutputs: Pandas DataFrame
+        :param scrambling: All scrambling coefficients calculated for all pairings.
+        :type scrambling: Pandas Series
+        :param scrambling_mean: Pandas DataFrame object with mean of gamma and kappa values.
+        :type scrambling_mean: Pandas Series
+        :param scrambling_std: Pandas DataFrame object with standard dev. of gamma and kappa values.
+        :type scrambling_std: Pandas Series
+    
+    @author: Colette L. Kelly (clkelly@stanford.edu).
     """
 
-    def __init__(self, inputfile, ref1, ref2, saveout=True, outputfile=None,
-        initialguess=None, lowerbounds=None, upperbounds=None):
+    def __init__(self, inputfile, saveout=True, outputfile=None,
+        initialguess=None, lowerbounds=None, upperbounds=None, **Refs):
 
         # default arguments
-        if initialguess is not None:
-            initialguess = np.array(initialguess, dtype=float)
-        elif initialguess is None:
-            initialguess = np.array([0.17, 0.08], dtype=float)
-        
-        if lowerbounds is not None:
-            lowerbounds = np.array(lowerbounds, dtype=float)
-        elif lowerbounds is None:
-            lowerbounds = np.array([0.0, 0.0], dtype=float)
-
-        if upperbounds is not None:
-            upperbounds = np.array(upperbounds, dtype=float)
-        elif upperbounds is None:
-            upperbounds = np.array([1.0, 1.0], dtype=float)
-
         if outputfile is None:
             today = dt.datetime.now().strftime('%y%m%d')
-            outputfile = f'{today}_scramblingoutput.csv'
+            outputfile = f"{today}_scrambling_output.xlsx"
         else:
             outputfile = outputfile
 
-        self.R = self.readin(inputfile)
-        self.scrambling = self.computescrambling(self.R, initialguess,
-            lowerbounds, upperbounds, ref1, ref2)
+        self.inputobj = parseinput.Input(inputfile, **Refs)
+        self.outputs, self.pairings, self.alloutputs = parseoutput.parseoutput(self.inputobj,
+            initialguess = initialguess, lowerbounds = lowerbounds, upperbounds = upperbounds)
+
+        self.scrambling = self.alloutputs[["gamma", "kappa"]]
         self.scrambling_mean = self.scrambling.mean()
         self.scrambling_std = self.scrambling.std()
 
-        self.inputfile = inputfile
-        self.outputfile = outputfile
-        self.initialguess = initialguess
-        self.lowerbounds = lowerbounds
-        self.upperbounds = upperbounds
-        
         if saveout==True:
-            self.saveoutput(self.scrambling, outputfile)
+            self.saveoutput(self.outputfile)
         else:
             pass
 
-    def readin(self, inputfile):
-        # import data and set inputs
-        R = np.array(pd.read_csv(inputfile, header=None))
-        return R
+    def saveoutput(self, outputfilename):
 
-    def computescrambling(self, R, initialguess, lowerbounds, upperbounds, ref1, ref2):
-        # Run function that iteratively solves for gamma and kappa
-        scrambling = scramblingsolver.automate_gk_solver(R,x0=initialguess,
-            lb=lowerbounds,ub=upperbounds,ref1=ref1, ref2=ref2)
-
-        return scrambling
-
-    def saveoutput(self, gk, outputfile):
-
-        # Create a commma delimited text file containing the output data
-        # The columns from left to right are gamma and kappa
-        gk.to_csv(path_or_buf=f"{outputfile}", header=True, index=False)
+        # Create an excel file containing the output data
+        with pd.ExcelWriter(outputfilename) as writer:
+            self.alloutputs.to_excel(writer, sheet_name='all') # save out main dataframe to one sheet
+            for df, name in zip(self.outputs, self.pairings):
+                # write each output dataframe to a separate sheet in the output spreadsheet
+                df.to_excel(writer, sheet_name=name)
 
     def __repr__(self):
         return f"<Gamma: {self.scrambling_mean[0]:.4}, Kappa: {self.scrambling_mean[1]:.4}>"
 
 class Isotopomers:
     """
+    Read in the isotopomers template spreadsheet and calculate isotopomers.
+
+    USAGE: deltavals = Isotopomers(inputfile = "00_Python_template.xlsx", scrambling=[0.17, 0.08])
+
     DESCRIPTION:
         Uses values of 31R, 45R and 46R to calculate 15Ralpha, 15R beta, 17R
         and 18R.
 
-    EXAMPLE:
-    deltavals = Isotopomers(inputfile = 'py_atm.csv',
-    scrambling=gk.scrambling.scrambling_mean, saveout=False)
-
     INPUT:
-        -   inputfile: .csv file ith dimensions n x 3 where n is the number of
-            measurements.  The three columns are 31R, 45R and 46R from left to
-            right. 
-            inputfile.csv should have no headers or index.
-        -   Scrambling: Scrambling coefficients gamma and kappa for calculating
-            isotopomer values. Scrambling coefficients can be calculated from
-            paired reference materials using the Scrambling module.
-        -   saveout: If True, save isotopocule values to output .csv file.
-            Default = True.
-        -   outputfile: Output filename. If None and saveout=True, default to
-            "{date}_output.csv"
+        :param inputfile: Spreadsheet of size-corrected reference materials,
+        following the format of "00_Python_template.xlsx".
+        :type inputfile: .xlsx file
+        :param scrambling: Scrambling coefficients to use to correct this sample set.
+        :type scrambling: List or Numpy array.
+        :param saveout: If True, save output .xlsx file of scrambling results.
+        :type saveout: Bool
+        :param outputfile: Output filename. If None and saveout=True, default to
+            "{date}__isotopeoutput.csv"
+        :type outputfile: String
 
     OUTPUT:
-        -   Isotopomers.R: Array of input data, read in from inputfile.
-        -   Isotopomers.scrambling: Numpy array of scrambling coefficients.
-        -   Isotopomers.isol: Pandas DataFrame object with  dimensions n x 4,
+        :param scrambling: Scrambling coefficients to use to correct this sample set.
+        :type scrambling: Numpy array.
+        :param R: Size-corrected 31R, 45R, and 46R from which to calculate delta vals.
+        :type R: Numpy array.
+        :param isotoperatios: Pandas DataFrame object with  dimensions n x 4,
             where n is the number of measurements.  The four columns are
             15Ralpha, 15Rbeta, 17R and 18R from left to right.
-        -   Isotopomers.deltavals: Pandas DataFrame object with dimensions n x 6,
+        :type isotoperatios: Pandas DataFrame
+        :param deltavals: Pandas DataFrame object with dimensions n x 6,
             where n is the number of measurements.  The six columns are d15Nalpha,
             d15Nbeta, site preference, d15Nbulk, d17O and d18O from left to right.
-        -   Scrambling.scrambling_std: Pandas DataFrame object with standard deviation of
-            gamma and kappa values.
+        :type deltavals: Pandas DataFrame
+    
+    @author: Colette L. Kelly (clkelly@stanford.edu).
     """
     def __init__(self, inputfile, scrambling, saveout=True, outputfile=None):
 
@@ -159,22 +155,15 @@ class Isotopomers:
         else:
             outputfile = outputfile
 
-        self.inputfile = inputfile
         self.scrambling = self.check_scrambling(scrambling)
-        self.outputfile = outputfile
-        self.R = self.readin(inputfile)
-        self.isol = self.computeisotopomers(self.R, self.scrambling)
-        self.deltavals = self.computedeltavals(self.isol)
+        self.R = parseinput.Input(inputfile).sizecorrected
+        self.isotoperatios = calcSPmain.calcSPmain(self.R, scrambling=self.scrambling)
+        self.deltavals = calcdeltaSP.calcdeltaSP(self.isotoperatios)
 
         if saveout==True:
             self.saveoutput(self.deltavals, outputfile)
         else:
             pass
-
-    def readin(self, inputfile):
-        # import data and set inputs
-        R = np.array(pd.read_csv(inputfile, header=None))
-        return R
     
     def check_scrambling(self, scrambling):
         try:
@@ -183,20 +172,6 @@ class Isotopomers:
             print("Please enter valid scrambling coefficients.")
         
         return scrambling
-
-    def computeisotopomers(self, R, scrambling):
-        # Run function that iteratively solves for 15Ralpha and 15Rbeta (a and b) 
-        # and then calculates 17R and 18R (c and d) by substitution
-        isol = calcSPmain.calcSPmain(R, scrambling=scrambling)
-
-        return isol
-
-    def computedeltavals(self, isol):
-        # Run function that converts the data above to per mil notation referenced
-        # to AIR (for N) and VSMOW (for O).
-        deltaVals = calcdeltaSP.calcdeltaSP(isol)
-
-        return deltaVals
 
     def saveoutput(self, deltavals, outputfile):
         # Create a commma delimited text file containing the output data

@@ -9,45 +9,47 @@ Example script showing how to use scrambling solver.
 """
 
 #import utils
-from automate_gk_solver import automate_gk_solver
-import numpy as np
 import pandas as pd
+import parseinput
+import parseoutput
 
 ###############
 # USER INPUTS #
 ###############
 
-# USER INPUT: Input data used to solve equation.
-# Columns are 31R, 45R and 46R for ref. #1, then 31R, 45R and 46R for ref. #2,
-# from left to right.
-# Each row is the data for one reference material pairing.
+# USER INPUT: Input data used to calculate scrambling.
+# Enter data into "00_Python_template.xlsx" and save with a different name.
+# Enter the names of reference materials in the "ref_tag" column (column B)
+# as they appear in constants.py. 
+# Each row is one reference material.
+# Do not change the column headers.
 # Input data should include at least six significant figures for accurate 
 # results.
-inputfilename = 'example_scrambling_input.csv'
+inputfilename = "00_Python_template.xlsx"
 
-# USER INPUT: scrambling output filename
-# columns are gamma, kappa from left to right
-# Each row is the data for one reference material pairing.
-outputfilename = 'example_scrambling_output.csv'
+# USER INPUT: Scrambling output filename.
+# The first sheet of this excel file will contain all scrambling data.
+# Subsequent sheets will contain scrambling data for each pairing
+# of reference materials.
+outputfilename = "00_scrambling_output.xlsx"
 
-# USER INPUT: two reference materials used to calculate scrambling
+# USER INPUT: 
+# function call & reference materials used to calculate scrambling
 # make sure these have been added to constants.py
-ref1 = 'ATM'
-ref2 = 'S2'
+inputobj = parseinput.Input(inputfilename, ref1='ATM', ref2='S2', ref3='B6')
 
 ##################################################
 # RUN SOLVER - NO NEED TO MODIFY BELOW THIS LINE #
 ##################################################
 
-# read in data
-R = np.array(pd.read_csv(inputfilename, header=None)) # need R to be an array
+# set up empty list of output df's
+outputdfs, dfnames, maindf = parseoutput.parseoutput(inputobj)
 
-# Run function that iteratively solves for gamma and kappa
-gk = automate_gk_solver(R,ref1=ref1, ref2=ref2)
+# Create an excel file containing the output data
+with pd.ExcelWriter(outputfilename) as writer:
+    maindf.to_excel(writer, sheet_name='all') # save out main dataframe to one sheet
+    for df, name in zip(outputdfs, dfnames):
+        # write each output dataframe to a separate sheet in the output spreadsheet
+        df.to_excel(writer, sheet_name=name)
 
-# Create a .csv file containing the output data
-# The columns from left to right are gamma and kappa
-gk.to_csv(outputfilename, header=False, index=False)
-
-# print out results
-print(gk)
+    

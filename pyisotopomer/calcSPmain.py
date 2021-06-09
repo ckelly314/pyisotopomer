@@ -39,8 +39,8 @@ def calcSPmain(R, scrambling):
         :type ub: numpy array, dtype=float
 
     OUTPUT:
-        :returns: array with dimensions n x 2 where n is the number of measurements.
-        The two columns are gamma and kappa from left to right.
+        :returns: pandas DataFrame with dimensions n x 4 where n is the number of measurements.
+        The four columns are 15Ralpha, 15Rbeta, 17R and 18R from left to right.
     
     @author: Colette L. Kelly (clkelly@stanford.edu).
     """
@@ -82,5 +82,8 @@ def calcSPmain(R, scrambling):
 
     # Calculate 18R (d) for the fourth column of isol
     isol[3] = 0.0020052 * (isol[2] / 0.0003799)**(1/0.516)
-
+    
+    # set column labels for isol
+    isol = isol.rename(columns = {0:'15Ralpha',1:'15Rbeta',2:'17R',3:'18R'})
+    
     return isol
