@@ -82,6 +82,8 @@ class Scrambling:
             outputfile = f"{today}_scrambling_output.xlsx"
         else:
             outputfile = outputfile
+            
+        self.outputfile = outputfile
 
         self.inputobj = parseinput.Input(inputfile, **Refs)
         self.outputs, self.pairings, self.alloutputs = parseoutput.parseoutput(self.inputobj,
