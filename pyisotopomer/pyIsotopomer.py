@@ -1,5 +1,5 @@
 """
-File: pyIsotopomer.py
+File: pyisotopomer.py
 ---------------------------
 Created on Mon May 3rd, 2021
 
