@@ -163,7 +163,7 @@ The scrambling coefficients should not be those calculated alongside one run of 
 
 ### ---
 
-The ‘deltavals’ function will create an output .csv file, i.e., ```{date}_isotopeoutput.csv```. Copy and paste output data back into working (size correction) spreadsheet in olive-highlighted cells (columns AM-AR).
+The Isotopomers function will create an output .csv file, i.e., ```{date}_isotopeoutput.csv```. Copy and paste output data back into working (size correction) spreadsheet in olive-highlighted cells (columns AM-AR).
 
 Note that a scale decompression may be applied after the isotopomer calculation. This is calculated in the “scale-decompression” tab of the excel worksheet, and is applied in columns AU-AZ of the size_correction tab. The scale decompression should be applied as an average 
 
