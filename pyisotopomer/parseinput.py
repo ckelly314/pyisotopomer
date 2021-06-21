@@ -88,25 +88,27 @@ class Input():
             # it automatically generates the maximum number of pairings possibble for each date
             output = LHS.join(RHS, lsuffix="_1", rsuffix="_2").dropna()
 
-            # save out to view different parsed dataframes
-            #output.to_csv(f"00{c[0]}-{c[1]}.csv")
+            # check if output is empty
+            if len(output)==0:
+                print(f"No matching dates for reference materials {c[0]} & {c[1]}")
 
-            # dictionary key is the ref. pairing, e.g. "ATM-S2"
-            key = f"{c[0]}-{c[1]}"
-            
-            # store names of ref materials in dict
-            ref1 = c[0]
-            ref2 = c[1]
-            # store input array for automate_gk_solver, no index or header
-            R = np.array(output[[f"size corrected 31R_1", # use f-strings to obtain column names
-            	f"size corrected 45R_1",f"size corrected 46R_1",
-            	f"size corrected 31R_2",f"size corrected 45R_2",
-            	f"size corrected 46R_2"]])
+            elif len(output)>0:
+                # dictionary key is the ref. pairing, e.g. "ATM-S2"
+                key = f"{c[0]}-{c[1]}"
+                
+                # store names of ref materials in dict
+                ref1 = c[0]
+                ref2 = c[1]
+                # store input array for automate_gk_solver, no index or header
+                R = np.array(output[[f"size corrected 31R_1", # use f-strings to obtain column names
+                	f"size corrected 45R_1",f"size corrected 46R_1",
+                	f"size corrected 31R_2",f"size corrected 45R_2",
+                	f"size corrected 46R_2"]])
 
-            # store pandas dataframe
-            df = output
-            
-            outputdict[key] = [ref1, ref2, R, df] # add data to output dictionary
+                # store pandas dataframe
+                df = output
+                
+                outputdict[key] = [ref1, ref2, R, df] # add data to output dictionary
 
         return pairings, outputdict
     

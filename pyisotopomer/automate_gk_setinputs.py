@@ -25,13 +25,13 @@ import parseoutput
 # Do not change the column headers.
 # Input data should include at least six significant figures for accurate 
 # results.
-inputfilename = "00_Python_template.xlsx"
+inputfilename = "verification/00_dates_dont_match.xlsx"
 
 # USER INPUT: Scrambling output filename.
 # The first sheet of this excel file will contain all scrambling data.
 # Subsequent sheets will contain scrambling data for each pairing
 # of reference materials.
-outputfilename = "00_scrambling_output.xlsx"
+outputfilename = "verification/00_dates_dont_match_output.xlsx"
 
 # USER INPUT: 
 # function call & reference materials used to calculate scrambling
