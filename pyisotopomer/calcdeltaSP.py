@@ -34,15 +34,9 @@ def calcdeltaSP(isol):
        d15Nbulk, d17O and d18O from left to right.
     """
 
-    # Calculate delta values of 15Nalpha and 15Nbeta referenced to the
-    # Casciotti lab standard
-    d15NalphaStd = 1000 * (isol['15Ralpha']/0.003677014710 - 1)
-    d15NbetaStd = 1000 * (isol['15Rbeta']/0.003676389705 - 1)
-
-    # Convert delta values of 15N so that they are referenced to AIR instead of 
-    # the Casciotti lab standard; **is this necessary or advisable?**
-    d15NalphaAir = d15NalphaStd + 0.14 + d15NalphaStd * (0.14/1000)
-    d15NbetaAir = d15NbetaStd - 0.03 + d15NbetaStd * (-0.03/1000)
+    # Calculate delta values of 15Nalpha and 15Nbeta referenced to AIR
+    d15NalphaAir = 1000 * (isol['15Ralpha']/0.0036765 - 1)
+    d15NbetaAir = 1000 * (isol['15Rbeta']/0.0036765 - 1)
 
     # Calculate 15N site preference referenced to AIR
     SP = d15NalphaAir - d15NbetaAir;

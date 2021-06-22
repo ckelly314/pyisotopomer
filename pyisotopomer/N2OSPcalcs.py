@@ -36,7 +36,7 @@ outputfilename = 'example_isotopomer_output.csv'
 # USER INPUT: scrambling coefficients
 # These are calculated with the package of scrambling scripts:
 # automate_gk_setinputs.py, automate_gk_solver.py, automate_gk_eqns.py, and constants.py
-gamma_kappa = np.array([0.172, 0.0796])
+gamma_kappa = np.array([0.172170839, 0.079714555])
 
 ##################################################
 # RUN SOLVER - NO NEED TO MODIFY BELOW THIS LINE #
@@ -59,4 +59,4 @@ deltaVals = pd.DataFrame(deltaVals, columns = ['d15Na', 'd15Nb', 'SP',
 deltaVals.to_csv(outputfilename)
 
 # for testing:
-print("we did it!")
+print("Done 😛")

@@ -25,13 +25,13 @@ import parseoutput
 # Do not change the column headers.
 # Input data should include at least six significant figures for accurate 
 # results.
-inputfilename = "verification/vary_ref_scrambling.xlsx"
+inputfilename = "00_Python_template.xlsx"
 
 # USER INPUT: Scrambling output filename.
 # The first sheet of this excel file will contain all scrambling data.
 # Subsequent sheets will contain scrambling data for each pairing
 # of reference materials.
-outputfilename = "verification/vary_ref_scrambling_output.xlsx"
+outputfilename = "example_scrambling_output.xlsx"
 
 # USER INPUT: 
 # function call & reference materials used to calculate scrambling
@@ -51,5 +51,8 @@ with pd.ExcelWriter(outputfilename) as writer:
     for df, name in zip(outputdfs, dfnames):
         # write each output dataframe to a separate sheet in the output spreadsheet
         df.to_excel(writer, sheet_name=name)
+
+# for testing:
+print("Done 😛")
 
     
