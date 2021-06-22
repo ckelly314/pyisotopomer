@@ -75,7 +75,7 @@ First, follow [these instructions](https://www.howtogeek.com/249966/how-to-insta
 
 Once you're in the `bash` shell, run the following commands to install Python 3.9 on your computer:
 
-```
+```bash
 $ sudo add-apt-repository ppa:deadsnakes/ppa
 $ sudo apt-get update
 $ sudo apt-get install python3.9
@@ -83,7 +83,7 @@ $ sudo apt-get install python3.9
 
 You can check which version of Python you've installed by running:
 
-```
+```bash
 $ python3 --version
 ```
 
@@ -95,7 +95,7 @@ Python 3.9.2
 
 Install the packages necessary to run pyisotopomer. Run:
 
-```
+```bash
 $ pip install "prompt-toolkit==2.0.10" "ipython[all]" jupyter jupyterlab numpy scipy pandas
 ```
 
