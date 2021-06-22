@@ -22,19 +22,19 @@ In this document, we will go over:
 
 The import convention for pyisotopomer is:
 
-```
+```Python
 from pyisotopomer import Scrambling, Isotopomers
 ```
 
 To calculate scrambling coefficients, the only function you need is:
 
-```
+```Python
 Scrambling(inputfile="FILENAME.xlsx", ref1="NAME", ref2="NAME", **kwargs)
 ```
 
 To calculate isotopomers, the only function you need is:
 
-```
+```Python
 Isotopomers(inputfile = "FILENAME.xlsx", scrambling = [0.1..., 0.0...], **kwargs)
 ```
 
@@ -133,7 +133,7 @@ DO NOT MODIFY COLUMN HEADERS IN THE CORRECTION TEMPLATE. Save the correction tem
 
 Open a terminal window. Launch Jupyter Notebook:
 
-```
+```bash
 colette$ jupyter notebook
 ```
 
@@ -147,7 +147,7 @@ Size-correct your data (including all samples and standards), as above. DO NOT M
 
 Open a terminal window. Launch Jupyter Notebook:
 
-```
+```bash
 colette$ jupyter notebook
 ```
 
