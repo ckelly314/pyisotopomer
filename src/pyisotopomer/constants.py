@@ -29,25 +29,6 @@ def constants(ref1, ref2):
 
     '''
 
-
-def constants(ref1, ref2):
-    '''
-    Return 15Ralpha and 15Rbeta for the two reference materials used to
-    calibrate scrambling.
-
-    USAGE: a, b, a2, b2 = constants('ATM', 'S2')
-
-    INPUT:
-        :param ref1: name of first reference material used for scrambling calibration
-        :type ref1: string
-        :param ref2: name of second reference material used for scrambling calibration
-        :type ref2: string
-
-    OUTPUT:
-        :returns: 15Ralpha #1, 15Rbeta #1, 15Ralpha #2, 15Rbeta #2
-
-    '''
-
     # read in .csv file containing ref. materials used for the scrambling calibration
     data = pd.read_csv("constants.csv")
 
