@@ -106,6 +106,8 @@ This may take a while; pip (the Python package manager) will check if these pack
 
 ## Size correction
 
+Download the data correction [template](https://github.com/ckelly314/pyisotopomer/blob/master/pyisotopomer/00_Python_template.xlsx).
+
 Export IRMS data in Isodat, with separate export templates for the sample peak and designated reference peak for each sample.
 
 Open the .xls file containing Isodat output. Note that the spreadsheet contains two tabs: one contains raw data for each sample, and the other contains raw data for the designated reference peak for each sample.
@@ -126,7 +128,9 @@ Here, two coefficients, γ and κ, are used to describe scrambling in the ion so
 
 Run two (or more) reference gases with known 15R-alpha and 15R-beta, prepared in the same format as samples (i.e., some amount of N<sub>2</sub>O reference gas injected into a bottle of seawater or DI water that has been purged with He or N2 gas).
 
-Open ```constants.py``` in a text editor. Note that we specify named reference materials in lines 50-53. If the reference materials used to calibrate scrambling are not in this list, add them, following the format of the existing lines. Save ```constants.py```.
+Download [constants.csv](https://github.com/ckelly314/pyisotopomer/blob/master/src/pyisotopomer/constants.csv).
+
+Open constants.csv in a text editor. Note that we specify named reference materials in lines 50-53. If the reference materials used to calibrate scrambling are not in this list, add them, following the format of the existing lines. Save constants.csv into your current working directory.
 
 Export and size-correct these data in the excel correction template, as above. The placeholder samples in the template spreadsheet are arranged in the right order 1-7, but this may not necessarily be the case, depending on how one performs the steps above. The order is not important to what follows, as long as the samples (columns C-Q) and reference peaks (columns S-U) are in the same order.
 
