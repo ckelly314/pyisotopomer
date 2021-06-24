@@ -1,3 +1,23 @@
+Metadata-Version: 2.1
+Name: pyisotopomer
+Version: 0.0.19
+Summary: Nitrous oxide isotopocule data corrections in Python
+Home-page: https://github.com/ckelly314/pyisotopomer
+Author: Colette L. Kelly
+Author-email: clkelly@stanford.edu
+License: UNKNOWN
+Project-URL: Bug Tracker, https://github.com/ckelly314/pyisotopomer/issues
+Platform: UNKNOWN
+Classifier: Development Status :: 3 - Alpha
+Classifier: Programming Language :: Python :: 3
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Natural Language :: English
+Classifier: Intended Audience :: Science/Research
+Classifier: Topic :: Scientific/Engineering :: Chemistry
+Description-Content-Type: text/markdown
+License-File: LICENSE
+
 # pyisotopomer
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
@@ -177,3 +197,5 @@ Calculate the amount (nmol) of <sup>44</sup>N<sub>2</sub>O in your sample from t
 Use the weight difference of the bottle pre- and post-analysis to determine the volume of sample run, and thus the concentration of <sup>44</sup>N<sub>2</sub>O.
 
 We calculate the concentrations of <sup>45</sup>N<sub>2</sub>O-α, <sup>45</sup>N<sub>2</sub>O-β, and <sup>46</sup>N<sub>2</sub>O (for tracer experiments) from the delta value and associated 15/14 ratios. For high levels of <sup>15</sup>N enrichment, use atom fraction <sup>15</sup>N and 14</sup>N rather than isotope ratios.
+
+

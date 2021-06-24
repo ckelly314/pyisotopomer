@@ -1,0 +1,43 @@
+
+# Site info
+site_name: pyisotopomer
+site_author: Colette L. Kelly
+site_description: Nitrous oxide isotopocule data corrections in Python
+copyright: Copyright &copy; 2021 Colette L. Kelly (MIT License)
+
+# Github repo info
+repo_name: ckelly314/pyisotopomer
+repo_url: https://github.com/ckelly314/pyisotopomer
+
+# Appearance
+theme:
+  name: material
+  language: en
+  palette:
+    scheme: default
+    primary: white
+    accent: deep orange
+  font:
+    text: Noto Sans
+    code: Noto Sans Mono
+
+# Extensions
+markdown_extensions:
+  - admonition
+  - pymdownx.superfences
+  - pymdownx.details
+  - codehilite:
+      guess_lang: false
+  - toc:
+      permalink: true
+  - footnotes
+  - pymdownx.inlinehilite
+  - pymdownx.arithmatex
+extra_javascript:
+  - https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-MML-AM_CHTML
+extra_css:
+  - stylesheets/extra.css
+
+# Plugins
+plugins:
+  - search
