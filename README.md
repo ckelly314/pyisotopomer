@@ -16,8 +16,8 @@ While the scrambling calibration is an integral part of obtaining high-quality N
 **Contents:**
 - [pyisotopomer](#pyisotopomer)
   - [Basic use](#basic-use)
-  - [Configuring python](#configuring-python:-macOS)
-  - [Configuring python](#configuring-python:-windows)
+  - [Configuring python](#configuring-python-macOS)
+  - [Configuring python](#configuring-python-windows)
   - [Pre-processing](#pre-processing)
   - [Scrambling calibration](#scrambling-calibration)
   - [Calculating isotopomers](#calculating-isotopomers)
