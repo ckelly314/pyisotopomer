@@ -43,7 +43,7 @@ To calculate isotopomers, the only function you need is:
 Isotopomers(inputfile = "FILENAME.xlsx", scrambling = [0.1..., 0.0...], **kwargs)
 ```
 
-You can walk through these steps in this [Jupyter Notebook](https://github.com/ckelly314/pyisotopomer/blob/master/src/pyisotopomer/run_pyisotopomer.ipynb).
+You can walk through these steps in this [Jupyter Notebook](https://github.com/ckelly314/pyisotopomer/blob/master/tests/run_pyisotopomer.ipynb).
 
 ## Configuring Python: macOS
 
