@@ -6,7 +6,7 @@ if __name__ == "__main__":
         long_description = fh.read()
     setup(
         name="pyisotopomer",
-        version="0.0.19",
+        version="0.0.21",
         author="Colette L. Kelly",
         author_email="clkelly@stanford.edu",
         description="Nitrous oxide isotopocule data corrections in Python",
@@ -28,10 +28,6 @@ if __name__ == "__main__":
         include_package_data=True,
         package_dir={"": "src"},
         packages=find_packages(where="src"),
-        package_data={
-            # If any package contains *.xlsx files, include them:
-            "": ["*.xlsx", "*.csv", "*.ipynb"],
-        },
         setup_requires=[],
         install_requires=[
             "numpy",
