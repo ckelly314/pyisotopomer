@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: pyisotopomer
-Version: 0.0.23
+Version: 0.0.24
 Summary: Nitrous oxide isotopocule data corrections in Python
 Home-page: https://github.com/ckelly314/pyisotopomer
 Author: Colette L. Kelly
@@ -29,17 +29,19 @@ pyisotopomer is a Python toolbox for processing nitrous oxide (N<sub>2</sub>O) i
 
 ## Intro
 
-While the scrambling calibration is an integral part of the N<sub>2</sub>O data processing, this calibration is part of a larger data processing pipeline. Below is a flowchart which illustrates the steps requisite to obtaining high-quality N<sub>2</sub>O  isotopocule data from isotope ratio mass spectrometry, starting from a new filament on an existing mass spectrometer. The scrambling calibration and isotopocule calculation steps can be performed in pyisotopomer.
+While the scrambling calibration is an integral part of obtaining high-quality N<sub>2</sub>O  isotopocule data from isotope ratio mass spectrometry, this calibration is part of a larger data processing pipeline. The scrambling calibration and isotopocule calculation steps can be performed in pyisotopomer.
 
 ![](flowchart.jpg)
 
-In this document, we will go over:
-
-1. Basic use of the pyisotopomer package
-2. Configuring Python on your computer
-3. Correcting IRMS data for the effect of peak area on isotope ratios
-4. Calibrating your instrument for scrambling with pyisotopomer
-5. Calculating isotopomers with pyisotopomer
+**Contents:**
+- [pyisotopomer](#pyisotopomer)
+  - [Basic use](#basic-use)
+  - [Configuring python: macOS](#configuring-python-macOS)
+  - [Configuring python: Windows](#configuring-python-windows)
+  - [Pre-processing](#pre-processing)
+  - [Scrambling calibration](#scrambling-calibration)
+  - [Calculating isotopomers](#calculating-isotopomers)
+  - [Calculating concentrations](#calculating-concentrations)
 
 ## Basic use
 
@@ -61,9 +63,9 @@ To calculate isotopomers, the only function you need is:
 Isotopomers(inputfile = "FILENAME.xlsx", scrambling = [0.1..., 0.0...], **kwargs)
 ```
 
-You can walk through these steps in this [Jupyter Notebook](https://github.com/ckelly314/pyisotopomer/blob/master/pyisotopomer/run_pyisotopomer.ipynb).
+You can walk through these steps in this [Jupyter Notebook](https://github.com/ckelly314/pyisotopomer/blob/master/tests/run_pyisotopomer.ipynb).
 
-## Configuring Python on your computer: macOS
+## Configuring Python: macOS
 
 Check that you have python3 installed on your computer. On macOS, open a new Terminal window (see below for instructions for Windows). Run the following command:
 
@@ -79,16 +81,16 @@ Python 3.9.2
 
 Note that the text before the dollar sign will vary based on the user and computer. Additionally, the dollar sign may be replaced by a percent sign if your terminal is in zshell (zsh) instead of bash, but this is not an important difference for the code below. If python3 is not yet installed on your computer, try this [helpful guide](https://github.com/stanfordpython/python-handouts/blob/master/installing-python-macos.md) for installing Python as well as working with virtual environments.
 
-Install the packages necessary to run pyisotopomer. Run:
+Install pyisotopomer. Run:
 
 ```bash
 colette$ pip install --upgrade pip
-colette$ pip install jupyter jupyterlab numpy scipy pandas
+colette$ pip install pyisotopomer
 ```
 
-This may take a while; pip (the Python package manager) will check if these packages have already been installed, and if not, download them from the cloud and install them on your machine.
+This may take a while; pip (the Python package manager) will download pyisotopomer and its dependencies from the cloud and install them on your machine. 
 
-## Configuring Python on your computer: Windows
+## Configuring Python: Windows
 
 Requires: 64-bit Windows 10, updated to the 2016 Anniversary build or later. *If you regularly download updates, you'll be fine.*
 
@@ -116,15 +118,15 @@ This should output something like:
 Python 3.9.2
 ```
 
-Install the packages necessary to run pyisotopomer. Run:
+Install pyisotopomer. Run:
 
 ```bash
-$ pip install "prompt-toolkit==2.0.10" "ipython[all]" jupyter jupyterlab numpy scipy pandas
+$ pip install "prompt-toolkit==2.0.10" "ipython[all]" pyisotopomer
 ```
 
-This may take a while; pip (the Python package manager) will check if these packages have already been installed, and if not, download them from the cloud and install them on your machine.
+This may take a while; pip (the Python package manager) will download pyisotopomer and its dependencies from the cloud and install them on your machine. 
 
-## Size correction
+## Pre-processing
 
 Download the data correction [template](https://github.com/ckelly314/pyisotopomer/blob/master/src/pyisotopomer/00_Python_template.xlsx).
 
@@ -142,7 +144,7 @@ Replace the values in row 7, columns W-Y, with your size correction slopes. Ensu
 
 The 31R, 45R, and 46R for each sample, normalized to the common reference injection and normalized to a m/z 44 peak area of 20 Vs, are found in columns AI-AK. Save the data correction template to your current working directory.
 
-## Calibrating your instrument for scrambling with pyisotopomer:
+## Scrambling calibration:
 
 Download [constants.csv](https://github.com/ckelly314/pyisotopomer/blob/master/src/pyisotopomer/constants.csv).
 
@@ -168,7 +170,7 @@ This should open Jupyter in a new browser window. In Jupyter, navigate to the py
 
 Follow the instructions in the Jupyter Notebook to run pyisotopomer and obtain scrambling coefficients for all possible pairings of reference materials. This will create an output file entitled ```{date}_scrambling_output.xlsx``` with scrambling output.
 
-## Calculating isotopomers with pyisotopomer
+## Calculating isotopomers
 
 Size-correct your data (including all samples and standards), as above. DO NOT MODIFY COLUMN HEADERS IN THE CORRECTION TEMPLATE. Save the correction template into the same directory as pyisotopomer.
 
@@ -194,7 +196,9 @@ The Isotopomers function will create an output .csv file, i.e., ```{date}_isotop
 
 Note that a scale decompression may be applied after the isotopomer calculation. This is calculated in the “scale-decompression” tab of the excel worksheet, and is applied in columns AU-AZ of the size_correction tab. The scale decompression should be applied as an average 
 
-## Calculating concentrations of <sup>44</sup>N<sub>2</sub>O, <sup>45</sup>N<sub>2</sub>O-α, <sup>45</sup>N<sub>2</sub>O-β, and <sup>46</sup>N<sub>2</sub>O
+## Calculating concentrations
+
+To calculate the concentrations of <sup>44</sup>N<sub>2</sub>O, <sup>45</sup>N<sub>2</sub>O-α, <sup>45</sup>N<sub>2</sub>O-β, and <sup>46</sup>N<sub>2</sub>O:
 
 Calculate the amount (nmol) of <sup>44</sup>N<sub>2</sub>O in your sample from the ratio of mass 44 peak area to N<sub>2</sub>O (nmol/Vs) for your instrument. For high levels of <sup>15</sup>N enrichment, account for masses 45 and 46 as well when calculating the total N<sub>2</sub>O.
 
