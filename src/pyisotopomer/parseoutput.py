@@ -96,8 +96,9 @@ def parseoutput(inputobj, initialguess=None, lowerbounds=None, upperbounds=None)
         # print(key)
 
         try:  # Run function that iteratively solves for gamma and kappa
-            gk = automate_gk_solver(R,ref1=ref1, ref2=ref2,
-                x0=initialguess, lb=lowerbounds, ub=upperbounds)
+            gk = automate_gk_solver(
+                R, ref1=ref1, ref2=ref2, x0=initialguess, lb=lowerbounds, ub=upperbounds
+            )
 
             try:
                 # attach scrambling coeffs to output dataframe
@@ -111,8 +112,10 @@ def parseoutput(inputobj, initialguess=None, lowerbounds=None, upperbounds=None)
 
             except AttributeError:
                 print(f"{ref1} and/or {ref2} have not been entered in constants.csv")
-        
+
         except ValueError:
-            print("Please ensure constants.csv is saved in the current working directory\n")
+            print(
+                "Please ensure constants.csv is saved in the current working directory\n"
+            )
 
     return outputdfs, dfnames, maindf
