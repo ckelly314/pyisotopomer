@@ -16,6 +16,7 @@ import numpy as np
 from scipy.optimize import least_squares
 from .SPnonlineq import SPnonlineq
 
+
 def calcSPmain(R, scrambling):
     """
     Calculate gamma and kappa from measured rR31/30 and r45/44, given known a, b, 17R.
@@ -41,11 +42,10 @@ def calcSPmain(R, scrambling):
     OUTPUT:
         :returns: pandas DataFrame with dimensions n x 4 where n is the number of measurements.
         The four columns are 15Ralpha, 15Rbeta, 17R and 18R from left to right.
-    
+
     @author: Colette L. Kelly (clkelly@stanford.edu).
     """
 
-    
     #  python: need to set up empty dataframe to which we'll add values
     isol = pd.DataFrame([])
 
@@ -67,23 +67,32 @@ def calcSPmain(R, scrambling):
     for n in range(len(R)):
         #  python: scipy.optimize.least_squares instead of matlab "lsqnonlin"
         row = np.array(R[n][:])
-        args = (row, scrambling, )
-        #v = least_squares(automate_gk_eqns, x0, bounds=bounds,args=args)
-        v = least_squares(SPnonlineq, x0, bounds=bounds,
-                          ftol=1e-15,
-                          xtol=1e-15, max_nfev=2000, args=args)
+        args = (
+            row,
+            scrambling,
+        )
+        # v = least_squares(automate_gk_eqns, x0, bounds=bounds,args=args)
+        v = least_squares(
+            SPnonlineq,
+            x0,
+            bounds=bounds,
+            ftol=1e-15,
+            xtol=1e-15,
+            max_nfev=2000,
+            args=args,
+        )
 
         #  create a new array from the iterated solutions
         #  first column is gamma, second column is kappa
         isol = isol.append([v.x])
 
     # Calculate 17R (c) for the third column of isol
-    isol[2] = R[:,1] - isol[0] - isol[1]
+    isol[2] = R[:, 1] - isol[0] - isol[1]
 
     # Calculate 18R (d) for the fourth column of isol
-    isol[3] = 0.0020052 * (isol[2] / 0.0003799)**(1/0.516)
-    
+    isol[3] = 0.0020052 * (isol[2] / 0.0003799) ** (1 / 0.516)
+
     # set column labels for isol
-    isol = isol.rename(columns = {0:'15Ralpha',1:'15Rbeta',2:'17R',3:'18R'})
-    
+    isol = isol.rename(columns={0: "15Ralpha", 1: "15Rbeta", 2: "17R", 3: "18R"})
+
     return isol

@@ -11,8 +11,9 @@ the scrambling calibration.
 
 import pandas as pd
 
+
 def constants(ref1, ref2):
-    '''
+    """
     Return 15Ralpha and 15Rbeta for the two reference materials used to
     calibrate scrambling.
 
@@ -27,18 +28,17 @@ def constants(ref1, ref2):
     OUTPUT:
         :returns: 15Ralpha #1, 15Rbeta #1, 15Ralpha #2, 15Rbeta #2
 
-    '''
+    """
 
     # read in .csv file containing ref. materials used for the scrambling calibration
     data = pd.read_csv("constants.csv")
 
     # constants for ref1
-    a = float(data[data.Ref_material==ref1].R15alpha)
-    b = float(data[data.Ref_material==ref1].R15beta)
+    a = float(data[data.Ref_material == ref1].R15alpha)
+    b = float(data[data.Ref_material == ref1].R15beta)
 
     # constants for ref2
-    a2 = float(data[data.Ref_material==ref2].R15alpha)
-    b2 = float(data[data.Ref_material==ref2].R15beta)
+    a2 = float(data[data.Ref_material == ref2].R15alpha)
+    b2 = float(data[data.Ref_material == ref2].R15beta)
 
     return a, b, a2, b2
-
