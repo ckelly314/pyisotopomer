@@ -95,21 +95,24 @@ def parseoutput(inputobj, initialguess=None, lowerbounds=None, upperbounds=None)
         key, [ref1, ref2, R, df] = inputobj.scrambleinput.popitem()
         # print(key)
 
-        # Run function that iteratively solves for gamma and kappa
-        gk = automate_gk_solver(
-            R, ref1=ref1, ref2=ref2, x0=initialguess, lb=lowerbounds, ub=upperbounds
-        )
+        try:  # Run function that iteratively solves for gamma and kappa
+            gk = automate_gk_solver(R,ref1=ref1, ref2=ref2,
+                x0=initialguess, lb=lowerbounds, ub=upperbounds)
 
-        # attach scrambling coeffs to output dataframe
-        df["gamma"] = np.array(gk.gamma)
-        df["kappa"] = np.array(gk.kappa)
+            try:
+                # attach scrambling coeffs to output dataframe
+                df["gamma"] = np.array(gk.gamma)
+                df["kappa"] = np.array(gk.kappa)
 
-        # write each output dataframe to a separate sheet in the output spreadsheet
-        outputdfs.append(df)
-        dfnames.append(f"{ref1}-{ref2}")
-        maindf = maindf.append(df)
+                # write each output dataframe to a separate sheet in the output spreadsheet
+                outputdfs.append(df)
+                dfnames.append(f"{ref1}-{ref2}")
+                maindf = maindf.append(df)
 
-        # print out results
-        # print(gk)
+            except AttributeError:
+                print(f"{ref1} and/or {ref2} have not been entered in constants.csv")
+        
+        except ValueError:
+            print("Please ensure constants.csv is saved in the current working directory\n")
 
     return outputdfs, dfnames, maindf
