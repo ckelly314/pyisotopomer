@@ -132,6 +132,8 @@ Download [constants.csv](https://github.com/ckelly314/pyisotopomer/blob/master/s
 
 Open ```constants.csv```. Here, we specify the calibrated isotope ratios of named reference materials. If the reference materials to be used to calibrate scrambling are not in this list, add them, following the format of the existing lines. Save ```constants.csv``` into your current working directory.
 
+Download this [Jupyter Notebook](https://github.com/ckelly314/pyisotopomer/blob/master/tests/run_pyisotopomer.ipynb). Save it into your current working directory.
+
 Here, two coefficients, γ and κ, are used to describe scrambling in the ion source. This is described in further detail in [Frame and Casciotti, 2010](https://www.biogeosciences.net/7/2695/2010/). Below is a description of how to calculate these coefficients in pyisotopomer.
 
 Run two (or more) reference gases with known 15R-alpha and 15R-beta, prepared in the same format as samples (i.e., some amount of N<sub>2</sub>O reference gas injected into a bottle of seawater or DI water that has been purged with He or N2 gas).
@@ -148,13 +150,15 @@ Open a terminal window. Launch Jupyter Notebook:
 colette$ jupyter notebook
 ```
 
-This should open Jupyter in a new browser window. In Jupyter, navigate to the pyisotopomer directory. Click on ```run_pyisotopomer.ipynb``` to open the Jupyter Notebook containing the code to run pyisotopomer.
+This should open Jupyter in a new browser window. In Jupyter, navigate to your current working directory. Click on ```run_pyIsotopomer.ipynb``` to open the Jupyter Notebook containing the code to run pyisotopomer.
 
 Follow the instructions in the Jupyter Notebook to run pyisotopomer and obtain scrambling coefficients for all possible pairings of reference materials. This will create an output file entitled ```{date}_scrambling_output.xlsx``` with scrambling output.
 
 ## Calculating isotopomers
 
-Size-correct your data (including all samples and standards), as above. DO NOT MODIFY COLUMN HEADERS IN THE CORRECTION TEMPLATE. Save the correction template into the same directory as pyisotopomer.
+Size-correct your data (including all samples and standards), as above. 
+
+DO NOT MODIFY COLUMN HEADERS IN THE CORRECTION TEMPLATE. Save the correction template into your current working directory.
 
 Open a terminal window. Launch Jupyter Notebook:
 
@@ -162,7 +166,7 @@ Open a terminal window. Launch Jupyter Notebook:
 colette$ jupyter notebook
 ```
 
-This should open Jupyter in a new browser window. In Jupyter, navigate to the directory where you saved the data correction template and ```constants.csv```. Click on ```run_pyIsotopomer.ipynb``` to open the Jupyter Notebook containing the code to run pyisotopomer.
+This should open Jupyter in a new browser window. In Jupyter, navigate to your current working directory. Click on ```run_pyIsotopomer.ipynb``` to open the Jupyter Notebook containing the code to run pyisotopomer.
 
 Follow the instructions in the Jupyter Notebook to run pyisotopomer and obtain sample isotopocule values in delta notation, as well as isotope ratios.
 
