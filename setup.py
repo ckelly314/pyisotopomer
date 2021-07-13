@@ -6,7 +6,7 @@ if __name__ == "__main__":
         long_description = fh.read()
     setup(
         name="pyisotopomer",
-        version="0.0.1",
+        version="0.0.2",
         author="Colette L. Kelly",
         author_email="clkelly@stanford.edu",
         description="Nitrous oxide isotopocule data corrections in Python",
