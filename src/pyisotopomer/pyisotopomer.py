@@ -87,6 +87,7 @@ class Scrambling:
         if outputfile is None:
             today = dt.datetime.now().strftime("%y%m%d")
             outputfile = f"{today}_scrambling_output.xlsx"
+            print(f"output saved as {today}_scrambling_output.xlsx")
         else:
             outputfile = outputfile
 
@@ -145,6 +146,15 @@ class Isotopomers:
         :param outputfile: Output filename. If None and saveout=True, default to
             "{date}__isotopeoutput.csv"
         :type outputfile: String
+        :param initialguess: Initial guess for 15Ralpha and 15Rbeta
+        If None, default to [0.0037, 0.0037].
+        :type initialguess: list or Numpy array
+        :param lowerbounds: Lower bounds for calcSPmain.py
+        If None, default to [0.0, 0.0].
+        :type lowerbounds: list or Numpy array
+        :param upperbounds: Upper bounds for calcSPmain.py
+        If None, default to [1.0, 1.0].
+        :type upperbounds: list or Numpy array
 
     OUTPUT:
         :param scrambling: Scrambling coefficients to use to correct this sample set.
@@ -163,18 +173,33 @@ class Isotopomers:
     @author: Colette L. Kelly (clkelly@stanford.edu).
     """
 
-    def __init__(self, inputfile, scrambling, saveout=True, outputfile=None):
+    def __init__(
+        self,
+        inputfile,
+        scrambling,
+        saveout=True,
+        outputfile=None,
+        initialguess=None,
+        lowerbounds=None,
+        upperbounds=None):
 
         # default arguments
         if outputfile is None:
             today = dt.datetime.now().strftime("%y%m%d")
             outputfile = f"{today}_isotopeoutput.csv"
+            print(f"output saved as {today}_isotopeoutput.csv")
         else:
             outputfile = outputfile
 
         self.scrambling = self.check_scrambling(scrambling)
         self.R = Input(inputfile).sizecorrected
-        self.isotoperatios = calcSPmain(self.R, scrambling=self.scrambling)
+        self.isotoperatios = calcSPmain(
+            self.R,
+            scrambling=self.scrambling,
+            initialguess=initialguess,
+            lowerbounds=lowerbounds,
+            upperbounds=upperbounds
+            )
         self.deltavals = calcdeltaSP(self.isotoperatios)
 
         if saveout == True:

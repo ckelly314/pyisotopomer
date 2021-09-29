@@ -17,7 +17,7 @@ from scipy.optimize import least_squares
 from .SPnonlineq import SPnonlineq
 
 
-def calcSPmain(R, scrambling):
+def calcSPmain(R, scrambling, initialguess=None, lowerbounds=None, upperbounds=None):
     """
     Calculate gamma and kappa from measured rR31/30 and r45/44, given known a, b, 17R.
 
@@ -32,13 +32,15 @@ def calcSPmain(R, scrambling):
         :param R: array with dimensions n x 6 where n is the number of reference pairs.
         The six columns are 31R, 45R and 46R for reference #1, then 31R, 45R, 46R for reference #2, from left to right.
         :type R: numpy array, dtype=float
-        :param x0: initial guess for gamma and kappa (e.g. x0=np.array([0.17, 0.08], dtype=float))
-        :type x0: numpy array, dtype=float
-        :param lb: lower bounds for solver (e.g. lb=np.array([0.0, 0.0], dtype=float))
-        :type lb: numpy array, dtype=float
-        :param ub: upper bounds for solver (e.g. ub=np.array([1.0, 1.0], dtype=float))
-        :type ub: numpy array, dtype=float
-
+        :param initialguess: Initial guess for 15Ralpha and 15Rbeta
+        If None, default to [0.0037, 0.0037].
+        :type initialguess: list or Numpy array
+        :param lowerbounds: Lower bounds for calcSPmain.py
+        If None, default to [0.0, 0.0].
+        :type lowerbounds: list or Numpy array
+        :param upperbounds: Upper bounds for calcSPmain.py
+        If None, default to [1.0, 1.0].
+        :type upperbounds: list or Numpy array
     OUTPUT:
         :returns: pandas DataFrame with dimensions n x 4 where n is the number of measurements.
         The four columns are 15Ralpha, 15Rbeta, 17R and 18R from left to right.
@@ -46,17 +48,36 @@ def calcSPmain(R, scrambling):
     @author: Colette L. Kelly (clkelly@stanford.edu).
     """
 
+    # default arguments
+    # an approximate initial solution: initial guess for 15Ralpha and 15Rbeta
+    if initialguess is not None:
+        x0 = np.array(initialguess, dtype=float)
+    elif initialguess is None:
+        x0 = np.array([0.0037, 0.0037], dtype=float)
+    # lower and upperbounds for 15Ralpha and 15Rbeta
+    # these constraints ensure that the solver converges to a solution in the
+    # correct range
+    if lowerbounds is not None:
+        lb = np.array(lowerbounds, dtype=float)
+    elif lowerbounds is None:
+        lb = np.array([0.0, 0.0], dtype=float)
+
+    if upperbounds is not None:
+        ub = np.array(upperbounds, dtype=float)
+    elif upperbounds is None:
+        ub = np.array([1.0, 1.0], dtype=float)
+
     #  python: need to set up empty dataframe to which we'll add values
     isol = pd.DataFrame([])
 
     # an approximate initial solution: initial guess for 15Ralpha and 15Rbeta
-    x0 = np.array([0.0037, 0.0037], dtype=float)
+    #x0 = np.array([0.0037, 0.0037], dtype=float)
 
     # lower and upperbounds for 15Ralpha and 15Rbeta
     # these constraints ensure that the solver converges to a solution in the
     # correct range
-    lb = np.array([0.00, 0.00], dtype=float)
-    ub = np.array([1.0, 1.0], dtype=float)
+    #lb = np.array([0.00, 0.00], dtype=float)
+   # ub = np.array([1.0, 1.0], dtype=float)
 
     bounds = (lb, ub)
 
