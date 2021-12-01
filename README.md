@@ -126,7 +126,7 @@ Replace the values in row 7, columns W-Y, with your size correction slopes. Ensu
 
 The 31R, 45R, and 46R for each sample, normalized to the common reference injection and normalized to a m/z 44 peak area of 20 Vs, are found in columns AI-AK. Save the correction template with a new name into your current working directory.
 
-## Scrambling calibration:
+## Scrambling calibration
 
 Download [constants.csv](https://github.com/ckelly314/pyisotopomer/blob/master/src/pyisotopomer/constants.csv).
 
