@@ -8,7 +8,7 @@ A test script for pyisotopomer implementation.
 from pyisotopomer import Scrambling, Isotopomers
 
 gk = Scrambling(
-    inputfile="00_Python_template.xlsx",
+    inputfile="pyisotopomer/00_Python_template.xlsx",
     ref1="ATM",
     ref2="S2",
     ref3="B6",
@@ -16,7 +16,7 @@ gk = Scrambling(
 )
 
 deltavals = Isotopomers(
-    inputfile="00_Python_template.xlsx", scrambling=gk.scrambling_mean, saveout=False
+    inputfile="pyisotopomer/00_Python_template.xlsx", scrambling=gk.scrambling_mean, saveout=False
 )
 
 print(gk)

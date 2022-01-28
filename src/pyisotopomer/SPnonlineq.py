@@ -12,7 +12,7 @@ python version by Colette L. Kelly (clkelly@stanford.edu).
 """
 
 
-def SPnonlineq(f, R, scrambling):
+def SPnonlineq(f, R, scrambling, c31=None):
     """
     USAGE: v = least_squares(SPnonlineq, x0, bounds=bounds... args=args)
         Please see calcSPmain.py for definitions of these variables.
@@ -40,14 +40,6 @@ def SPnonlineq(f, R, scrambling):
     # pull scrambling coefficients
     g = scrambling[0]
     k = scrambling[1]
-
-    # calibrated sample: atmosphere-equilibrated seawater
-    a = 0.003734221050  # alpha, from "N2Ocalibrationsummary.xlsx"
-    b = 0.003664367550  # beta
-
-    # calibrated sample: Toyoda Lab S2
-    a2 = 0.003696905  # alpha
-    b2 = 0.003629183  # beta
 
     # solve two equations with two unknowns
     # f[0] = 15Ralpha = a, and f[2] = 15Rbeta = b
