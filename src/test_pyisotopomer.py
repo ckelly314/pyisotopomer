@@ -13,10 +13,13 @@ gk = Scrambling(
     ref2="S2",
     ref3="B6",
     initialguess=[0.17, 0.08],
+    #saveout=False
 )
 
 deltavals = Isotopomers(
-    inputfile="pyisotopomer/00_Python_template.xlsx", scrambling=gk.scrambling_mean, saveout=False
+    inputfile="pyisotopomer/00_Python_template.xlsx",
+    #scrambling=gk.scrambling_mean,
+    #saveout=False
 )
 
 print(gk)

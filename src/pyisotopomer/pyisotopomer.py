@@ -139,8 +139,6 @@ class Isotopomers:
         :param inputfile: Spreadsheet of size-corrected reference materials,
         following the format of "00_Python_template.xlsx".
         :type inputfile: .xlsx file
-        :param scrambling: Scrambling coefficients to use to correct this sample set.
-        :type scrambling: List or Numpy array.
         :param saveout: If True, save output .xlsx file of scrambling results.
         :type saveout: Bool
         :param outputfile: Output filename. If None and saveout=True, default to
@@ -157,9 +155,7 @@ class Isotopomers:
         :type upperbounds: list or Numpy array
 
     OUTPUT:
-        :param scrambling: Scrambling coefficients to use to correct this sample set.
-        :type scrambling: Numpy array.
-        :param R: Size-corrected 31R, 45R, and 46R from which to calculate delta vals.
+        :param R: Size-corrected 31R, 45R, and 46R, gamma, and kappa.
         :type R: Numpy array.
         :param isotoperatios: Pandas DataFrame object with  dimensions n x 4,
             where n is the number of measurements.  The four columns are
@@ -176,7 +172,6 @@ class Isotopomers:
     def __init__(
         self,
         inputfile,
-        scrambling,
         saveout=True,
         outputfile=None,
         initialguess=None,
@@ -191,11 +186,9 @@ class Isotopomers:
         else:
             outputfile = outputfile
 
-        self.scrambling = self.check_scrambling(scrambling)
         self.R = Input(inputfile).sizecorrected
         self.isotoperatios = calcSPmain(
             self.R,
-            scrambling=self.scrambling,
             initialguess=initialguess,
             lowerbounds=lowerbounds,
             upperbounds=upperbounds
@@ -206,14 +199,6 @@ class Isotopomers:
             self.saveoutput(self.deltavals, outputfile)
         else:
             pass
-
-    def check_scrambling(self, scrambling):
-        try:
-            scrambling = np.array(scrambling, dtype=float)
-        except ValueError:
-            print("Please enter valid scrambling coefficients.")
-
-        return scrambling
 
     def saveoutput(self, deltavals, outputfile):
         # Create a commma delimited text file containing the output data

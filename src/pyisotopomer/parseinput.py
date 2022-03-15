@@ -62,7 +62,8 @@ class Input:
         # for input to calcSPmain
         return np.array(
             data[
-                ["size corrected 31R", "size corrected 45R", "size corrected 46R"]
+                ["size corrected 31R", "size corrected 45R", "size corrected 46R",
+                "gamma", "kappa"]
             ].dropna()
         )
 

@@ -12,7 +12,7 @@ python version by Colette L. Kelly (clkelly@stanford.edu).
 """
 
 
-def SPnonlineq(f, R, scrambling, c31=None):
+def SPnonlineq(f, R):
     """
     USAGE: v = least_squares(SPnonlineq, x0, bounds=bounds... args=args)
         Please see calcSPmain.py for definitions of these variables.
@@ -22,9 +22,9 @@ def SPnonlineq(f, R, scrambling, c31=None):
         15R beta (see Frame and Casciotti, 2010, Appendix B).
 
     INPUT:
-        R = array with dimensions n x 3 where n is the number of
-        measurements.  The three columns are 31R, 45R and 46R from left to
-        right.
+        R = array with dimensions n x 5 where n is the number of
+        measurements.  The three columns are 31R, 45R, 46R, gamma,
+        and kappa, from left to right.
 
     OUTPUT:
         F = array with dimensions n x 2 where n is the number of
@@ -33,13 +33,12 @@ def SPnonlineq(f, R, scrambling, c31=None):
     """
 
     # rename inputted data
-    x = R[0]
-    y = R[1]
-    z = R[2]
+    x = R[0] # size-corrected 31R   
+    y = R[1] # size-corrected 45R
+    z = R[2] # size-corrected 46R
 
-    # pull scrambling coefficients
-    g = scrambling[0]
-    k = scrambling[1]
+    g = R[3] # gamma scrambling coefficient
+    k = R[4] # gamma scrambling coefficient
 
     # solve two equations with two unknowns
     # f[0] = 15Ralpha = a, and f[2] = 15Rbeta = b

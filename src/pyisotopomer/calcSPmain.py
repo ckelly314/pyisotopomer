@@ -17,28 +17,26 @@ from scipy.optimize import least_squares
 from .SPnonlineq import SPnonlineq
 
 
-def calcSPmain(R, scrambling, initialguess=None, lowerbounds=None, upperbounds=None):
+def calcSPmain(R, initialguess=None, lowerbounds=None, upperbounds=None):
     """
-    Calculate gamma and kappa from measured rR31/30 and r45/44, given known a, b, 17R.
-
-    USAGE: gk = automate_gk_solver(R,ref1=ref1, ref2=ref2)
+    USAGE: isotoperatios = calcSPmain(R)
 
     DESCRIPTION:
-        Uses known values of alpha, beta, and 17R for two sample gases and one
-        standard gas, plus measured rR31/30 for sample and standard gases,
-        to calculate scrambling coefficients gamma and kappa.
+        Calculate 15Ralpha, 15Rbeta, 17R, and 18R from size-corrected isotope ratios
+        and scrambling coefficients.
 
     INPUT:
-        :param R: array with dimensions n x 6 where n is the number of reference pairs.
-        The six columns are 31R, 45R and 46R for reference #1, then 31R, 45R, 46R for reference #2, from left to right.
+        :param R: array with dimensions n x 5 where n is the number of
+        measurements.  The three columns are 31R, 45R, 46R, gamma,
+        and kappa, from left to right.
         :type R: numpy array, dtype=float
         :param initialguess: Initial guess for 15Ralpha and 15Rbeta
         If None, default to [0.0037, 0.0037].
         :type initialguess: list or Numpy array
-        :param lowerbounds: Lower bounds for calcSPmain.py
+        :param lowerbounds: Lower bounds for least_squares solver
         If None, default to [0.0, 0.0].
         :type lowerbounds: list or Numpy array
-        :param upperbounds: Upper bounds for calcSPmain.py
+        :param upperbounds: Upper bounds for least_squares solver
         If None, default to [1.0, 1.0].
         :type upperbounds: list or Numpy array
     OUTPUT:
@@ -70,15 +68,6 @@ def calcSPmain(R, scrambling, initialguess=None, lowerbounds=None, upperbounds=N
     #  python: need to set up empty dataframe to which we'll add values
     isol = pd.DataFrame([])
 
-    # an approximate initial solution: initial guess for 15Ralpha and 15Rbeta
-    #x0 = np.array([0.0037, 0.0037], dtype=float)
-
-    # lower and upperbounds for 15Ralpha and 15Rbeta
-    # these constraints ensure that the solver converges to a solution in the
-    # correct range
-    #lb = np.array([0.00, 0.00], dtype=float)
-   # ub = np.array([1.0, 1.0], dtype=float)
-
     bounds = (lb, ub)
 
     #  python: options for solver function are specified in signature as kwargs
@@ -90,7 +79,6 @@ def calcSPmain(R, scrambling, initialguess=None, lowerbounds=None, upperbounds=N
         row = np.array(R[n][:])
         args = (
             row,
-            scrambling,
         )
         # v = least_squares(automate_gk_eqns, x0, bounds=bounds,args=args)
         v = least_squares(
