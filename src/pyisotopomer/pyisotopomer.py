@@ -92,9 +92,10 @@ class Scrambling:
         else:
             outputfile = outputfile
 
+        self.inputobj = ScramblingInput(inputfile, **Refs)
+        
         self.outputfile = outputfile
 
-        self.inputobj = ScramblingInput(inputfile, **Refs)
         self.outputs, self.pairings, self.alloutputs = parseoutput(
             self.inputobj,
             initialguess=initialguess,

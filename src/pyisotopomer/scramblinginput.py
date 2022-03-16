@@ -44,8 +44,13 @@ class ScramblingInput:
 
         self.filename = filename
 
-        # full contents of excel template, first tab
-        self.data = self.readin(filename)
+        try:
+            # full contents of excel template, first tab
+            self.data = self.readin(self.filename)
+        except FileNotFoundError:
+            if self.filename[-5:] != ".xlsx":
+                self.filename = self.filename+".xlsx"
+                self.data = self.readin(self.filename)
 
         # subset of data to be used for Isotopomers
         self.sizecorrected = self.parseratios(self.data)
@@ -69,8 +74,13 @@ class ScramblingInput:
         )
 
     def parsescrambling(self, data, **Refs):
+        # if no ref materials are specified, infer from ref_tag column
+        if len(Refs.values())==0:
+            Refs = list(data.ref_tag.dropna().drop_duplicates())
+        else:
+            Refs = Refs.values()
         # convert all reference names to strings in case they are input as numbers
-        Refs = [str(r) for r in Refs.values()]
+        Refs = [str(r) for r in Refs]
         # return n arrays of paired reference materials,
         # where n = the number of possible combinations of reference materials
         pairings = list(combinations(Refs, 2))
