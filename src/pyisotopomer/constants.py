@@ -36,6 +36,10 @@ def constants(ref1, ref2):
 
         data = pd.read_csv("constants.csv")
 
+        # convert reference material names to strings in case they're input as numbers
+        ref1 = str(ref1)
+        ref2 = str(ref2)
+
         # constants for ref1
         a = float(data[data.Ref_material == ref1].R15alpha)
         b = float(data[data.Ref_material == ref1].R15beta)

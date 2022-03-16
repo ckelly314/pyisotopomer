@@ -1,5 +1,5 @@
 """
-File: parseinput.py
+File: scramblinginput.py
 ---------------------------
 Created on Weds June 2nd, 2021
 
@@ -15,7 +15,7 @@ import numpy as np
 from itertools import combinations
 
 
-class Input:
+class ScramblingInput:
     """
     Read in the scrambling template spreadsheet and generate pairings of reference materials.
 
@@ -50,14 +50,14 @@ class Input:
         # subset of data to be used for Isotopomers
         self.sizecorrected = self.parseratios(self.data)
 
-        self.isotopomerinput = self.parseisotopomerinput(self.data)
-
         # subset of data to be used for Scrambling
         self.pairings, self.scrambleinput = self.parsescrambling(self.data, **Refs)
 
     def readin(self, filename):
         # return Pandas DataFrame of all input data
-        return pd.read_excel(filename, "size_correction", skiprows=1)
+        data = pd.read_excel(filename, "size_correction", skiprows=1)
+        data['ref_tag'] = data['ref_tag'].astype("string")
+        return data
 
     def parseratios(self, data):
         # return just the size-corrected isotope ratios in a numpy array
@@ -68,20 +68,12 @@ class Input:
             ].dropna()
         )
 
-    def parseisotopomerinput(self, data):
-        # return just the size-corrected isotope ratios in a numpy array
-        # for input to calcSPmain
-        return np.array(
-            data[
-                ["size corrected 31R", "size corrected 45R", "size corrected 46R",
-                "gamma", "kappa"]
-            ].dropna()
-        )
-
     def parsescrambling(self, data, **Refs):
+        # convert all reference names to strings in case they are input as numbers
+        Refs = [str(r) for r in Refs.values()]
         # return n arrays of paired reference materials,
         # where n = the number of possible combinations of reference materials
-        pairings = list(combinations(Refs.values(), 2))
+        pairings = list(combinations(Refs, 2))
 
         # set up an output dictionary of ref pairings,
         # such that each key is the string representation of the pairing,

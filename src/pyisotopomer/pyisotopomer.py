@@ -14,7 +14,8 @@ import datetime as dt
 from .calcSPmain import calcSPmain
 from .calcdeltaSP import calcdeltaSP
 from .concentrations import concentrations
-from .parseinput import Input
+from .scramblinginput import ScramblingInput
+from .isotopomerinput import IsotopomerInput
 from .parseoutput import parseoutput
 
 
@@ -93,7 +94,7 @@ class Scrambling:
 
         self.outputfile = outputfile
 
-        self.inputobj = Input(inputfile, **Refs)
+        self.inputobj = ScramblingInput(inputfile, **Refs)
         self.outputs, self.pairings, self.alloutputs = parseoutput(
             self.inputobj,
             initialguess=initialguess,
@@ -186,7 +187,7 @@ class Isotopomers:
         else:
             outputfile = outputfile
 
-        self.R = Input(inputfile).isotopomerinput
+        self.R = IsotopomerInput(inputfile).ratiosscrambling
         self.isotoperatios = calcSPmain(
             self.R,
             initialguess=initialguess,
