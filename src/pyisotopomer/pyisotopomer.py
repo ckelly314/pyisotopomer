@@ -186,7 +186,7 @@ class Isotopomers:
         else:
             outputfile = outputfile
 
-        self.R = Input(inputfile).sizecorrected
+        self.R = Input(inputfile).isotopomerinput
         self.isotoperatios = calcSPmain(
             self.R,
             initialguess=initialguess,

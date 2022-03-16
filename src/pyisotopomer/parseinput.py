@@ -50,6 +50,8 @@ class Input:
         # subset of data to be used for Isotopomers
         self.sizecorrected = self.parseratios(self.data)
 
+        self.isotopomerinput = self.parseisotopomerinput(self.data)
+
         # subset of data to be used for Scrambling
         self.pairings, self.scrambleinput = self.parsescrambling(self.data, **Refs)
 
@@ -58,6 +60,15 @@ class Input:
         return pd.read_excel(filename, "size_correction", skiprows=1)
 
     def parseratios(self, data):
+        # return just the size-corrected isotope ratios in a numpy array
+        # for input to calcSPmain
+        return np.array(
+            data[
+                ["size corrected 31R", "size corrected 45R", "size corrected 46R"]
+            ].dropna()
+        )
+
+    def parseisotopomerinput(self, data):
         # return just the size-corrected isotope ratios in a numpy array
         # for input to calcSPmain
         return np.array(

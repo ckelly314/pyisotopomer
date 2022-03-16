@@ -18,7 +18,6 @@ gk = Scrambling(
 
 deltavals = Isotopomers(
     inputfile="pyisotopomer/00_Python_template.xlsx",
-    #scrambling=gk.scrambling_mean,
     #saveout=False
 )
 
