@@ -76,6 +76,7 @@ class Scrambling:
     def __init__(
         self,
         inputfile,
+        tabname=None,
         saveout=True,
         outputfile=None,
         initialguess=None,
@@ -174,6 +175,7 @@ class Isotopomers:
     def __init__(
         self,
         inputfile,
+        tabname=None,
         saveout=True,
         outputfile=None,
         initialguess=None,
@@ -188,7 +190,7 @@ class Isotopomers:
         else:
             outputfile = outputfile
 
-        self.R = IsotopomerInput(inputfile).ratiosscrambling
+        self.R = IsotopomerInput(inputfile, tabname).ratiosscrambling
         self.isotoperatios = calcSPmain(
             self.R,
             initialguess=initialguess,

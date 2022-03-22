@@ -42,8 +42,18 @@ class IsotopomerInput:
 
         self.filename = filename
 
-        # full contents of excel template, first tab
-        self.data = self.readin(filename)
+        if tabname is not None:
+            self.tabname = tabname
+        elif tabname is None:
+            self.tabname = "size_correction"
+
+        try:
+            # full contents of excel template, first tab
+            self.data = self.readin(self.filename, self.tabname)
+        except FileNotFoundError:
+            if self.filename[-5:] != ".xlsx":
+                self.filename = self.filename+".xlsx"
+                self.data = self.readin(self.filename, self.tabname)
 
         # subset of data to be used for Isotopomers
         self.sizecorrected = self.parseratios(self.data)
