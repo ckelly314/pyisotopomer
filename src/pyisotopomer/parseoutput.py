@@ -14,7 +14,7 @@ import numpy as np
 from .automate_gk_solver import automate_gk_solver
 
 
-def parseoutput(inputobj, initialguess=None, lowerbounds=None, upperbounds=None):
+def parseoutput(inputobj, initialguess=None, lowerbounds=None, upperbounds=None, weights=False):
     """
     Parse output from scrambling solver.
 
@@ -97,7 +97,8 @@ def parseoutput(inputobj, initialguess=None, lowerbounds=None, upperbounds=None)
 
         try:  # Run function that iteratively solves for gamma and kappa
             gk = automate_gk_solver(
-                R, ref1=ref1, ref2=ref2, x0=initialguess, lb=lowerbounds, ub=upperbounds
+                R, ref1=ref1, ref2=ref2, x0=initialguess, lb=lowerbounds, ub=upperbounds,
+                weights=weights,
             )
 
             try:

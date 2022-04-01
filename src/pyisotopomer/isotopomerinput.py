@@ -38,7 +38,7 @@ class IsotopomerInput:
     @author: Colette L. Kelly (clkelly@stanford.edu).
     """
 
-    def __init__(self, filename):
+    def __init__(self, filename, tabname):
 
         self.filename = filename
 
@@ -60,9 +60,9 @@ class IsotopomerInput:
 
         self.ratiosscrambling = self.parseisotopomerinput(self.data)
 
-    def readin(self, filename):
+    def readin(self, filename, tabname):
         # return Pandas DataFrame of all input data
-        return pd.read_excel(filename, "size_correction", skiprows=1)
+        return pd.read_excel(filename, tabname, skiprows=1)
 
     def parseratios(self, data):
         # return just the size-corrected isotope ratios in a numpy array

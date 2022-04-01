@@ -13,7 +13,7 @@ import numpy as np
 from .constants import constants  # import alpha and beta values for reference materials
 
 
-def automate_gk_eqns(f, R, ref1, ref2):
+def automate_gk_eqns(f, R, ref1, ref2, weights):
     """
     Calculates gamma and kappa from measured rR31/30, given known a, b, 17R.
 
@@ -30,6 +30,15 @@ def automate_gk_eqns(f, R, ref1, ref2):
         :param R: array with dimensions n x 6 where n is the number of reference pairs.
         The six columns are 31R, 45R and 46R for reference #1, then 31R, 45R, 46R for reference #2, from left to right.
         :type R: numpy array, dtype=float
+        :param ref1: string or number containing name of reference material #1,
+        as written in constants.cvs
+        :type ref1: str, int, or float
+        :param ref2: string or number containing name of reference material #2,
+        as written in constants.cvs
+        :type ref1: str, int, or float
+        :param weights: list or array containing weights for each reference material
+        to be multiplied by their respective cost equations
+        :type weights: list or array [weight1, weight2]
 
     OUTPUT:
         :returns: [gamma, kappa]
@@ -45,21 +54,22 @@ def automate_gk_eqns(f, R, ref1, ref2):
 
     # these are the alpha and beta values for the two reference materials
     # they are specified in constants.py
-    a, b, a2, b2 = constants(ref1, ref2)
+    a, b, r17, a2, b2, r172 = constants(ref1, ref2)
 
     # solve two equations with two unknowns
     # f[0] = gamma, and f[1] = kappa
-    F = [
+    cost = (weights[0]*(
         (1 - f[0]) * a
         + f[1] * b
         + a * b
-        + (y - a - b) * (1 + f[0] * a + (1 - f[1]) * b)
-        - x * (1 + f[0] * a + (1 - f[1]) * b),
-        (1 - f[0]) * a2
+        + (r17) * (1 + f[0] * a + (1 - f[1]) * b)
+        - x * (1 + f[0] * a + (1 - f[1]) * b))
+        +
+        weights[1]*((1 - f[0]) * a2
         + f[1] * b2
         + a2 * b2
-        + (y2 - a2 - b2) * (1 + f[0] * a2 + (1 - f[1]) * b2)
-        - x2 * (1 + f[0] * a2 + (1 - f[1]) * b2),
-    ]
+        + (r172) * (1 + f[0] * a2 + (1 - f[1]) * b2)
+        - x2 * (1 + f[0] * a2 + (1 - f[1]) * b2))
+    )
 
-    return F
+    return cost

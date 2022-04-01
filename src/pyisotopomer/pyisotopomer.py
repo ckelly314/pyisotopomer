@@ -82,6 +82,7 @@ class Scrambling:
         initialguess=None,
         lowerbounds=None,
         upperbounds=None,
+        weights=False,
         **Refs,
     ):
 
@@ -89,7 +90,8 @@ class Scrambling:
         if outputfile is None:
             today = dt.datetime.now().strftime("%y%m%d")
             outputfile = f"{today}_scrambling_output.xlsx"
-            print(f"output saved as {today}_scrambling_output.xlsx")
+            if saveout == True:
+                print(f"output saved as {today}_scrambling_output.xlsx")
         else:
             outputfile = outputfile
 
@@ -102,6 +104,7 @@ class Scrambling:
             initialguess=initialguess,
             lowerbounds=lowerbounds,
             upperbounds=upperbounds,
+            weights=weights,
         )
 
         self.scrambling = self.alloutputs[["gamma", "kappa"]]
@@ -186,7 +189,8 @@ class Isotopomers:
         if outputfile is None:
             today = dt.datetime.now().strftime("%y%m%d")
             outputfile = f"{today}_isotopeoutput.csv"
-            print(f"output saved as {today}_isotopeoutput.csv")
+            if saveout == True:
+                print(f"output saved as {today}_isotopeoutput.csv")
         else:
             outputfile = outputfile
 

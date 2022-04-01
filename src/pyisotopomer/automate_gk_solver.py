@@ -18,7 +18,7 @@ from .automate_gk_eqns import (
 )  # import alpha and beta values for reference materials
 
 
-def automate_gk_solver(R, ref1, ref2, x0=None, lb=None, ub=None):
+def automate_gk_solver(R, ref1, ref2, x0=None, lb=None, ub=None, weights=False):
     """
     Calculate gamma and kappa from measured rR31/30 and r45/44, given known a, b, 17R.
 
@@ -39,6 +39,8 @@ def automate_gk_solver(R, ref1, ref2, x0=None, lb=None, ub=None):
         :type lb: numpy array, dtype=float
         :param ub: upper bounds for solver (e.g. ub=np.array([1.0, 1.0], dtype=float))
         :type ub: numpy array, dtype=float
+        :param weights: if True, weight each ref. material by variance in its 31R
+        :type weights: bool
 
     OUTPUT:
         :returns: array with dimensions n x 2 where n is the number of measurements.
@@ -70,6 +72,23 @@ def automate_gk_solver(R, ref1, ref2, x0=None, lb=None, ub=None):
 
     bounds = (lb, ub)
 
+    if weights == True: # if variance kwarg is True, calculate weights
+        if (np.var(R[:,0])!=0)&(np.var(R[:,3]) != 0): # if variance isn't zero
+            # calculate variance of each ref. material's 31R as a proportion of total variane
+            var1percent = np.var(R[:,0])/(np.var(R[:,0]) + np.var(R[:,3]))
+            var2percent = np.var(R[:,3])/(np.var(R[:,0]) + np.var(R[:,3]))
+            # invert variances to obtain weights
+            weights = [1./var1percent, 1./var2percent]
+
+            print(f"{ref1} weight = {1./var1percent}\n{ref2} weight = {1./var2percent}")
+        
+        else:
+            weights = [1., 1.] # if variances are zero, set weights to 1
+    
+    elif weights == False:
+        
+        weights = [1., 1.] # if variance kwarg is False, set weights to 1
+
     #  python: options for solver function are specified in signature as kwargs
 
     #  run leastsquares nonlinear solver for each row of data to obtain alpha
@@ -81,6 +100,7 @@ def automate_gk_solver(R, ref1, ref2, x0=None, lb=None, ub=None):
             row,
             ref1,
             ref2,
+            weights,
         )
         # v = least_squares(automate_gk_eqns, x0, bounds=bounds,args=args)
         v = least_squares(
