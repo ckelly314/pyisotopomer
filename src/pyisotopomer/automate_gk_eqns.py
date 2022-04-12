@@ -63,8 +63,7 @@ def automate_gk_eqns(f, R, ref1, ref2, weights):
         + f[1] * b
         + a * b
         + (r17) * (1 + f[0] * a + (1 - f[1]) * b)
-        - x * (1 + f[0] * a + (1 - f[1]) * b))
-        +
+        - x * (1 + f[0] * a + (1 - f[1]) * b)),
         weights[1]*((1 - f[0]) * a2
         + f[1] * b2
         + a2 * b2
