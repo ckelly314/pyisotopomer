@@ -38,7 +38,7 @@ class IsotopomerInput:
     @author: Colette L. Kelly (clkelly@stanford.edu).
     """
 
-    def __init__(self, filename, tabname):
+    def __init__(self, filename, tabname=None):
 
         self.filename = filename
 
