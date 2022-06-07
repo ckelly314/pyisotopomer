@@ -84,7 +84,7 @@ class IsotopomerInput:
         )
 
     def __repr__(self):
-        return f"{self.isotopomerinput}"
+        return f"{self.sizecorrected}"
 
 
 if __name__ == "__main__":
