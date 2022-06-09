@@ -57,6 +57,7 @@ class IsotopomerInput:
 
         # subset of data to be used for Isotopomers
         self.sizecorrected = self.parseratios(self.data)
+        self.normalized = self.parsenormalized(self.data)
 
         self.ratiosscrambling = self.parseisotopomerinput(self.data)
 
@@ -70,6 +71,15 @@ class IsotopomerInput:
         return np.array(
             data[
                 ["size corrected 31R", "size corrected 45R", "size corrected 46R"]
+            ].dropna()
+        )
+
+    def parsenormalized(self, data):
+        # return size-corrected 31R and scale-normalized 45R 46R in a numpy array
+        # for input to bulknonlineq
+        return np.array(
+            data[
+                ["size corrected 31R", "normalized 45R", "normalized 46R"]
             ].dropna()
         )
 
