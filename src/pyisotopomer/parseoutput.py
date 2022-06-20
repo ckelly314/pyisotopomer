@@ -53,7 +53,7 @@ def parseoutput(inputobj, initialguess=None, lowerbounds=None, upperbounds=None,
     if initialguess is not None:
         initialguess = np.array(initialguess, dtype=float)
     elif initialguess is None:
-        initialguess = np.array([0.17, 0.08], dtype=float)
+        initialguess = np.array([0.1, 0.1], dtype=float)
 
     if lowerbounds is not None:
         lowerbounds = np.array(lowerbounds, dtype=float)

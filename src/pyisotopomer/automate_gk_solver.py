@@ -55,7 +55,7 @@ def automate_gk_solver(R, ref1, ref2, x0=None, lb=None, ub=None, weights=False):
     if x0 is not None:  # check if solver has been given an x0 parameter
         x0 = x0
     else:
-        x0 = np.array([0.17, 0.08], dtype=float)  # set default x0
+        x0 = np.array([0.1, 0.1], dtype=float)  # set default x0
 
     #  lower and upperbounds for 15Ralpha and 15Rbeta
     #  these constraints ensure that the solver converges to a solution in the
