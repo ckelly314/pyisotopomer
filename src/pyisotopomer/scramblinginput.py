@@ -1,6 +1,6 @@
 """
 File: scramblinginput.py
----------------------------
+------------------------------
 Created on Weds June 2nd, 2021
 
 Functions and Input class to read in and parse data
@@ -13,6 +13,7 @@ from excel template.
 import pandas as pd
 import numpy as np
 from itertools import combinations
+from calculate_17R import calculate_17R
 
 
 class ScramblingInput:
@@ -55,6 +56,11 @@ class ScramblingInput:
         # subset of data to be used for Isotopomers
         self.sizecorrected = self.parseratios(self.data)
 
+        # calculate 17R from 45R and 46R and add to self.data
+        r17array = calculate_17R(self.sizecorrected)
+        self.data["15Rbulk"] = r17array[:,0]
+        self.data["17R"] = r17array[:,1]
+
         # subset of data to be used for Scrambling
         self.pairings, self.scrambleinput = self.parsescrambling(self.data, **Refs)
 
@@ -62,6 +68,7 @@ class ScramblingInput:
         # return Pandas DataFrame of all input data
         data = pd.read_excel(filename, "size_correction", skiprows=1)
         data['ref_tag'] = data['ref_tag'].astype("string")
+        data = data.dropna(thresh=10) # need to drop rows of NaNs
         return data
 
     def parseratios(self, data):
@@ -102,6 +109,8 @@ class ScramblingInput:
                         "size corrected 31R",  # only need a subset of columns
                         "size corrected 45R",
                         "size corrected 46R",
+                        "15Rbulk",
+                        "17R",
                     ]
                 ]
                 .dropna()
@@ -118,6 +127,8 @@ class ScramblingInput:
                         "size corrected 31R",
                         "size corrected 45R",
                         "size corrected 46R",
+                        "15Rbulk",
+                        "17R",
                     ]
                 ]
                 .dropna()
@@ -143,12 +154,16 @@ class ScramblingInput:
                 R = np.array(
                     output[
                         [
-                            f"size corrected 31R_1",  # use f-strings to obtain column names
-                            f"size corrected 45R_1",
-                            f"size corrected 46R_1",
-                            f"size corrected 31R_2",
-                            f"size corrected 45R_2",
-                            f"size corrected 46R_2",
+                            "size corrected 31R_1",
+                            "size corrected 45R_1",
+                            "size corrected 46R_1",
+                            "15Rbulk_1",
+                            "17R_1",
+                            "size corrected 31R_2",
+                            "size corrected 45R_2",
+                            "size corrected 46R_2",
+                            "15Rbulk_2",
+                            "17R_2",
                         ]
                     ]
                 )
