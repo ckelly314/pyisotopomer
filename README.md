@@ -149,6 +149,8 @@ Download this [Python script](https://github.com/ckelly314/pyisotopomer/blob/mas
 colette$ python run_pyisotopomer.py
 ```
 
+This will create an output file entitled ```{date}_scrambling_output.xlsx``` with scrambling output, similar to this [example spreadsheet]
+
 ### Using Jupyter Notebook
 
 Download this [Jupyter Notebook](https://github.com/ckelly314/pyisotopomer/blob/master/tests/run_pyisotopomer.ipynb). Save it into your current working directory.
@@ -168,6 +170,19 @@ Follow the instructions in the Jupyter Notebook to run pyisotopomer and obtain s
 Size-correct your data (including all samples and standards), as above. 
 
 DO NOT MODIFY COLUMN HEADERS IN THE CORRECTION TEMPLATE. Save the correction template into your current working directory.
+
+### Using a Python script
+Download this [Python script](https://github.com/ckelly314/pyisotopomer/blob/master/tests/run_pyisotopomer.py). Save it into your current working directory. The script includes example calls to the functions Scrambling and Isotopomers. Update the keyword arguments to reflect the filename of your template spreadsheet, the names of your reference materials, and the appropriate initial guess for your IRMS (if known). Run the script:
+
+```bash
+colette$ python run_pyisotopomer.py
+```
+
+This will create an output file entitled ```{date}_isotopeoutput.csv``` with isotopocule delta values.
+
+### Using Jupyter Notebook
+
+Download this [Jupyter Notebook](https://github.com/ckelly314/pyisotopomer/blob/master/tests/run_pyisotopomer.ipynb). Save it into your current working directory.
 
 Open a terminal window. Launch Jupyter Notebook:
 
