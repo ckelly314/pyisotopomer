@@ -79,6 +79,7 @@ class Scrambling:
         tabname=None,
         saveout=True,
         outputfile=None,
+        method="algebraic",
         initialguess=None,
         lowerbounds=None,
         upperbounds=None,
@@ -101,6 +102,7 @@ class Scrambling:
 
         self.outputs, self.pairings, self.alloutputs = parseoutput(
             self.inputobj,
+            method=method,
             initialguess=initialguess,
             lowerbounds=lowerbounds,
             upperbounds=upperbounds,

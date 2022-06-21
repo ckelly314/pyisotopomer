@@ -11,11 +11,12 @@ Functions to parse output from scrambling solver.
 # import utils
 import pandas as pd
 import numpy as np
+from .algebraic_gk_eqns import algebraic_gk_eqns
 from .automate_gk_solver import automate_gk_solver
 
 
 def parseoutput(
-    inputobj, initialguess=None, lowerbounds=None, upperbounds=None, weights=False
+    inputobj, method="algebraic", initialguess=None, lowerbounds=None, upperbounds=None, weights=False
 ):
     """
     Parse output from scrambling solver.
@@ -101,18 +102,25 @@ def parseoutput(
         # input array for gk_solver,
         # and output DataFrame of paired reference materials
         key, [ref1, ref2, R, df] = inputobj.scrambleinput.popitem()
-        # print(key)
+        #print(R)
 
         try:  # Run function that iteratively solves for gamma and kappa
-            gk = automate_gk_solver(
-                R,
-                ref1=ref1,
-                ref2=ref2,
-                x0=initialguess,
-                lb=lowerbounds,
-                ub=upperbounds,
-                weights=weights,
-            )
+            if method=="algebraic":
+                gk = algebraic_gk_eqns(
+                    R,
+                    ref1=ref1,
+                    ref2=ref2
+                    )
+            elif method=="least_squares":
+                gk = automate_gk_solver(
+                    R,
+                    ref1=ref1,
+                    ref2=ref2,
+                    x0=initialguess,
+                    lb=lowerbounds,
+                    ub=upperbounds,
+                    weights=weights,
+                )
 
             try:
                 # attach scrambling coeffs to output dataframe

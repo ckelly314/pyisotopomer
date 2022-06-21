@@ -3,7 +3,7 @@ File: automate_gk_eqns.py
 ---------------------------------
 Created on Tues June 21, 2022
 
-Algebraic/exact solutions for gamma and kappa.
+Algebraic solutions for gamma and kappa.
 
 @author: Colette L. Kelly (clkelly@stanford.edu).
 """
@@ -13,7 +13,7 @@ import numpy as np
 from .constants import constants  # import alpha and beta values for reference materials
 
 
-def exact_gk_eqns(R, ref1, ref2):
+def algebraic_gk_eqns(R, ref1, ref2):
     """
     Calculates gamma and kappa from measured rR31/30, given known a, b, 17R.
 
@@ -46,28 +46,41 @@ def exact_gk_eqns(R, ref1, ref2):
 
     @author: Colette L. Kelly (clkelly@stanford.edu).
     """
-    # rename inputted data
-    x = R[0]  # size-corrected 31/30 ratio for reference material #1
-    y = R[1]  # size-corrected 45/44 ratio for reference material #1
-    r17 = R[4]  # 17R calculated iteratively from 45R and 46R for reference material #1
-
-    x2 = R[5]  # size-corrected 31/30 ratio for reference material #2
-    y2 = R[6]  # size-corrected 45/44 ratio for reference material #2
-    r172 = R[9]  # 17R calculated iteratively from 45R and 46R for reference material #2
-
     # these are the alpha and beta values for the two reference materials
     # they are specified in constants.py
     a, b, a2, b2 = constants(ref1, ref2)
 
-    # solve two equations with two unknowns
-    kappa = ((a-x+r17)*(1+b)/(a*(1+x-r17)) - (a2-x2+r172)*(1+b2)/(a2*(1+x2-r172)))/(b2/a2-b/a)
-    gamma1 = (a+kappa*b+a*b-(x-r17)*(1+(1-kappa)*b))/(a*(1+x-r17))
-    gamma2 = (a2+kappa*b2+a2*b2-(x2-r172)*(1+(1-kappa)*b2))/(a2*(1+x2-r172))
+    spdiff = (a - b - a2 + b2)*1000/0.0036765
+    if spdiff < 50:
+        print("Difference in reference materials SPs may be too small for consistent results with the algebraic method:")
+        print(f"SP1 - SP2 = {spdiff:.4} per mille")
 
-    print(gamma1 - gamma2)
+    gammas = []
+    kappas = []
+    
+    for n in range(len(R)):
+        # I'm still not sure why, but looping through the rows prevents an IndexError
+        row = np.array(R[n][:])
+        # rename inputted data
+        x = row[0]  # size-corrected 31/30 ratio for reference material #1
+        y = row[1]  # size-corrected 45/44 ratio for reference material #1
+        r17 = row[4]  # 17R calculated iteratively from 45R and 46R for reference material #1
+
+        x2 = row[5]  # size-corrected 31/30 ratio for reference material #2
+        y2 = row[6]  # size-corrected 45/44 ratio for reference material #2
+        r172 = row[9]  # 17R calculated iteratively from 45R and 46R for reference material #2
+
+        # solve two equations with two unknowns
+        kappa = ((a-x+r17)*(1+b)/(a*(1+x-r17)) - (a2-x2+r172)*(1+b2)/(a2*(1+x2-r172)))/(b2/a2-b/a)
+        gamma1 = (a+kappa*b+a*b-(x-r17)*(1+(1-kappa)*b))/(a*(1+x-r17))
+        gamma2 = (a2+kappa*b2+a2*b2-(x2-r172)*(1+(1-kappa)*b2))/(a2*(1+x2-r172))
+
+        #print(gamma1 - gamma2) # the two gamma values should be within machine precision of each other
+        gammas.append(gamma1)
+        kappas.append(kappa)
 
     gk = pd.DataFrame([])
-    gk["gamma"] = gamma1
-    gk["kappa"] = kappa
+    gk["gamma"] = gammas
+    gk["kappa"] = kappas
 
     return gk

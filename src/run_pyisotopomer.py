@@ -14,7 +14,8 @@ gk = Scrambling(
     ref1="ATM",
     ref2="S2",
     ref3="B6",
-    initialguess=[0.17, 0.08],
+    method="algebraic",
+    initialguess=[0.17, 0.08]
 )
 
 deltavals = Isotopomers(

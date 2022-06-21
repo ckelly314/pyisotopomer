@@ -13,7 +13,7 @@ import numpy as np
 from .constants import constants  # import alpha and beta values for reference materials
 
 
-def exact_gk_eqns(R, ref1, ref2):
+def algebraic_gk_eqns(R, ref1, ref2):
     """
     Calculates gamma and kappa from measured rR31/30, given known a, b, 17R.
 
