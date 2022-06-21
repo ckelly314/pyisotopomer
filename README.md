@@ -110,7 +110,7 @@ This may take a while; pip (the Python package manager) will download pyisotopom
 
 ## Pre-processing
 
-Download the data correction [template](https://github.com/ckelly314/pyisotopomer/blob/master/src/pyisotopomer/00_Python_template.xlsx).
+Download the data correction [template](https://github.com/ckelly314/pyisotopomer/blob/master/src/00_Python_template_v2.xlsx).
 
 Export IRMS data in Isodat, with separate export templates for the sample peak and designated reference peak for each sample.
 
@@ -128,9 +128,11 @@ The 31R, 45R, and 46R for each sample, normalized to the common reference inject
 
 ## Scrambling calibration
 
-Download [constants.csv](https://github.com/ckelly314/pyisotopomer/blob/master/src/pyisotopomer/constants.csv).
+Download [constants.csv](https://github.com/ckelly314/pyisotopomer/blob/master/src/constants.csv).
 
 Open ```constants.csv```. Here, we specify the calibrated isotope ratios of named reference materials. If the reference materials to be used to calibrate scrambling are not in this list, add them, following the format of the existing lines. Save ```constants.csv``` into your current working directory.
+
+
 
 Download this [Jupyter Notebook](https://github.com/ckelly314/pyisotopomer/blob/master/tests/run_pyisotopomer.ipynb). Save it into your current working directory.
 
