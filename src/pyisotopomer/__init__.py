@@ -3,6 +3,7 @@
 
 from .constants import constants
 from .calculate_17R import calculate_17R
+from .exact_gk_eqns import exact_gk_eqns
 from .automate_gk_eqns import automate_gk_eqns
 from .automate_gk_solver import automate_gk_solver
 from .scramblinginput import ScramblingInput
