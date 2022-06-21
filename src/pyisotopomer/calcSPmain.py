@@ -77,9 +77,7 @@ def calcSPmain(R, initialguess=None, lowerbounds=None, upperbounds=None):
     for n in range(len(R)):
         #  python: scipy.optimize.least_squares instead of matlab "lsqnonlin"
         row = np.array(R[n][:])
-        args = (
-            row,
-        )
+        args = (row,)
         # v = least_squares(automate_gk_eqns, x0, bounds=bounds,args=args)
         v = least_squares(
             SPnonlineq,

@@ -14,7 +14,9 @@ import numpy as np
 from .automate_gk_solver import automate_gk_solver
 
 
-def parseoutput(inputobj, initialguess=None, lowerbounds=None, upperbounds=None, weights=False):
+def parseoutput(
+    inputobj, initialguess=None, lowerbounds=None, upperbounds=None, weights=False
+):
     """
     Parse output from scrambling solver.
 
@@ -68,24 +70,26 @@ def parseoutput(inputobj, initialguess=None, lowerbounds=None, upperbounds=None,
     # set up outputs
     outputdfs = []  # list of output DataFrames for each pairing of ref. materials
     dfnames = []  # list of each pairing of ref. materials as strings
-    maindf = pd.DataFrame(
-        [],
-        columns=[
-            "ref_tag_1",
-            "size corrected 31R_1",
-            "size corrected 45R_1",
-            "size corrected 46R_1",
-            "15Rbulk_1",
-            "17R_1",
-            "ref_tag_2",
-            "size corrected 31R_2",
-            "size corrected 45R_2",
-            "size corrected 46R_2",
-            "15Rbulk_2",
-            "17R_2",
-            "gamma",
-            "kappa",
-        ],
+    maindf = (
+        pd.DataFrame(  # maindf will contain ALL of the possible pairings and solutions
+            [],
+            columns=[
+                "ref_tag_1",
+                "size corrected 31R_1",
+                "size corrected 45R_1",
+                "size corrected 46R_1",
+                "15Rbulk_1",
+                "17R_1",
+                "ref_tag_2",
+                "size corrected 31R_2",
+                "size corrected 45R_2",
+                "size corrected 46R_2",
+                "15Rbulk_2",
+                "17R_2",
+                "gamma",
+                "kappa",
+            ],
+        )
     )
 
     # loop through pairings of reference materials by popping items off input dict
@@ -101,7 +105,12 @@ def parseoutput(inputobj, initialguess=None, lowerbounds=None, upperbounds=None,
 
         try:  # Run function that iteratively solves for gamma and kappa
             gk = automate_gk_solver(
-                R, ref1=ref1, ref2=ref2, x0=initialguess, lb=lowerbounds, ub=upperbounds,
+                R,
+                ref1=ref1,
+                ref2=ref2,
+                x0=initialguess,
+                lb=lowerbounds,
+                ub=upperbounds,
                 weights=weights,
             )
 

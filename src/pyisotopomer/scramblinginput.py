@@ -50,7 +50,7 @@ class ScramblingInput:
             self.data = self.readin(self.filename)
         except FileNotFoundError:
             if self.filename[-5:] != ".xlsx":
-                self.filename = self.filename+".xlsx"
+                self.filename = self.filename + ".xlsx"
                 self.data = self.readin(self.filename)
 
         # subset of data to be used for Isotopomers
@@ -58,8 +58,8 @@ class ScramblingInput:
 
         # calculate 17R from 45R and 46R and add to self.data
         r17array = calculate_17R(self.sizecorrected)
-        self.data["15Rbulk"] = r17array[:,0]
-        self.data["17R"] = r17array[:,1]
+        self.data["15Rbulk"] = r17array[:, 0]
+        self.data["17R"] = r17array[:, 1]
 
         # subset of data to be used for Scrambling
         self.pairings, self.scrambleinput = self.parsescrambling(self.data, **Refs)
@@ -67,8 +67,8 @@ class ScramblingInput:
     def readin(self, filename):
         # return Pandas DataFrame of all input data
         data = pd.read_excel(filename, "size_correction", skiprows=1)
-        data['ref_tag'] = data['ref_tag'].astype("string")
-        data = data.dropna(thresh=10) # need to drop rows of NaNs
+        data["ref_tag"] = data["ref_tag"].astype("string")
+        data = data.dropna(thresh=10)  # need to drop rows of NaNs
         return data
 
     def parseratios(self, data):
@@ -82,7 +82,7 @@ class ScramblingInput:
 
     def parsescrambling(self, data, **Refs):
         # if no ref materials are specified, infer from ref_tag column
-        if len(Refs.values())==0:
+        if len(Refs.values()) == 0:
             Refs = list(data.ref_tag.dropna().drop_duplicates())
         else:
             Refs = Refs.values()

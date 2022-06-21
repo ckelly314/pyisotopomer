@@ -52,7 +52,7 @@ class IsotopomerInput:
             self.data = self.readin(self.filename, self.tabname)
         except FileNotFoundError:
             if self.filename[-5:] != ".xlsx":
-                self.filename = self.filename+".xlsx"
+                self.filename = self.filename + ".xlsx"
                 self.data = self.readin(self.filename, self.tabname)
 
         # subset of data to be used for Isotopomers
@@ -78,8 +78,13 @@ class IsotopomerInput:
         # for input to calcSPmain
         return np.array(
             data[
-                ["size corrected 31R", "size corrected 45R", "size corrected 46R",
-                "gamma", "kappa"]
+                [
+                    "size corrected 31R",
+                    "size corrected 45R",
+                    "size corrected 46R",
+                    "gamma",
+                    "kappa",
+                ]
             ].dropna()
         )
 

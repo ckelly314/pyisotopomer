@@ -34,7 +34,7 @@ class Scrambling:
 
     INPUT:
         :param inputfile: Spreadsheet of size-corrected reference materials,
-        following the format of "00_Python_template.xlsx".
+        following the format of "00_Python_template_v2.xlsx".
         :type inputfile: .xlsx file
         :param **Refs: Reference materials included in input spreadsheet:
         e.g., ref1="NAME", ref2="NAME", ref3="NAME"
@@ -96,7 +96,7 @@ class Scrambling:
             outputfile = outputfile
 
         self.inputobj = ScramblingInput(inputfile, **Refs)
-        
+
         self.outputfile = outputfile
 
         self.outputs, self.pairings, self.alloutputs = parseoutput(
@@ -183,7 +183,8 @@ class Isotopomers:
         outputfile=None,
         initialguess=None,
         lowerbounds=None,
-        upperbounds=None):
+        upperbounds=None,
+    ):
 
         # default arguments
         if outputfile is None:
@@ -199,8 +200,8 @@ class Isotopomers:
             self.R,
             initialguess=initialguess,
             lowerbounds=lowerbounds,
-            upperbounds=upperbounds
-            )
+            upperbounds=upperbounds,
+        )
         self.deltavals = calcdeltaSP(self.isotoperatios)
 
         if saveout == True:

@@ -33,12 +33,12 @@ def SPnonlineq(f, R):
     """
 
     # rename inputted data
-    x = R[0] # size-corrected 31R   
-    y = R[1] # size-corrected 45R
-    z = R[2] # size-corrected 46R
+    x = R[0]  # size-corrected 31R
+    y = R[1]  # size-corrected 45R
+    z = R[2]  # size-corrected 46R
 
-    g = R[3] # gamma scrambling coefficient
-    k = R[4] # gamma scrambling coefficient
+    g = R[3]  # gamma scrambling coefficient
+    k = R[4]  # gamma scrambling coefficient
 
     # solve two equations with two unknowns
     # f[0] = 15Ralpha = a, and f[2] = 15Rbeta = b
