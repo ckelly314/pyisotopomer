@@ -43,20 +43,16 @@ def constants(ref1, ref2):
         # constants for ref1
         a = float(data[data.Ref_material == ref1].R15alpha)
         b = float(data[data.Ref_material == ref1].R15beta)
-        r17 = float(data[data.Ref_material == ref1].R17)
 
         # constants for ref2
         a2 = float(data[data.Ref_material == ref2].R15alpha)
         b2 = float(data[data.Ref_material == ref2].R15beta)
-        r172 = float(data[data.Ref_material == ref2].R17)
 
     except FileNotFoundError:  # set constants to NaN's if constants.csv is not found
 
         a = np.NaN
         b = np.NaN
-        r17 = np.NaN
         a2 = np.NaN
         b2 = np.NaN
-        r172 = np.NaN
 
-    return a, b, r17, a2, b2, r172
+    return a, b, a2, b2

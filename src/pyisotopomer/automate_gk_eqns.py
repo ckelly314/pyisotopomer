@@ -48,13 +48,15 @@ def automate_gk_eqns(f, R, ref1, ref2, weights):
     # rename inputted data
     x = R[0]  # size-corrected 31/30 ratio for reference material #1
     y = R[1]  # size-corrected 45/44 ratio for reference material #1
+    r17 = R[4] # 17R calculated iteratively from 45R and 46R for reference material #1
 
-    x2 = R[3]  # size-corrected 31/30 ratio for reference material #2
-    y2 = R[4]  # size-corrected 45/44 ratio for reference material #2
+    x2 = R[5]  # size-corrected 31/30 ratio for reference material #2
+    y2 = R[6]  # size-corrected 45/44 ratio for reference material #2
+    r172 = R[9] # 17R calculated iteratively from 45R and 46R for reference material #2
 
     # these are the alpha and beta values for the two reference materials
     # they are specified in constants.py
-    a, b, r17, a2, b2, r172 = constants(ref1, ref2)
+    a, b, a2, b2 = constants(ref1, ref2)
 
     # solve two equations with two unknowns
     # f[0] = gamma, and f[1] = kappa
@@ -62,12 +64,12 @@ def automate_gk_eqns(f, R, ref1, ref2, weights):
         (1 - f[0]) * a
         + f[1] * b
         + a * b
-        + (y - a - b) * (1 + f[0] * a + (1 - f[1]) * b)
+        + (r17) * (1 + f[0] * a + (1 - f[1]) * b)
         - x * (1 + f[0] * a + (1 - f[1]) * b)),
         weights[1]*((1 - f[0]) * a2
         + f[1] * b2
         + a2 * b2
-        + (y2 - a2 - b2) * (1 + f[0] * a2 + (1 - f[1]) * b2)
+        + (r172) * (1 + f[0] * a2 + (1 - f[1]) * b2)
         - x2 * (1 + f[0] * a2 + (1 - f[1]) * b2))
     )
 
