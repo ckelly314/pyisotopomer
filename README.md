@@ -149,7 +149,7 @@ Download this [Python script](https://github.com/ckelly314/pyisotopomer/blob/mas
 colette$ python run_pyisotopomer.py
 ```
 
-This will create an output file entitled ```{date}_scrambling_output.xlsx``` with scrambling output, similar to this [example spreadsheet]
+This will create an output file entitled ```{date}_scrambling_output.xlsx``` with scrambling output, similar to this [example spreadsheet](https://github.com/ckelly314/pyisotopomer/blob/master/tests/example_scrambling_output.xlsx).
 
 ### Using Jupyter Notebook
 
@@ -163,7 +163,7 @@ colette$ jupyter notebook
 
 This should open Jupyter in a new browser window. In Jupyter, navigate to your current working directory. Click on ```run_pyIsotopomer.ipynb``` to open the Jupyter Notebook containing the code to run pyisotopomer.
 
-Follow the instructions in the Jupyter Notebook to run pyisotopomer and obtain scrambling coefficients for all possible pairings of reference materials. This will create an output file entitled ```{date}_scrambling_output.xlsx``` with scrambling output.
+Follow the instructions in the Jupyter Notebook to run pyisotopomer and obtain scrambling coefficients for all possible pairings of reference materials. This will create an output file entitled ```{date}_scrambling_output.xlsx``` with scrambling output, similar to this [example spreadsheet](https://github.com/ckelly314/pyisotopomer/blob/master/tests/example_scrambling_output.xlsx).
 
 ## Calculating isotopomers
 
@@ -178,7 +178,7 @@ Download this [Python script](https://github.com/ckelly314/pyisotopomer/blob/mas
 colette$ python run_pyisotopomer.py
 ```
 
-This will create an output file entitled ```{date}_isotopeoutput.csv``` with isotopocule delta values.
+This will create an output file entitled ```{date}_isotopeoutput.csv``` with isotopocule delta values, similar to this [example spreadsheet](https://github.com/ckelly314/pyisotopomer/blob/master/tests/example_isotopomer_output.csv).
 
 ### Using Jupyter Notebook
 
@@ -192,7 +192,7 @@ colette$ jupyter notebook
 
 This should open Jupyter in a new browser window. In Jupyter, navigate to your current working directory. Click on ```run_pyIsotopomer.ipynb``` to open the Jupyter Notebook containing the code to run pyisotopomer.
 
-Follow the instructions in the Jupyter Notebook to run pyisotopomer and obtain sample isotopocule values in delta notation, as well as isotope ratios.
+Follow the instructions in the Jupyter Notebook to run pyisotopomer and obtain sample isotopocule values in delta notation, as well as isotope ratios. This will create an output file entitled ```{date}_isotopeoutput.csv``` with isotopocule delta values, similar to this [example spreadsheet](https://github.com/ckelly314/pyisotopomer/blob/master/tests/example_isotopomer_output.csv).
 
 ### How to think about scrambling when calculating isotopomers
 
