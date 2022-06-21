@@ -3,6 +3,8 @@ File: run_pyisotopomer.py
 --------------
 
 Run Scrambling and Isotopomers functions.
+
+@author: Colette L. Kelly (clkelly@stanford.edu).
 """
 
 from pyisotopomer import Scrambling, Isotopomers
