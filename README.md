@@ -128,14 +128,6 @@ The 31R, 45R, and 46R for each sample, normalized to the common reference inject
 
 ## Scrambling calibration
 
-Download [constants.csv](https://github.com/ckelly314/pyisotopomer/blob/master/src/constants.csv).
-
-Open ```constants.csv```. Here, we specify the calibrated isotope ratios of named reference materials. If the reference materials to be used to calibrate scrambling are not in this list, add them, following the format of the existing lines. Save ```constants.csv``` into your current working directory.
-
-
-
-Download this [Jupyter Notebook](https://github.com/ckelly314/pyisotopomer/blob/master/tests/run_pyisotopomer.ipynb). Save it into your current working directory.
-
 Here, two coefficients, γ and κ, are used to describe scrambling in the ion source. This is described in further detail in [Frame and Casciotti, 2010](https://www.biogeosciences.net/7/2695/2010/). Below is a description of how to calculate these coefficients in pyisotopomer.
 
 Run two (or more) reference gases with known <sup>15</sup>R-α and <sup>15</sup>R-β, prepared in the same format as samples (i.e., some amount of N<sub>2</sub>O reference gas injected into a bottle of seawater or DI water that has been purged with He or N2 gas).
@@ -145,6 +137,21 @@ Export and size-correct these data in the excel correction template, as above. T
 Each row of the correction template represents one reference material. In column B, "ref_tag", add the names of the reference materials, as they appear in ```constants.csv``` (for example, here, atmosphere-equilibrated seawater is named "ATM").
 
 DO NOT MODIFY COLUMN HEADERS IN THE CORRECTION TEMPLATE. Save the correction template into your current working directory.
+
+Download [constants.csv](https://github.com/ckelly314/pyisotopomer/blob/master/src/constants.csv).
+
+Open ```constants.csv```. Here, we specify the calibrated isotope ratios of named reference materials. If the reference materials to be used to calibrate scrambling are not in this list, add them, following the format of the existing lines. Save ```constants.csv``` into your current working directory.
+
+### Using a Python script
+Download this [Python script](https://github.com/ckelly314/pyisotopomer/blob/master/tests/run_pyisotopomer.py). Save it into your current working directory. The script includes example calls to the functions Scrambling and Isotopomers. Update the keyword arguments to reflect the filename of your template spreadsheet, the names of your reference materials, and the appropriate initial guess for your IRMS (if known). Run the script:
+
+```bash
+colette$ python run_pyisotopomer.py
+```
+
+### Using Jupyter Notebook
+
+Download this [Jupyter Notebook](https://github.com/ckelly314/pyisotopomer/blob/master/tests/run_pyisotopomer.ipynb). Save it into your current working directory.
 
 Open a terminal window. Launch Jupyter Notebook:
 
