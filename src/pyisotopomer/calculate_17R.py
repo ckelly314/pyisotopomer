@@ -6,6 +6,8 @@ Created on Monday, June 20 2022
 Solve for 15Rbulk and 17R values from measured 45R and 46R
 of reference materials, to obtain 17R values consistent with
 both 45R and 46R to use in scrambling calculation.
+
+@author: Colette L. Kelly (clkelly@stanford.edu).
 """
 
 # import utils
