@@ -1,13 +1,11 @@
 Metadata-Version: 2.1
 Name: pyisotopomer
-Version: 0.0.3
+Version: 0.0.4
 Summary: Nitrous oxide isotopocule data corrections in Python
 Home-page: https://github.com/ckelly314/pyisotopomer
 Author: Colette L. Kelly
 Author-email: clkelly@stanford.edu
-License: UNKNOWN
 Project-URL: Bug Tracker, https://github.com/ckelly314/pyisotopomer/issues
-Platform: UNKNOWN
 Classifier: Development Status :: 3 - Alpha
 Classifier: Programming Language :: Python :: 3
 Classifier: License :: OSI Approved :: MIT License
@@ -130,7 +128,7 @@ This may take a while; pip (the Python package manager) will download pyisotopom
 
 ## Pre-processing
 
-Download the data correction [template](https://github.com/ckelly314/pyisotopomer/blob/master/src/pyisotopomer/00_Python_template.xlsx).
+Download the data correction [template](https://github.com/ckelly314/pyisotopomer/blob/master/src/00_Python_template_v2.xlsx).
 
 Export IRMS data in Isodat, with separate export templates for the sample peak and designated reference peak for each sample.
 
@@ -146,17 +144,15 @@ Replace the values in row 7, columns W-Y, with your size correction slopes. Ensu
 
 The 31R, 45R, and 46R for each sample, normalized to the common reference injection and normalized to a m/z 44 peak area of 20 Vs, are found in columns AI-AK. Save the correction template with a new name into your current working directory.
 
-## Scrambling calibration:
-
-Download [constants.csv](https://github.com/ckelly314/pyisotopomer/blob/master/src/pyisotopomer/constants.csv).
-
-Open ```constants.csv```. Here, we specify the calibrated isotope ratios of named reference materials. If the reference materials to be used to calibrate scrambling are not in this list, add them, following the format of the existing lines. Save ```constants.csv``` into your current working directory.
-
-Download this [Jupyter Notebook](https://github.com/ckelly314/pyisotopomer/blob/master/tests/run_pyisotopomer.ipynb). Save it into your current working directory.
+## Scrambling calibration
 
 Here, two coefficients, γ and κ, are used to describe scrambling in the ion source. This is described in further detail in [Frame and Casciotti, 2010](https://www.biogeosciences.net/7/2695/2010/). Below is a description of how to calculate these coefficients in pyisotopomer.
 
-Run two (or more) reference gases with known 15R-alpha and 15R-beta, prepared in the same format as samples (i.e., some amount of N<sub>2</sub>O reference gas injected into a bottle of seawater or DI water that has been purged with He or N2 gas).
+Download [constants.csv](https://github.com/ckelly314/pyisotopomer/blob/master/src/constants.csv).
+
+Open ```constants.csv```. Here, we specify the calibrated isotope ratios of named reference materials. If the reference materials to be used to calibrate scrambling are not in this list, add them, following the format of the existing lines. Save ```constants.csv``` into your current working directory.
+
+Run two (or more) reference gases with known <sup>15</sup>R-α and <sup>15</sup>R-β, prepared in the same format as samples (i.e., some amount of N<sub>2</sub>O reference gas injected into a bottle of seawater or DI water that has been purged with He or N2 gas).
 
 Export and size-correct these data in the excel correction template, as above. The placeholder samples in the template spreadsheet are arranged in the right order 1-7, but this may not necessarily be the case, depending on how one performs the steps above. The order is not important to what follows, as long as the samples (columns C-Q) and reference peaks (columns S-U) are in the same order.
 
@@ -164,6 +160,19 @@ Each row of the correction template represents one reference material. In column
 
 DO NOT MODIFY COLUMN HEADERS IN THE CORRECTION TEMPLATE. Save the correction template into your current working directory.
 
+### Using a Python script
+Download this [Python script](https://github.com/ckelly314/pyisotopomer/blob/master/tests/run_pyisotopomer.py). Save it into your current working directory. The script includes example calls to the functions Scrambling and Isotopomers. Update the keyword arguments to reflect the filename of your template spreadsheet, the names of your reference materials, and the appropriate initial guess for your IRMS (if known). Run the script:
+
+```bash
+colette$ python run_pyisotopomer.py
+```
+
+This will create an output file entitled ```{date}_scrambling_output.xlsx``` with scrambling output, similar to this [example spreadsheet](https://github.com/ckelly314/pyisotopomer/blob/master/tests/example_scrambling_output.xlsx).
+
+### Using Jupyter Notebook
+
+Download this [Jupyter Notebook](https://github.com/ckelly314/pyisotopomer/blob/master/tests/run_pyisotopomer.ipynb). Save it into your current working directory.
+
 Open a terminal window. Launch Jupyter Notebook:
 
 ```bash
@@ -172,7 +181,7 @@ colette$ jupyter notebook
 
 This should open Jupyter in a new browser window. In Jupyter, navigate to your current working directory. Click on ```run_pyIsotopomer.ipynb``` to open the Jupyter Notebook containing the code to run pyisotopomer.
 
-Follow the instructions in the Jupyter Notebook to run pyisotopomer and obtain scrambling coefficients for all possible pairings of reference materials. This will create an output file entitled ```{date}_scrambling_output.xlsx``` with scrambling output.
+Follow the instructions in the Jupyter Notebook to run pyisotopomer and obtain scrambling coefficients for all possible pairings of reference materials. This will create an output file entitled ```{date}_scrambling_output.xlsx``` with scrambling output, similar to this [example spreadsheet](https://github.com/ckelly314/pyisotopomer/blob/master/tests/example_scrambling_output.xlsx).
 
 ## Calculating isotopomers
 
@@ -180,6 +189,19 @@ Size-correct your data (including all samples and standards), as above.
 
 DO NOT MODIFY COLUMN HEADERS IN THE CORRECTION TEMPLATE. Save the correction template into your current working directory.
 
+### Using a Python script
+Download this [Python script](https://github.com/ckelly314/pyisotopomer/blob/master/tests/run_pyisotopomer.py). Save it into your current working directory. The script includes example calls to the functions Scrambling and Isotopomers. Update the keyword arguments to reflect the filename of your template spreadsheet, the names of your reference materials, and the appropriate initial guess for your IRMS (if known). Run the script:
+
+```bash
+colette$ python run_pyisotopomer.py
+```
+
+This will create an output file entitled ```{date}_isotopeoutput.csv``` with isotopocule delta values, similar to this [example spreadsheet](https://github.com/ckelly314/pyisotopomer/blob/master/tests/example_isotopomer_output.csv).
+
+### Using Jupyter Notebook
+
+Download this [Jupyter Notebook](https://github.com/ckelly314/pyisotopomer/blob/master/tests/run_pyisotopomer.ipynb). Save it into your current working directory.
+
 Open a terminal window. Launch Jupyter Notebook:
 
 ```bash
@@ -188,7 +210,7 @@ colette$ jupyter notebook
 
 This should open Jupyter in a new browser window. In Jupyter, navigate to your current working directory. Click on ```run_pyIsotopomer.ipynb``` to open the Jupyter Notebook containing the code to run pyisotopomer.
 
-Follow the instructions in the Jupyter Notebook to run pyisotopomer and obtain sample isotopocule values in delta notation, as well as isotope ratios.
+Follow the instructions in the Jupyter Notebook to run pyisotopomer and obtain sample isotopocule values in delta notation, as well as isotope ratios. This will create an output file entitled ```{date}_isotopeoutput.csv``` with isotopocule delta values, similar to this [example spreadsheet](https://github.com/ckelly314/pyisotopomer/blob/master/tests/example_isotopomer_output.csv).
 
 ### How to think about scrambling when calculating isotopomers
 
@@ -211,5 +233,3 @@ Calculate the amount (nmol) of <sup>44</sup>N<sub>2</sub>O in your sample from t
 Use the weight difference of the bottle pre- and post-analysis to determine the volume of sample run, and thus the concentration of <sup>44</sup>N<sub>2</sub>O.
 
 We calculate the concentrations of <sup>45</sup>N<sub>2</sub>O-α, <sup>45</sup>N<sub>2</sub>O-β, and <sup>46</sup>N<sub>2</sub>O (for tracer experiments) from the delta value and associated 15/14 ratios. For high levels of <sup>15</sup>N enrichment, use atom fraction <sup>15</sup>N and 14</sup>N rather than isotope ratios.
-
-
