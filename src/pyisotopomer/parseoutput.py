@@ -16,7 +16,12 @@ from .automate_gk_solver import automate_gk_solver
 
 
 def parseoutput(
-    inputobj, method="algebraic", initialguess=None, lowerbounds=None, upperbounds=None, weights=False
+    inputobj,
+    method="algebraic",
+    initialguess=None,
+    lowerbounds=None,
+    upperbounds=None,
+    weights=False,
 ):
     """
     Parse output from scrambling solver.
@@ -30,6 +35,9 @@ def parseoutput(
     INPUT:
         :param inputobj: Input class from parseinput.py
         :type inputobj: Class
+        :param method: Method to use to calculate gamma and kappa.
+        See Kelly et al. (in revision) for details.
+        If None, default to "algebraic".
         :param initialguess: Initial guess for gamma and kappa.
         If None, default to [0.17, 0.08].
         :type initialguess: list or Numpy array
@@ -102,16 +110,16 @@ def parseoutput(
         # input array for gk_solver,
         # and output DataFrame of paired reference materials
         key, [ref1, ref2, R, df] = inputobj.scrambleinput.popitem()
-        #print(R)
+        # print(R)
 
-        try:  # Run function that iteratively solves for gamma and kappa
-            if method=="algebraic":
-                gk = algebraic_gk_eqns(
-                    R,
-                    ref1=ref1,
-                    ref2=ref2
-                    )
-            elif method=="least_squares":
+        try:  # use Try and Except arguements to handle cases where constants.csv isn't properly set up
+            if (
+                method == "algebraic"
+            ):  # Calculate gamma and kappa explicitly from algebraic solution
+                gk = algebraic_gk_eqns(R, ref1=ref1, ref2=ref2)
+            elif (
+                method == "least_squares"
+            ):  # Run function that iteratively solves for gamma and kappa
                 gk = automate_gk_solver(
                     R,
                     ref1=ref1,

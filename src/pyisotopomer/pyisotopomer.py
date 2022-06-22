@@ -44,6 +44,10 @@ class Scrambling:
         :param outputfile: Output filename. If None and saveout=True, default to
             "{date}_scrambling_output.xlsx"
         :type outputfile: String
+        :param method: Method to use to calculate gamma and kappa.
+        See Kelly et al. (in revision) for details.
+        If None, default to "algebraic".
+        :type method: String
         :param initialguess: Initial guess for gamma and kappa.
         If None, default to [0.17, 0.08].
         :type initialguess: list or Numpy array

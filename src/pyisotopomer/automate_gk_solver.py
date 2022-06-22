@@ -44,7 +44,7 @@ def automate_gk_solver(R, ref1, ref2, x0=None, lb=None, ub=None, weights=False):
         :type weights: bool
 
     OUTPUT:
-        :returns: array with dimensions n x 2 where n is the number of measurements.
+        :returns: Pandas DataFrame with dimensions n x 2 where n is the number of measurements.
         The two columns are gamma and kappa from left to right.
 
     @author: Colette L. Kelly (clkelly@stanford.edu).
@@ -75,7 +75,7 @@ def automate_gk_solver(R, ref1, ref2, x0=None, lb=None, ub=None, weights=False):
 
     if weights == True:  # if variance kwarg is True, calculate weights
         if (np.var(R[:, 0]) != 0) & (np.var(R[:, 3]) != 0):  # if variance isn't zero
-            # calculate variance of each ref. material's 31R as a proportion of total variane
+            # calculate variance of each ref. material's 31R as a proportion of total variance
             var1percent = np.var(R[:, 0]) / (np.var(R[:, 0]) + np.var(R[:, 3]))
             var2percent = np.var(R[:, 3]) / (np.var(R[:, 0]) + np.var(R[:, 3]))
             # invert variances to obtain weights
