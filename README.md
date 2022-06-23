@@ -36,13 +36,13 @@ from pyisotopomer import Scrambling, Isotopomers
 To calculate scrambling coefficients, the only function you need is:
 
 ```Python
-Scrambling(inputfile="FILENAME.xlsx", ref1="NAME", ref2="NAME", **kwargs)
+Scrambling(inputfile="FILENAME.xlsx", **kwargs)
 ```
 
 To calculate isotopomers, the only function you need is:
 
 ```Python
-Isotopomers(inputfile = "FILENAME.xlsx", scrambling = [0.1..., 0.0...], **kwargs)
+Isotopomers(inputfile = "FILENAME.xlsx", **kwargs)
 ```
 
 You can walk through these steps in this [Jupyter Notebook](https://github.com/ckelly314/pyisotopomer/blob/master/tests/run_pyisotopomer.ipynb).
@@ -118,13 +118,19 @@ Open the .xls file containing Isodat output. Note that the spreadsheet contains 
 
 In the "sample" tab, bring all fragment data in line, then delete extra rows. Do the same in the "standard" tab.
 
-Open the data correction template. Copy the raw sample data from columns A-O in the sample tab into columns C-Q in the correction template. Copy the "rR" columns from the standards tab (columns M, N, O) into columns S, T, U in the correction template.
+Open the data correction template. In the "size_correction" tab, copy the raw sample data from columns A-O in the sample tab into columns C-Q in the correction template. Copy the "rR" columns from the standards tab (columns M, N, O) into columns S, T, U in the correction template.
 
-Replace the values in row 3, columns W-Y with the appropriate 31R, 45R, and 46R for your N<sub>2</sub>O reference gas (the reference gas used for on-offs/direct injections). The values in the template spreadsheet are specific to the Casciotti Lab's N<sub>2</sub>O reference gas. 
+Replace the values in row 3, columns W-Y with the appropriate 31R, 45R, and 46R for your N<sub>2</sub>O reference tank (the reference gas used for on-offs/direct injections). The values in the template spreadsheet are specific to the Casciotti Lab's N<sub>2</sub>O reference tank.
 
 Replace the values in row 7, columns W-Y, with your size correction slopes. Ensure that these size correction slopes are normalized to the m/z 44 peak area. Ensure that they apply to the raw "ratio of ratios" 31rR/31rR, 45rR/45rR, and 45rR/45rR in columns AA-AC. The values in the template spreadsheet are specific to the linearity of the Casciotti Lab Delta V, as of February-March 2021.
 
-The 31R, 45R, and 46R for each sample, normalized to the common reference injection and normalized to a m/z 44 peak area of 20 Vs, are found in columns AI-AK. Save the correction template with a new name into your current working directory.
+Go to the "scale_normalization" tab of the excel template. Columns A-F contain the pre-loaded delta values for a set of reference gases. If your reference gases are not listed, add their calibrated delta values in columns A-F, then copy the calculations in columns G-N. Columns M and N contain the "known" 45/44R and 46/44R for each reference material, normalized to the 45/44 and 46/44 of your N2O reference tank.
+
+Columns P-R are references to the names, size corrected 45rR/45rR, and 46rR/46rR of each sample in your run. Drag these cells down to include all of the reference materials in your run. Columns S and T are the "known" 45rR/45rR and 46rR/46rR for each reference material — CHANGE these values so that they point to the appropriate values in columns M and N. Inspect the plot in columns AB-AF to ensure that the slopes and R<sup>2</sup> are close to 1 (if not, check for problem reference materials that are throwing off the calibration). Row 3, columns Y and Z contain the 𝜆 factors needed to scale-normalize the measured 45rR/45rR and 46rR/46rR of the data.
+
+Return to the "size_correction" tab of the excel template. Rows AI-AJ contain the scale-normalized 45rR/45rR and 46rR/46rR of each samples.
+
+The 31R, 45R, and 46R for each sample, normalized to the common reference injection, normalized to a m/z 44 peak area of 20 Vs, and scale-normalized (in the case of 45R and 46R), are found in columns AL-AN. Save the correction template with a new name into your current working directory.
 
 ## Scrambling calibration
 
@@ -136,7 +142,7 @@ Open ```constants.csv```. Here, we specify the calibrated isotope ratios of name
 
 Run two (or more) reference gases with known <sup>15</sup>R-α and <sup>15</sup>R-β, prepared in the same format as samples (i.e., some amount of N<sub>2</sub>O reference gas injected into a bottle of seawater or DI water that has been purged with He or N2 gas).
 
-Export and size-correct these data in the excel correction template, as above. The placeholder samples in the template spreadsheet are arranged in the right order 1-7, but this may not necessarily be the case, depending on how one performs the steps above. The order is not important to what follows, as long as the samples (columns C-Q) and reference peaks (columns S-U) are in the same order.
+Export, size-correct, and scale-normalize these data in the excel correction template, as above. The placeholder samples in the template spreadsheet are arranged in the right order 1-7, but this may not necessarily be the case, depending on how one performs the steps above. The order is not important to what follows, as long as the samples (columns C-Q) and reference peaks (columns S-U) are in the same order.
 
 Each row of the correction template represents one reference material. In column B, "ref_tag", add the names of the reference materials, as they appear in ```constants.csv``` (for example, here, atmosphere-equilibrated seawater is named "ATM").
 
