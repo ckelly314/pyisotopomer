@@ -140,24 +140,38 @@ Download [constants.csv](https://drive.google.com/file/d/1hrllkbP2ywSr-BHP93C0DQ
 
 Open ```constants.csv```. Here, we specify the calibrated isotope ratios of named reference materials. If the reference materials to be used to calibrate scrambling are not in this list, add them, following the format of the existing lines. Save ```constants.csv``` into your current working directory.
 
-Run two (or more) reference gases with known <sup>15</sup>R-α and <sup>15</sup>R-β, prepared in the same format as samples (i.e., some amount of N<sub>2</sub>O reference gas injected into a bottle of seawater or DI water that has been purged with He or N2 gas).
+Run two (or more) reference gases with known <sup>15</sup>R-α and <sup>15</sup>R-β, prepared in the same format as samples. For the Casciotti lab, this is some amount of N<sub>2</sub>O reference gas injected into a bottle of seawater or DI water that has been purged with He or N2 gas.
 
 Export, size-correct, and scale-normalize these data in the excel correction template, as above. The placeholder samples in the template spreadsheet are arranged in the right order 1-7, but this may not necessarily be the case, depending on how one performs the steps above. The order is not important to what follows, as long as the samples (columns C-Q) and reference peaks (columns S-U) are in the same order.
 
-Each row of the correction template represents one reference material. In column B, "ref_tag", add the names of the reference materials, as they appear in ```constants.csv``` (for example, here, atmosphere-equilibrated seawater is named "ATM").
+To mark which rows of the correction template represent reference materials, in column B "ref_tag", add the names of the reference materials, as they appear in ```constants.csv```. For example, here, atmosphere-equilibrated seawater is named "ATM" and is marked as such in the "ref_tag" column.
 
 DO NOT MODIFY COLUMN HEADERS IN THE CORRECTION TEMPLATE. Save the correction template into your current working directory.
 
-### Using a Python script
+### Choice of Method
+
+Pyisotopomer contains two methods for the calculation of γ and κ: a direct calculation of γ and κ based on the algebraic re-arrangement of the equation for <sup>31</sup>R, and a least-squares solver method. Given the right reference materials, it is not necessary to use a numerical algorithm to solve for γ and κ; algebraic manipulations can provide exact and unique solutions for each coefficient. This algebraic solution is the default method of calculation of γ and κ in pyisotopomer. It should be noted that this algebraic solution produces consistent results only when the site preferences of the two reference materials used in the calculation are sufficiently distinct — otherwise, it will return values of γ and κ that vary widely and may not fall in the range of plausible values (i.e., they are either negative or greater than one).
+
+In the event that the user has yet to obtain reference materials that are different enough in their site preferences to produce consistent results with the algebraic method, the least squares approach can be used as a temporary alternative, with the following caveats and modifications:
+ - The least squares solver finds a local minimum close to the initial guess for γ and κ. As such, if the solver is fed an initial guess other than the absolute minimum calculated from the algebraic solution, it will find the “wrong” scrambling coefficients.
+ - Using these “wrong” scrambling coefficients is OK if your unknowns are close in their delta values to those of the reference materials, but will have a deleterious effect as the unknowns diverge in their isotopomer values from the reference materials.
+ - If the least squares solver is fed the correct γ and κ as an initial guess, it will converge on that solution — although this is still not as robust as simply running reference materials of sufficiently distinct site preferences and calculating γ and κ algebraically.
+
+The algebraic method is the default and does not require any modifications to the call to the Scrambling function. To change to the least squares method, specify it as follows:
+
+```Python
+Scrambling(inputfile="FILENAME.xlsx", method="least_squares", **kwargs)
+```
+
+### Example Python script for the scrambling calculation
+
 Download this [Python script](https://github.com/ckelly314/pyisotopomer/blob/master/tests/run_pyisotopomer.py). Save it into your current working directory. The script includes example calls to the functions Scrambling and Isotopomers. Update the keyword arguments to reflect the filename of your template spreadsheet, the names of your reference materials, and the appropriate initial guess for your IRMS (if known). Run the script:
 
 ```bash
 colette$ python run_pyisotopomer.py
 ```
 
-This will create an output file entitled ```{date}_scrambling_output.xlsx``` with scrambling output, similar to this [example spreadsheet](https://github.com/ckelly314/pyisotopomer/blob/master/tests/example_scrambling_output.xlsx).
-
-### Using Jupyter Notebook
+### Example Jupyter Notebook for the scrambling calculation
 
 Download this [Jupyter Notebook](https://drive.google.com/file/d/1hEVvs98ZrpDxzNLJ2D0H6zJjnEs2umiq/view?usp=sharing). Save it into your current working directory.
 
@@ -167,50 +181,43 @@ Open a terminal window. Launch Jupyter Notebook:
 colette$ jupyter notebook
 ```
 
-This should open Jupyter in a new browser window. In Jupyter, navigate to your current working directory. Click on ```run_pyIsotopomer.ipynb``` to open the Jupyter Notebook containing the code to run pyisotopomer.
+This should open Jupyter in a new browser window. In Jupyter, navigate to your current working directory. Click on ```run_pyIsotopomer.ipynb``` to open the Jupyter Notebook containing the code to run pyisotopomer. Follow the instructions in the Jupyter Notebook to run pyisotopomer and obtain scrambling coefficients for all possible pairings of reference materials.
 
-Follow the instructions in the Jupyter Notebook to run pyisotopomer and obtain scrambling coefficients for all possible pairings of reference materials. This will create an output file entitled ```{date}_scrambling_output.xlsx``` with scrambling output, similar to this [example spreadsheet](https://github.com/ckelly314/pyisotopomer/blob/master/tests/example_scrambling_output.xlsx).
+Regardless of whether it is run in a Python script or Jupyter Notebook, the Scrambling function will create an output file entitled ```{date}_scrambling_output.xlsx``` with scrambling output, similar to this [example spreadsheet](https://github.com/ckelly314/pyisotopomer/blob/master/tests/example_scrambling_output.xlsx). The Scrambling function will also output two .csv files containing intermediate data products: [normalized_ratios.csv](https://github.com/ckelly314/pyisotopomer/blob/master/src/normalized_ratios.csv) contains the <sup>15</sup>R<sup>bulk</sup>, <sup>17</sup>R, and <sup>18</sup>R that pyisotopomer calculated from the normalized <sup>45</sup>R and <sup>46</sup>R of each reference material, and [normalized_deltas.csv](https://github.com/ckelly314/pyisotopomer/blob/master/src/normalized_deltas.csv) contains the equivalent delta values. You can copy the values from "normalized_deltas.csv" into rows AT-AV of the excel template. If the scale normalization was effective, the δ<sup>15</sup>N<sup>bulk</sup> and δ<sup>18</sup>O of each reference material should be close to their calibrated values.
 
 ## Calculating isotopomers
 
-Size-correct your data (including all samples and standards), as above. 
+Size-correct your data (including all samples and standards), as above. Enter the appropriate γ and κ in rows AO-AP of the excel template. These should be a running average of γ and κ, calculated using a window of \~10 reference material pairings (see below).
 
 DO NOT MODIFY COLUMN HEADERS IN THE CORRECTION TEMPLATE. Save the correction template into your current working directory.
-
-### Using a Python script
-Download this [Python script](https://github.com/ckelly314/pyisotopomer/blob/master/tests/run_pyisotopomer.py). Save it into your current working directory. The script includes example calls to the functions Scrambling and Isotopomers. Update the keyword arguments to reflect the filename of your template spreadsheet, the names of your reference materials, and the appropriate initial guess for your IRMS (if known). Run the script:
-
-```bash
-colette$ python run_pyisotopomer.py
-```
-
-This will create an output file entitled ```{date}_isotopeoutput.csv``` with isotopocule delta values, similar to this [example spreadsheet](https://github.com/ckelly314/pyisotopomer/blob/master/tests/example_isotopomer_output.csv).
-
-### Using Jupyter Notebook
-
-Download this [Jupyter Notebook](https://drive.google.com/file/d/1hEVvs98ZrpDxzNLJ2D0H6zJjnEs2umiq/view?usp=sharing). Save it into your current working directory.
-
-Open a terminal window. Launch Jupyter Notebook:
-
-```bash
-colette$ jupyter notebook
-```
-
-This should open Jupyter in a new browser window. In Jupyter, navigate to your current working directory. Click on ```run_pyIsotopomer.ipynb``` to open the Jupyter Notebook containing the code to run pyisotopomer.
-
-Follow the instructions in the Jupyter Notebook to run pyisotopomer and obtain sample isotopocule values in delta notation, as well as isotope ratios. This will create an output file entitled ```{date}_isotopeoutput.csv``` with isotopocule delta values, similar to this [example spreadsheet](https://github.com/ckelly314/pyisotopomer/blob/master/tests/example_isotopomer_output.csv).
 
 ### How to think about scrambling when calculating isotopomers
 
 You will also need to enter the appropriate scrambling coefficients in the call to the Isotopomers function. These scrambling coefficients should represent a running average of γ and κ calculated from at least 10 pairings of reference materials (e.g. a week's worth, if unknowns are bookended by reference materials) run alongside unknowns. 
 
-The scrambling coefficients should not be those calculated alongside one run of unknowns. This is because a 1% standard deviation in the scrambling coefficients leads to an error of ~4‰ in site preference, so it is advisable to run sufficient reference materials to bring the standard deviation of γ and κ below this threshold.
+The scrambling coefficients should not be those calculated alongside one run of unknowns. This is because a small standard deviation in the scrambling coefficients can lead to a large error in site preference, so it is advisable to run sufficient reference materials to bring down the standard deviation of γ and κ.
 
-### ---
+### Example Python script for the isotopomer calculation
 
-The Isotopomers function will create an output .csv file, i.e., ```{date}_isotopeoutput.csv```. Copy and paste output data back into working (size correction) spreadsheet in olive-highlighted cells (columns AM-AR).
+Download this [Python script](https://github.com/ckelly314/pyisotopomer/blob/master/tests/run_pyisotopomer.py). Save it into your current working directory. The script includes example calls to the functions Scrambling and Isotopomers. Update the keyword arguments to reflect the filename of your template spreadsheet, the names of your reference materials, and the appropriate initial guess for your IRMS (if known). Run the script:
 
-Note that a scale decompression may be applied after the isotopomer calculation. This is calculated in the “scale-decompression” tab of the excel worksheet, and is applied in columns AU-AZ of the size_correction tab. The scale decompression should be applied as an average 
+```bash
+colette$ python run_pyisotopomer.py
+```
+
+### Example Jupyter Notebook for the isotopomer calculation
+
+Download this [Jupyter Notebook](https://drive.google.com/file/d/1hEVvs98ZrpDxzNLJ2D0H6zJjnEs2umiq/view?usp=sharing). Save it into your current working directory.
+
+Open a terminal window. Launch Jupyter Notebook:
+
+```bash
+colette$ jupyter notebook
+```
+
+This should open Jupyter in a new browser window. In Jupyter, navigate to your current working directory. Click on ```run_pyIsotopomer.ipynb``` to open the Jupyter Notebook containing the code to run pyisotopomer. Follow the instructions in the Jupyter Notebook to run pyisotopomer and obtain sample isotopocule values in delta notation, as well as isotope ratios.
+
+Regardless of whether it is run in a Python script or Jupyter Notebook, the Isotopomers function will create an output file entitled ```{date}_isotopeoutput.csv``` with isotopocule delta values, similar to this [example spreadsheet](https://github.com/ckelly314/pyisotopomer/blob/master/tests/example_isotopomer_output.csv). Copy and paste output data back into working (size correction) spreadsheet in olive-highlighted cells (columns AX-BC).
 
 ## Calculating concentrations
 
