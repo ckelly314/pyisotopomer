@@ -157,7 +157,7 @@ In the event that the user has yet to obtain reference materials that are differ
  - Using these “wrong” scrambling coefficients is OK if your unknowns are close in their delta values to those of the reference materials, but will have a deleterious effect as the unknowns diverge in their isotopomer values from the reference materials.
  - If the least squares solver is fed the correct γ and κ as an initial guess, it will converge on that solution — although this is still not as robust as simply running reference materials of sufficiently distinct site preferences and calculating γ and κ algebraically.
 
-The algebraic method is the default and does not require any modifications to the call to the Scrambling function. To change to the least squares method, specify it as follows:
+The algebraic method is the default and does not require any modifications to the call to the Scrambling function. To change to the least squares method, specify it as follows. If you have an _a priori_ initial guess for γ and κ, enter it using the "initialguess" keyword argument.
 
 ```Python
 Scrambling(inputfile="FILENAME.xlsx", method="least_squares", **kwargs)
