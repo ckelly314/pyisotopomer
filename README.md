@@ -193,9 +193,7 @@ DO NOT MODIFY COLUMN HEADERS IN THE CORRECTION TEMPLATE. Save the correction tem
 
 ### How to think about scrambling when calculating isotopomers
 
-You will also need to enter the appropriate scrambling coefficients in the call to the Isotopomers function. These scrambling coefficients should represent a running average of γ and κ calculated from at least 10 pairings of reference materials (e.g. a week's worth, if unknowns are bookended by reference materials) run alongside unknowns. 
-
-The scrambling coefficients should not be those calculated alongside one run of unknowns. This is because a small standard deviation in the scrambling coefficients can lead to a large error in site preference, so it is advisable to run sufficient reference materials to bring down the standard deviation of γ and κ.
+You will need to enter the appropriate scrambling coefficients in the excel template. These scrambling coefficients should represent a running average of γ and κ calculated from at least 10 pairings of reference materials (e.g. a week's worth, if unknowns are bookended by reference materials) run alongside unknowns. This is because a small standard deviation in the scrambling coefficients can lead to a large error in site preference, so it is advisable to run sufficient reference materials to bring down the standard deviation of γ and κ.
 
 ### Example Python script for the isotopomer calculation
 
@@ -221,10 +219,8 @@ Regardless of whether it is run in a Python script or Jupyter Notebook, the Isot
 
 ## Calculating concentrations
 
-To calculate the concentrations of <sup>44</sup>N<sub>2</sub>O, <sup>45</sup>N<sub>2</sub>O-α, <sup>45</sup>N<sub>2</sub>O-β, and <sup>46</sup>N<sub>2</sub>O:
+To calculate the concentration of N<sub>2</sub>O:
 
-Calculate the amount (nmol) of <sup>44</sup>N<sub>2</sub>O in your sample from the ratio of mass 44 peak area to N<sub>2</sub>O (nmol/Vs) for your instrument. For high levels of <sup>15</sup>N enrichment, account for masses 45 and 46 as well when calculating the total N<sub>2</sub>O.
+Go to the "concentration_constants" tab of the excel template. Following the example calibration curve, calculate the ratio of mass 44 peak area to N<sub>2</sub>O (nmol/Vs) for your instrument. Update the values in row 2, columns B and D to reflect this calibration.
 
-Use the weight difference of the bottle pre- and post-analysis to determine the volume of sample run, and thus the concentration of <sup>44</sup>N<sub>2</sub>O.
-
-We calculate the concentrations of <sup>45</sup>N<sub>2</sub>O-α, <sup>45</sup>N<sub>2</sub>O-β, and <sup>46</sup>N<sub>2</sub>O (for tracer experiments) from the delta value and associated 15/14 ratios. For high levels of <sup>15</sup>N enrichment, use atom fraction <sup>15</sup>N and 14</sup>N rather than isotope ratios.
+Go to the "size_correction" tab of the excel template. Columns BE-BM contain the concentration calculation for liquid samples — that is, N<sub>2</sub>O dissolved in seawater, DI water, or freshwater. Enter the weights of each sample pre- and post- analysis in columns BE-BF. Column BI calculates volume from weight difference using the appropriate density of each sample matrix; ensure that this refers to the correct densities in the "concentration_constants" tab. Column BJ contains the N<sub>2</sub>O nmol amount in each sample, and column BL contains the concentration.
