@@ -45,7 +45,7 @@ To calculate isotopomers, the only function you need is:
 Isotopomers(inputfile = "FILENAME.xlsx", **kwargs)
 ```
 
-You can walk through these steps in this [Jupyter Notebook](https://github.com/ckelly314/pyisotopomer/blob/master/tests/run_pyisotopomer.ipynb).
+You can walk through these steps in this [Jupyter Notebook](https://drive.google.com/file/d/1hEVvs98ZrpDxzNLJ2D0H6zJjnEs2umiq/view?usp=sharing).
 
 ## Configuring Python: macOS
 
@@ -136,7 +136,7 @@ The 31R, 45R, and 46R for each sample, normalized to the common reference inject
 
 Here, two coefficients, γ and κ, are used to describe scrambling in the ion source. This is described in further detail in [Frame and Casciotti, 2010](https://www.biogeosciences.net/7/2695/2010/). Below is a description of how to calculate these coefficients in pyisotopomer.
 
-Download [constants.csv](https://github.com/ckelly314/pyisotopomer/blob/master/src/constants.csv).
+Download [constants.csv](https://drive.google.com/file/d/1hrllkbP2ywSr-BHP93C0DQpUVKVOLX5b/view?usp=sharing).
 
 Open ```constants.csv```. Here, we specify the calibrated isotope ratios of named reference materials. If the reference materials to be used to calibrate scrambling are not in this list, add them, following the format of the existing lines. Save ```constants.csv``` into your current working directory.
 
@@ -159,7 +159,7 @@ This will create an output file entitled ```{date}_scrambling_output.xlsx``` wit
 
 ### Using Jupyter Notebook
 
-Download this [Jupyter Notebook](https://github.com/ckelly314/pyisotopomer/blob/master/tests/run_pyisotopomer.ipynb). Save it into your current working directory.
+Download this [Jupyter Notebook](https://drive.google.com/file/d/1hEVvs98ZrpDxzNLJ2D0H6zJjnEs2umiq/view?usp=sharing). Save it into your current working directory.
 
 Open a terminal window. Launch Jupyter Notebook:
 
@@ -188,7 +188,7 @@ This will create an output file entitled ```{date}_isotopeoutput.csv``` with iso
 
 ### Using Jupyter Notebook
 
-Download this [Jupyter Notebook](https://github.com/ckelly314/pyisotopomer/blob/master/tests/run_pyisotopomer.ipynb). Save it into your current working directory.
+Download this [Jupyter Notebook](https://drive.google.com/file/d/1hEVvs98ZrpDxzNLJ2D0H6zJjnEs2umiq/view?usp=sharing). Save it into your current working directory.
 
 Open a terminal window. Launch Jupyter Notebook:
 
