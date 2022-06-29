@@ -48,13 +48,7 @@ You can walk through these steps in this [Jupyter Notebook](https://drive.google
 
 ## Running pyisotopomer in Google Colab
 
-You can install and run pyisotopomer locally on your computer, or you can run it online in Google Colab. Google Colab is free and allows you to run Python (and pyisotopomer) without installing it on your computer. This [Google Colab notebook](https://drive.google.com/file/d/1hEVvs98ZrpDxzNLJ2D0H6zJjnEs2umiq/view?usp=sharing) contains instructions on how to use the Google Colab environment and example code to run pyisotopomer.
-
-The example Google Colab notebook and the repository containing it has “Read Only” access. In order to be able to modify the notebook and do your own data processing, you need to:
-1. Access the [pyisotopomer_examples folder](https://drive.google.com/drive/folders/1XNmi0alJtopnELIcx8kcD2KBwru8kSLw?usp=sharing)
-2. Right click on the name of the folder and choose “Add to my Drive”.
-3. Navigate to the location of this folder in your Drive, right-click on it, and choose “Make a Copy”. It will create a new folder in your drive entitled "Copy of pyisotopomer_examples". Rename it as you wish.
-4. If you have never used Google Colab before, you need to connect Google Colab to your Google Drive. To do that, double-click on run_pyisotopomer.ipynb, at the top of the page click on “Connect More Apps” and choose “Colab”. Sometimes, you need to load the webpage a few times before you see Google Colab in the app choices.
+You can install and run pyisotopomer locally on your computer, or you can run it online in Google Colaboratory (Colab). Google Colab is free and allows you to run Python (and pyisotopomer) without installing it on your computer. This [Google Colab notebook](https://drive.google.com/file/d/1hEVvs98ZrpDxzNLJ2D0H6zJjnEs2umiq/view?usp=sharing) contains instructions on how to use the Google Colab environment and example code to run pyisotopomer. Once you click on this link, you should see an option to "Open with Google Colaboratory". If you have never used Google Colab before, you need to connect Google Colab to your Google Drive. To do that, follow the link above, at the top of the page click on “Connect More Apps” and choose “Colab”. Sometimes, you need to load the webpage a few times before you see Google Colab in the app choices.
 
 ## Pre-processing
 
