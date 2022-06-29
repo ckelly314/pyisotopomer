@@ -18,8 +18,7 @@ While the scrambling calibration is an integral part of obtaining high-quality N
 **Contents:**
 - [pyisotopomer](#pyisotopomer)
   - [Basic use](#basic-use)
-  - [Configuring python: macOS](#configuring-python-macOS)
-  - [Configuring python: Windows](#configuring-python-windows)
+  - [Running pyisotopomer in Google Colab](#Running-pyisotopomer-in-Google-Colab)
   - [Pre-processing](#pre-processing)
   - [Scrambling calibration](#scrambling-calibration)
   - [Calculating isotopomers](#calculating-isotopomers)
@@ -47,70 +46,19 @@ Isotopomers(inputfile = "FILENAME.xlsx", **kwargs)
 
 You can walk through these steps in this [Jupyter Notebook](https://drive.google.com/file/d/1hEVvs98ZrpDxzNLJ2D0H6zJjnEs2umiq/view?usp=sharing).
 
-## Configuring Python: macOS
+## Running pyisotopomer in Google Colab
 
-Check that you have python3 installed on your computer. On macOS, open a new Terminal window (see below for instructions for Windows). Run the following command:
+You can install and run pyisotopomer locally on your computer, or you can run it online in Google Colab. Google Colab is free and allows you to run Python (and pyisotopomer) without installing it on your computer. This [Google Colab notebook](https://drive.google.com/file/d/1hEVvs98ZrpDxzNLJ2D0H6zJjnEs2umiq/view?usp=sharing) contains instructions on how to use the Google Colab environment and example code to run pyisotopomer.
 
-```bash
-colette$ python3 --version
-```
-
-This should output something like:
-
-```bash
-Python 3.9.2
-```
-
-Note that the text before the dollar sign will vary based on the user and computer. Additionally, the dollar sign may be replaced by a percent sign if your terminal is in zshell (zsh) instead of bash, but this is not an important difference for the code below. If python3 is not yet installed on your computer, try this [helpful guide](https://github.com/stanfordpython/python-handouts/blob/master/installing-python-macos.md) for installing Python as well as working with virtual environments.
-
-Install pyisotopomer. Run:
-
-```bash
-colette$ pip install --upgrade pip
-colette$ pip install pyisotopomer
-```
-
-This may take a while; pip (the Python package manager) will download pyisotopomer and its dependencies from the cloud and install them on your machine. 
-
-## Configuring Python: Windows
-
-Requires: 64-bit Windows 10, updated to the 2016 Anniversary build or later. *If you regularly download updates, you'll be fine.*
-
-Windows 10 has added a subsystem called Ubuntu that allows you to open a bash shell. If you don't know what a bash shell is, that's totally fine — just follow the instructions below.
-
-First, follow [these instructions](https://www.howtogeek.com/249966/how-to-install-and-use-the-linux-bash-shell-on-windows-10/) from HowToGeek. These will help you activate the "Windows Subsystem for Linux," get Ubuntu from the Microsoft Store, and launch a `bash` shell on Ubuntu.
-
-Once you're in the `bash` shell, run the following commands to install Python 3.9 on your computer:
-
-```bash
-$ sudo add-apt-repository ppa:deadsnakes/ppa
-$ sudo apt-get update
-$ sudo apt-get install python3.9
-```
-
-You can check which version of Python you've installed by running:
-
-```bash
-$ python3 --version
-```
-
-This should output something like:
-
-```bash
-Python 3.9.2
-```
-
-Install pyisotopomer. Run:
-
-```bash
-$ pip install "prompt-toolkit==2.0.10" "ipython[all]" pyisotopomer
-```
-
-This may take a while; pip (the Python package manager) will download pyisotopomer and its dependencies from the cloud and install them on your machine. 
+The example Google Colab notebook and the repository containing it has “Read Only” access. In order to be able to modify the notebook and do your own data processing, you need to:
+1. Access the [pyisotopomer_examples folder](https://drive.google.com/drive/folders/1XNmi0alJtopnELIcx8kcD2KBwru8kSLw?usp=sharing)
+2. Right click on the name of the folder and choose “Add to my Drive”.
+3. Navigate to the location of this folder in your Drive, right-click on it, and choose “Make a Copy”. It will create a new folder in your drive entitled "Copy of pyisotopomer_examples". Rename it as you wish.
+4. If you have never used Google Colab before, you need to connect Google Colab to your Google Drive. To do that, double-click on run_pyisotopomer.ipynb, at the top of the page click on “Connect More Apps” and choose “Colab”. Sometimes, you need to load the webpage a few times before you see Google Colab in the app choices.
 
 ## Pre-processing
 
-Download the data correction [template](https://github.com/ckelly314/pyisotopomer/blob/master/src/00_Python_template_v2.xlsx).
+Download the data correction [template](https://docs.google.com/spreadsheets/d/1YMyaIXTMbX56r5_1C3ovAb_GBVsQJXfr/edit?usp=sharing&ouid=104573000701514802850&rtpof=true&sd=true).
 
 Export IRMS data in Isodat, with separate export templates for the sample peak and designated reference peak for each sample.
 
@@ -130,13 +78,13 @@ Columns P-R are references to the names, size corrected 45rR/45rR, and 46rR/46rR
 
 Return to the "size_correction" tab of the excel template. Rows AI-AJ contain the scale-normalized 45rR/45rR and 46rR/46rR of each samples.
 
-The 31R, 45R, and 46R for each sample, normalized to the common reference injection, normalized to a m/z 44 peak area of 20 Vs, and scale-normalized (in the case of 45R and 46R), are found in columns AL-AN. Save the correction template with a new name into your current working directory.
+The 31R, 45R, and 46R for each sample, normalized to the common reference injection, normalized to a m/z 44 peak area of 20 Vs, and scale-normalized (in the case of 45R and 46R), are found in columns AL-AN. Save the correction template with a new name into your current working directory, or, if you're using Google Colab, upload it to your data processing folder in your drive.
 
 ## Scrambling calibration
 
 Here, two coefficients, γ and κ, are used to describe scrambling in the ion source. This is described in further detail in [Frame and Casciotti, 2010](https://www.biogeosciences.net/7/2695/2010/). Below is a description of how to calculate these coefficients in pyisotopomer.
 
-Download [constants.csv](https://drive.google.com/file/d/1hrllkbP2ywSr-BHP93C0DQpUVKVOLX5b/view?usp=sharing).
+Download [constants.csv](https://drive.google.com/file/d/1hEb7wg3nsnm0C5TERxzt4We9IEKUNLdJ/view?usp=sharing).
 
 Open ```constants.csv```. Here, we specify the calibrated isotope ratios of named reference materials. If the reference materials to be used to calibrate scrambling are not in this list, add them, following the format of the existing lines. Save ```constants.csv``` into your current working directory.
 
@@ -146,7 +94,7 @@ Export, size-correct, and scale-normalize these data in the excel correction tem
 
 To mark which rows of the correction template represent reference materials, in column B "ref_tag", add the names of the reference materials, as they appear in ```constants.csv```. For example, here, atmosphere-equilibrated seawater is named "ATM" and is marked as such in the "ref_tag" column.
 
-DO NOT MODIFY COLUMN HEADERS IN THE CORRECTION TEMPLATE. Save the correction template into your current working directory.
+DO NOT MODIFY COLUMN HEADERS IN THE CORRECTION TEMPLATE. Save the correction template into your current working directory, or, if you're using Google Colab, upload it to your data processing folder in your drive.
 
 ### Choice of Method
 
@@ -172,7 +120,11 @@ Scrambling(inputfile="00_Python_template_v2.xlsx", method="least_squares",
           initialguess=[0.17, 0.08], **kwargs)
 ```
 
-The Scrambling function will create an output file entitled ```{date}_scrambling_output.xlsx``` with scrambling output, similar to this [example spreadsheet](https://github.com/ckelly314/pyisotopomer/blob/master/tests/example_scrambling_output.xlsx). The Scrambling function will also output two .csv files containing intermediate data products: [normalized_ratios.csv](https://github.com/ckelly314/pyisotopomer/blob/master/src/normalized_ratios.csv) contains the <sup>15</sup>R<sup>bulk</sup>, <sup>17</sup>R, and <sup>18</sup>R that pyisotopomer calculated from the normalized <sup>45</sup>R and <sup>46</sup>R of each reference material, and [normalized_deltas.csv](https://github.com/ckelly314/pyisotopomer/blob/master/src/normalized_deltas.csv) contains the equivalent delta values. You can copy the values from "normalized_deltas.csv" into rows AT-AV of the excel template. If the scale normalization was effective, the δ<sup>15</sup>N<sup>bulk</sup> and δ<sup>18</sup>O of each reference material should be close to their calibrated values.
+The Scrambling function will create an output file entitled ```{date}_scrambling_output.xlsx``` with scrambling output, similar to this [example spreadsheet](https://docs.google.com/spreadsheets/d/1Z_jMqslWt4LfdaFTM_Ngt3a2VtxXn-mm/edit?usp=sharing&ouid=104573000701514802850&rtpof=true&sd=true). The Scrambling function will also output two .csv files containing intermediate data products: [normalized_ratios.csv](https://drive.google.com/file/d/1baG9H-MQuVRv9crKAKPQlj2wrp3l4qvj/view?usp=sharing) contains the <sup>15</sup>R<sup>bulk</sup>, <sup>17</sup>R, and <sup>18</sup>R that pyisotopomer calculated from the normalized <sup>45</sup>R and <sup>46</sup>R of each reference material, and [normalized_deltas.csv](https://drive.google.com/file/d/1bx-Mop1dzjX5rhooWN79dgdfTjhWOvUi/view?usp=sharing) contains the equivalent delta values. You can copy the values from "normalized_deltas.csv" into rows AT-AV of the excel template. If the scale normalization was effective, the δ<sup>15</sup>N<sup>bulk</sup> and δ<sup>18</sup>O of each reference material should be close to their calibrated values.
+
+### Google Colab notebook for the scrambling calculation
+
+This [Google Colab notebook](https://drive.google.com/file/d/1hEVvs98ZrpDxzNLJ2D0H6zJjnEs2umiq/view?usp=sharing) contains instructions on how to use the Google Colab environment and example code to run the Scrambling function of pyisotopomer.
 
 ### Example Python script for the scrambling calculation
 
@@ -181,18 +133,6 @@ This [Python script](https://github.com/ckelly314/pyisotopomer/blob/master/tests
 ```bash
 colette$ python run_pyisotopomer.py
 ```
-
-### Example Jupyter Notebook for the scrambling calculation
-
-This [Jupyter Notebook](https://drive.google.com/file/d/1hEVvs98ZrpDxzNLJ2D0H6zJjnEs2umiq/view?usp=sharing) contains example function calls that run the code above. Save it into your current working directory.
-
-Open a terminal window. Launch Jupyter Notebook:
-
-```bash
-colette$ jupyter notebook
-```
-
-This should open Jupyter in a new browser window. In Jupyter, navigate to your current working directory. Click on ```run_pyIsotopomer.ipynb``` to open the Jupyter Notebook containing the code to run pyisotopomer. Follow the instructions in the Jupyter Notebook to run pyisotopomer and obtain scrambling coefficients for all possible pairings of reference materials.
 
 ## Calculating isotopomers
 
@@ -210,7 +150,11 @@ To calculate isotopomers, modify the "inputfile" keyword to reflect the name of 
 Isotopomers(inputfile = "00_Python_template_v2.xlsx", **kwargs)
 ```
 
-the Isotopomers function will create an output file entitled ```{date}_isotopeoutput.csv``` with isotopocule delta values, similar to this [example spreadsheet](https://github.com/ckelly314/pyisotopomer/blob/master/tests/example_isotopomer_output.csv). Copy and paste output data back into working (size correction) spreadsheet in olive-highlighted cells (columns AX-BC).
+the Isotopomers function will create an output file entitled ```{date}_isotopeoutput.csv``` with isotopocule delta values, similar to this [example spreadsheet](https://drive.google.com/file/d/1ZWws_32rjzutNkmD4HYebJBWjjIPRwt1/view?usp=sharing). Copy and paste output data back into working (size correction) spreadsheet in olive-highlighted cells (columns AX-BC).
+
+### Google Colab notebook forthe isotopomer calculation
+
+This [Google Colab notebook](https://drive.google.com/file/d/1hEVvs98ZrpDxzNLJ2D0H6zJjnEs2umiq/view?usp=sharing) contains instructions on how to use the Google Colab environment and example code to run the Isotopomers function of pyisotopomer.
 
 ### Example Python script for the isotopomer calculation
 
@@ -219,18 +163,6 @@ This [Python script](https://github.com/ckelly314/pyisotopomer/blob/master/tests
 ```bash
 colette$ python run_pyisotopomer.py
 ```
-
-### Example Jupyter Notebook for the isotopomer calculation
-
-This [Jupyter Notebook](https://drive.google.com/file/d/1hEVvs98ZrpDxzNLJ2D0H6zJjnEs2umiq/view?usp=sharing) contains example function calls that run the code above. Save it into your current working directory.
-
-Open a terminal window. Launch Jupyter Notebook:
-
-```bash
-colette$ jupyter notebook
-```
-
-This should open Jupyter in a new browser window. In Jupyter, navigate to your current working directory. Click on ```run_pyIsotopomer.ipynb``` to open the Jupyter Notebook containing the code to run pyisotopomer. Follow the instructions in the Jupyter Notebook to run pyisotopomer and obtain scrambling coefficients for all possible pairings of reference materials.
 
 ## Calculating concentrations
 
