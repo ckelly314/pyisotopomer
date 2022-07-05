@@ -130,13 +130,13 @@ colette$ python run_pyisotopomer.py
 
 ## Calculating isotopomers
 
-Size-correct your data (including all samples and standards), as above. Enter the appropriate γ and κ in rows AO-AP of the excel template. These should be a running average of γ and κ, calculated using a window of \~10 reference material pairings (see below).
+Size-correct your data (including all samples and standards), as above. Enter the appropriate γ and κ in columns AO-AP of the excel template. These should be a running average of γ and κ, calculated using a window of \~10 reference material pairings (see below).
 
 DO NOT MODIFY COLUMN HEADERS IN THE CORRECTION TEMPLATE. Save the correction template into your current working directory.
 
 ### How to think about scrambling when calculating isotopomers
 
-You will need to enter the appropriate scrambling coefficients in the excel template. These scrambling coefficients should represent a running average of γ and κ calculated from at least 10 pairings of reference materials (e.g. a week's worth, if unknowns are bookended by reference materials) run alongside unknowns. This is because a small standard deviation in the scrambling coefficients can lead to a large error in site preference, so it is advisable to run sufficient reference materials to bring down the standard deviation of γ and κ.
+You will need to enter the appropriate scrambling coefficients in the excel template. These scrambling coefficients should represent a running average of γ and κ calculated from at least 10 pairings of reference materials (e.g. a week's worth, if unknowns are bookended by reference materials) run alongside unknowns. This is because a small standard deviation in the scrambling coefficients can lead to a large error in site preference, so it is advisable to run sufficient reference materials to bring down the standard deviation of γ and κ. To calculate these running averages, it can be helpful to keep a spreadsheet with a running log of scrambling coefficients.
 
 To calculate isotopomers, modify the "inputfile" keyword to reflect the name of your excel data corrections spreadsheet, then run the following code:
 
