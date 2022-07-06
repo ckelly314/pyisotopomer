@@ -110,18 +110,18 @@ def parseoutput(
         # input array for gk_solver,
         # and output DataFrame of paired reference materials
         key, [ref1, ref2, R, df] = inputobj.scrambleinput.popitem()
-        # print(R)
 
         try:  # use Try and Except arguements to handle cases where constants.csv isn't properly set up
             if (
                 method == "algebraic"
             ):  # Calculate gamma and kappa explicitly from algebraic solution
-                gk = algebraic_gk_eqns(R, ref1=ref1, ref2=ref2)
+                gk = algebraic_gk_eqns(R, inputobj.isotopeconstants, ref1=ref1, ref2=ref2)
             elif (
                 method == "least_squares"
             ):  # Run function that iteratively solves for gamma and kappa
                 gk = automate_gk_solver(
                     R,
+                    inputobj.isotopeconstants,
                     ref1=ref1,
                     ref2=ref2,
                     x0=initialguess,

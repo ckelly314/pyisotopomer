@@ -10,10 +10,10 @@ isotopomer calculations.
 """
 
 import numpy as np
-from .constants import constants  # import alpha and beta values for reference materials
+from .constants_new import constants_new  # import alpha and beta values for reference materials
 
 
-def automate_gk_eqns(f, R, ref1, ref2, weights):
+def automate_gk_eqns(f, R, isotopeconstants, ref1, ref2, weights):
     """
     Calculates gamma and kappa from measured rR31/30, given known a, b, 17R.
 
@@ -57,7 +57,7 @@ def automate_gk_eqns(f, R, ref1, ref2, weights):
 
     # these are the alpha and beta values for the two reference materials
     # they are specified in constants.py
-    a, b, a2, b2 = constants(ref1, ref2)
+    a, b, a2, b2 = constants_new(isotopeconstants, ref1, ref2)
 
     # solve two equations with two unknowns
     # f[0] = gamma, and f[1] = kappa

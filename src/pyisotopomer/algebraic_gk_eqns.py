@@ -10,10 +10,10 @@ Algebraic solutions for gamma and kappa.
 
 import pandas as pd
 import numpy as np
-from .constants import constants  # import alpha and beta values for reference materials
+from .constants_new import constants_new  # import alpha and beta values for reference materials
 
 
-def algebraic_gk_eqns(R, ref1, ref2):
+def algebraic_gk_eqns(R, isotopeconstants, ref1, ref2):
     """
     Calculates gamma and kappa from algebraic solution for each parameter,
     using the known 15Ralpha and 15Rbeta and measured 31/30R and 17R of two
@@ -44,7 +44,7 @@ def algebraic_gk_eqns(R, ref1, ref2):
     """
     # these are the alpha and beta values for the two reference materials
     # they are specified in constants.py
-    a, b, a2, b2 = constants(ref1, ref2)
+    a, b, a2, b2 = constants_new(isotopeconstants, ref1, ref2)
 
     # calculate difference in SPs of reference materials and print warning if too small
     spdiff = (a - b - a2 + b2) * 1000 / 0.0036765

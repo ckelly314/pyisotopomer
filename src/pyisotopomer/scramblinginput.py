@@ -52,6 +52,10 @@ class ScramblingInput:
             if self.filename[-5:] != ".xlsx":
                 self.filename = self.filename + ".xlsx"
                 self.data = self.readin(self.filename)
+        
+        # read in d15Na and d15Nb of reference materials from excel template
+        self.isotopeconstants = pd.read_excel(filename, "scale_normalization",
+            skiprows=1, usecols=["ref_tag","d15Na","d15Nb"])
 
         # subset of data to be used for Isotopomers
         self.sizecorrected = self.parseratios(self.data)
@@ -85,11 +89,13 @@ class ScramblingInput:
             Refs = list(data.ref_tag.dropna().drop_duplicates())
         else:
             Refs = Refs.values()
-        # convert all reference names to strings in case they are input as numbers
-        alpha_refs = [r for r in Refs if type(r)==str] # separate out refs that are already strings
-        numeric_refs = [str(int(r)) for r in Refs if type(r)==float] # convert to int first to handle .0 suffix
-        [alpha_refs.append(r) for r in numeric_refs] # append converted numeric refs
-        Refs = alpha_refs
+
+        # remove refs that aren't included in constants
+        unmatched = [r for r in Refs if r not in list(self.isotopeconstants.ref_tag)]
+        if len(unmatched)>0:
+            print("no matches found for", unmatched)
+        Refs = [r for r in Refs if r in list(self.isotopeconstants.ref_tag)]
+
         # return n arrays of paired reference materials,
         # where n = the number of possible combinations of reference materials
         pairings = list(combinations(Refs, 2))

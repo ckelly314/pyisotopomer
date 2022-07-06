@@ -18,7 +18,7 @@ from .automate_gk_eqns import (
 )  # import alpha and beta values for reference materials
 
 
-def automate_gk_solver(R, ref1, ref2, x0=None, lb=None, ub=None, weights=False):
+def automate_gk_solver(R, isotopeconstants, ref1, ref2, x0=None, lb=None, ub=None, weights=False):
     """
     Calculate gamma and kappa from measured rR31/30 and r45/44, given known a, b, 17R.
 
@@ -99,6 +99,7 @@ def automate_gk_solver(R, ref1, ref2, x0=None, lb=None, ub=None, weights=False):
         row = np.array(R[n][:])
         args = (
             row,
+            isotopeconstants,
             ref1,
             ref2,
             weights,
