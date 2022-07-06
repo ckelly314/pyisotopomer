@@ -67,7 +67,6 @@ class ScramblingInput:
     def readin(self, filename):
         # return Pandas DataFrame of all input data
         data = pd.read_excel(filename, "size_correction", skiprows=1)
-        data["ref_tag"] = data["ref_tag"].astype("string")
         data = data.dropna(thresh=10)  # need to drop rows of NaNs
         return data
 
