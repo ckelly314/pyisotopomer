@@ -78,17 +78,15 @@ The 31R, 45R, and 46R for each sample, normalized to the common reference inject
 
 Here, two coefficients, γ and κ, are used to describe scrambling in the ion source. This is described in further detail in [Frame and Casciotti, 2010](https://www.biogeosciences.net/7/2695/2010/). Below is a description of how to calculate these coefficients in pyisotopomer.
 
-Download [constants.csv](https://drive.google.com/file/d/1hEb7wg3nsnm0C5TERxzt4We9IEKUNLdJ/view?usp=sharing).
-
-Open ```constants.csv```. Here, we specify the calibrated isotope ratios of named reference materials. If the reference materials to be used to calibrate scrambling are not in this list, add them, following the format of the existing lines. Save ```constants.csv``` into your current working directory.
-
 Run two (or more) reference gases with known <sup>15</sup>R-α and <sup>15</sup>R-β, prepared in the same format as samples. For the Casciotti lab, this is some amount of N<sub>2</sub>O reference gas injected into a bottle of seawater or DI water that has been purged with He or N2 gas.
 
-Export, size-correct, and scale-normalize these data in the excel correction template, as above. The placeholder samples in the template spreadsheet are arranged in the right order 1-7, but this may not necessarily be the case, depending on how one performs the steps above. The order is not important to what follows, as long as the samples (columns C-Q) and reference peaks (columns S-U) are in the same order.
+Download the data correction [template](https://docs.google.com/spreadsheets/d/1YMyaIXTMbX56r5_1C3ovAb_GBVsQJXfr/edit?usp=sharing&ouid=104573000701514802850&rtpof=true&sd=true). Pre-process the data according to the pyisotopomer [README](https://github.com/ckelly314/pyisotopomer). Save it into your current working directory.
 
-To mark which rows of the correction template represent reference materials, in column B "ref_tag", add the names of the reference materials, as they appear in ```constants.csv```. For example, here, atmosphere-equilibrated seawater is named "ATM" and is marked as such in the "ref_tag" column.
+Go to the "scale_normalization" tab of the excel template. Make sure it contains all of the reference materials you will use for the scrambling calculation. In column A "ref_tag", enter the names of your reference materials — these can be whatever you want, as long as they contain only alphanumeric characters and are short (15 characters or fewer).
 
-DO NOT MODIFY COLUMN HEADERS IN THE CORRECTION TEMPLATE. Save the correction template into your current working directory, or, if you're using Google Colab, upload it to your data processing folder in your drive.
+Go to the "size_correction" tab of the excel template. To mark which rows of the correction template represent reference materials, in column B "ref_tag", add the names of the reference materials, as they appear in the "scale_normalization" tab. For example, here, atmosphere-equilibrated seawater is named "ATM" and is marked as such in the "ref_tag" column.
+
+DO NOT MODIFY COLUMN HEADERS IN THE CORRECTION TEMPLATE. Save the correction template into your current working directory.
 
 ### Choice of Method
 
