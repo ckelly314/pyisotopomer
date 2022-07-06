@@ -87,7 +87,10 @@ class ScramblingInput:
         else:
             Refs = Refs.values()
         # convert all reference names to strings in case they are input as numbers
-        Refs = [str(r) for r in Refs]
+        alpha_refs = [r for r in Refs if type(r)==str] # separate out refs that are already strings
+        numeric_refs = [str(int(r)) for r in Refs if type(r)==float] # convert to int first to handle .0 suffix
+        [alpha_refs.append(r) for r in numeric_refs] # append converted numeric refs
+        Refs = alpha_refs
         # return n arrays of paired reference materials,
         # where n = the number of possible combinations of reference materials
         pairings = list(combinations(Refs, 2))
