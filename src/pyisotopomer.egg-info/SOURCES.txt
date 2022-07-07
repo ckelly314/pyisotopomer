@@ -14,6 +14,7 @@ src/pyisotopomer/calcdeltaSP.py
 src/pyisotopomer/calculate_17R.py
 src/pyisotopomer/concentrations.py
 src/pyisotopomer/constants.py
+src/pyisotopomer/constants_new.py
 src/pyisotopomer/isotopomerinput.py
 src/pyisotopomer/parseoutput.py
 src/pyisotopomer/pyisotopomer.py
