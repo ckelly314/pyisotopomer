@@ -225,11 +225,12 @@ class Isotopomers:
         self.R = IsotopomerInput(inputfile, tabname).ratiosscrambling
         self.isotoperatios = calcSPmain(
             self.R,
+            self.IsotopeStandards,
             initialguess=initialguess,
             lowerbounds=lowerbounds,
             upperbounds=upperbounds,
         )
-        self.deltavals = calcdeltaSP(self.isotoperatios)
+        self.deltavals = calcdeltaSP(self.isotoperatios, self.IsotopeStandards)
 
         if saveout == True:
             self.saveoutput(self.deltavals, outputfile)
