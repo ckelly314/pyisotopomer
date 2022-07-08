@@ -66,7 +66,7 @@ Replace the values in row 3, columns W-Y with the appropriate 31R, 45R, and 46R 
 
 Replace the values in row 7, columns W-Y, with your size correction slopes. Ensure that these size correction slopes are normalized to the m/z 44 peak area. Ensure that they apply to the raw "ratio of ratios" 31rR/31rR, 45rR/45rR, and 45rR/45rR in columns AA-AC. The values in the template spreadsheet are specific to the linearity of the Casciotti Lab Delta V, as of February-March 2021.
 
-Go to the "scale_normalization" tab of the excel template. Columns A-F contain the pre-loaded delta values for a set of reference gases. If your reference gases are not listed, add their calibrated delta values in columns A-F, then copy the calculations in columns G-N. Columns M and N contain the "known" 45/44R and 46/44R for each reference material, normalized to the 45/44 and 46/44 of your N2O reference tank.
+Go to the "scale_normalization" tab of the excel template. Columns A-F contain the pre-loaded delta values for a set of reference gases. If your reference gases are not listed, add their calibrated delta values in columns A-F, then copy the calculations in columns G-N. Columns M and N contain the "known" 45/44R and 46/44R for each reference material, normalized to the 45/44 and 46/44 of your N<sub>2</sub>O reference tank.
 
 Starting in Row 12, Columns B and C are the "known" 45rR/45rR and 46rR/46rR for each reference material. CHANGE these values so that they point to the appropriate values in columns M and N. Columns D and E are references to the size corrected 45rR/45rR and 46rR/46rR of each sample in your run. Drag these cells down to include all of the reference materials in your run. Row 13, Columns J and K contain the λ factors needed to scale-normalize the measured 45rR/45rR and 46rR/46rR of the data. These should be close to 1 (if not, check for problem reference materials that are throwing off the calibration).
 
@@ -142,7 +142,7 @@ To calculate isotopomers, modify the "inputfile" keyword to reflect the name of 
 Isotopomers(inputfile = "00_Python_template_v2.xlsx", **kwargs)
 ```
 
-the Isotopomers function will create an output file entitled ```{date}_isotopeoutput.csv``` with isotopocule delta values, similar to this [example spreadsheet](https://drive.google.com/file/d/1ZWws_32rjzutNkmD4HYebJBWjjIPRwt1/view?usp=sharing). Copy and paste output data back into working (size correction) spreadsheet in olive-highlighted cells (columns AX-BC).
+The Isotopomers function will create an output file entitled ```{date}_isotopeoutput.csv``` with isotopocule delta values, similar to this [example spreadsheet](https://drive.google.com/file/d/1ZWws_32rjzutNkmD4HYebJBWjjIPRwt1/view?usp=sharing). Copy and paste output data back into working (size correction) spreadsheet in olive-highlighted cells (columns AX-BC).
 
 ### Google Colab notebook forthe isotopomer calculation
 
