@@ -68,11 +68,11 @@ Replace the values in row 7, columns W-Y, with your size correction slopes. Ensu
 
 Go to the "scale_normalization" tab of the excel template. Columns A-F contain the pre-loaded delta values for a set of reference gases. If your reference gases are not listed, add their calibrated delta values in columns A-F, then copy the calculations in columns G-N. Columns M and N contain the "known" 45/44R and 46/44R for each reference material, normalized to the 45/44 and 46/44 of your N2O reference tank.
 
-Columns P-R are references to the names, size corrected 45rR/45rR, and 46rR/46rR of each sample in your run. Drag these cells down to include all of the reference materials in your run. Columns S and T are the "known" 45rR/45rR and 46rR/46rR for each reference material — CHANGE these values so that they point to the appropriate values in columns M and N. Inspect the plot in columns AB-AF to ensure that the slopes and R<sup>2</sup> are close to 1 (if not, check for problem reference materials that are throwing off the calibration). Row 3, columns Y and Z contain the 𝜆 factors needed to scale-normalize the measured 45rR/45rR and 46rR/46rR of the data.
+Starting in Row 12, Columns B and C are the "known" 45rR/45rR and 46rR/46rR for each reference material. CHANGE these values so that they point to the appropriate values in columns M and N. Columns D and E are references to the size corrected 45rR/45rR and 46rR/46rR of each sample in your run. Drag these cells down to include all of the reference materials in your run. Row 13, Columns J and K contain the λ factors needed to scale-normalize the measured 45rR/45rR and 46rR/46rR of the data. These should be close to 1 (if not, check for problem reference materials that are throwing off the calibration).
 
-Return to the "size_correction" tab of the excel template. Rows AI-AJ contain the scale-normalized 45rR/45rR and 46rR/46rR of each samples.
+Return to the "size_correction" tab of the excel template. Columns AI and AJ contain the scale-normalized 45rR/45rR and 46rR/46rR of each sample.
 
-The 31R, 45R, and 46R for each sample, normalized to the common reference injection, normalized to a m/z 44 peak area of 20 Vs, and scale-normalized (in the case of 45R and 46R), are found in columns AL-AN. Save the correction template with a new name into your current working directory, or, if you're using Google Colab, upload it to your data processing folder in your drive.
+The 31R, 45R, and 46R for each sample, normalized to the common reference injection, normalized to a m/z 44 peak area of 20 Vs, and scale-normalized (in the case of 45R and 46R), are found in columns AL-AN. If you know the Δ<sup>17</sup>O of your samples, enter them in Column AO; otherwise, leave these values as 0. Save the correction template with a new name into your current working directory, or, if you're using Google Colab, upload it to your data processing folder in your drive.
 
 ## Scrambling calibration
 
@@ -112,7 +112,7 @@ Scrambling(inputfile="00_Python_template_v2.xlsx", method="least_squares",
           initialguess=[0.17, 0.08], **kwargs)
 ```
 
-The Scrambling function will create an output file entitled ```{date}_scrambling_output.xlsx``` with scrambling output, similar to this [example spreadsheet](https://docs.google.com/spreadsheets/d/1Z_jMqslWt4LfdaFTM_Ngt3a2VtxXn-mm/edit?usp=sharing&ouid=104573000701514802850&rtpof=true&sd=true). The Scrambling function will also output two .csv files containing intermediate data products: [normalized_ratios.csv](https://drive.google.com/file/d/1baG9H-MQuVRv9crKAKPQlj2wrp3l4qvj/view?usp=sharing) contains the <sup>15</sup>R<sup>bulk</sup>, <sup>17</sup>R, and <sup>18</sup>R that pyisotopomer calculated from the normalized <sup>45</sup>R and <sup>46</sup>R of each reference material, and [normalized_deltas.csv](https://drive.google.com/file/d/1bx-Mop1dzjX5rhooWN79dgdfTjhWOvUi/view?usp=sharing) contains the equivalent delta values. You can copy the values from "normalized_deltas.csv" into rows AT-AV of the excel template. If the scale normalization was effective, the δ<sup>15</sup>N<sup>bulk</sup> and δ<sup>18</sup>O of each reference material should be close to their calibrated values.
+The Scrambling function will create an output file entitled ```{date}_scrambling_output.xlsx``` with scrambling output, similar to this [example spreadsheet](https://docs.google.com/spreadsheets/d/1Z_jMqslWt4LfdaFTM_Ngt3a2VtxXn-mm/edit?usp=sharing&ouid=104573000701514802850&rtpof=true&sd=true). The Scrambling function will also output two .csv files containing intermediate data products: [normalized_ratios.csv](https://drive.google.com/file/d/1baG9H-MQuVRv9crKAKPQlj2wrp3l4qvj/view?usp=sharing) contains the <sup>15</sup>R<sup>bulk</sup>, <sup>17</sup>R, and <sup>18</sup>R that pyisotopomer calculated from the normalized <sup>45</sup>R and <sup>46</sup>R of each reference material, and [normalized_deltas.csv](https://drive.google.com/file/d/1bx-Mop1dzjX5rhooWN79dgdfTjhWOvUi/view?usp=sharing) contains the equivalent delta values. You can copy these delta values into Columns AT-AV. If the scale normalization was effective, the δ<sup>15</sup>N<sup>bulk</sup> and δ<sup>18</sup>O of each reference material should be close to their calibrated values; if not, you may need to check for problem reference materials.
 
 ### Google Colab notebook for the scrambling calculation
 
@@ -128,7 +128,7 @@ colette$ python run_pyisotopomer.py
 
 ## Calculating isotopomers
 
-Size-correct your data (including all samples and standards), as above. Enter the appropriate γ and κ in columns AO-AP of the excel template. These should be a running average of γ and κ, calculated using a window of \~10 reference material pairings (see below).
+Size-correct your data (including all samples and standards), as above. Enter the appropriate γ and κ in columns AP-AQ of the excel template. These should be a running average of γ and κ, calculated using a window of \~10 reference material pairings (see below).
 
 DO NOT MODIFY COLUMN HEADERS IN THE CORRECTION TEMPLATE. Save the correction template into your current working directory.
 
