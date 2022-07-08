@@ -23,9 +23,16 @@ gk = Scrambling(
     # upperbounds=[1.0, 1.0], # only applies to the "least_squares" method
     # weights=False, # only applies to the "least_squares" method
     ref1="ATM",  # you can list as many reference materials as you want
-    ref2="S2",
+    #ref2="S2",
     ref3="B6",
+    O17slope=0.528,
+    O17excess=0.0,
+    R15Air=None,
+    R17VSMOW = None,
+    R18VSMOW = None
 )
+
+print(gk)
 
 deltavals = Isotopomers(
     inputfile="00_Python_template_v2.xlsx",
@@ -35,4 +42,9 @@ deltavals = Isotopomers(
     initialguess=[0.0037, 0.0037],
     lowerbounds=[0.0, 0.0],
     upperbounds=[1.0, 1.0],
+    O17slope=0.528,
+    O17excess=0.0,
+    R15Air=None,
+    R17VSMOW = None,
+    R18VSMOW = None
 )

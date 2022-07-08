@@ -17,6 +17,7 @@ from .automate_gk_solver import automate_gk_solver
 
 def parseoutput(
     inputobj,
+    isotopereferences,
     method="algebraic",
     initialguess=None,
     lowerbounds=None,
