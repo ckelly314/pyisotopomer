@@ -41,7 +41,7 @@ class ScramblingInput:
     @author: Colette L. Kelly (clkelly@stanford.edu).
     """
 
-    def __init__(self, filename, **Refs):
+    def __init__(self, filename, IsotopeStandards, **Refs):
 
         self.filename = filename
 
@@ -61,7 +61,7 @@ class ScramblingInput:
         self.sizecorrected = self.parseratios(self.data)
 
         # calculate 17R from 45R and 46R and add to self.data
-        r17array = calculate_17R(self.sizecorrected)
+        r17array = calculate_17R(self.sizecorrected, IsotopeStandards)
         self.data["15Rbulk"] = r17array[:, 0]
         self.data["17R"] = r17array[:, 1]
 
