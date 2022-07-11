@@ -17,7 +17,7 @@ from scipy.optimize import least_squares
 from .SPnonlineq import SPnonlineq
 
 
-def calcSPmain(R, IsotopeStandards, initialguess=None, lowerbounds=None, upperbounds=None):
+def calcSPmain(R, initialguess=None, lowerbounds=None, upperbounds=None):
     """
     USAGE: isotoperatios = calcSPmain(R)
 
@@ -77,7 +77,7 @@ def calcSPmain(R, IsotopeStandards, initialguess=None, lowerbounds=None, upperbo
     for n in range(len(R)):
         #  python: scipy.optimize.least_squares instead of matlab "lsqnonlin"
         row = np.array(R[n][:])
-        args = (row, IsotopeStandards)
+        args = (row,)
         # v = least_squares(automate_gk_eqns, x0, bounds=bounds,args=args)
         v = least_squares(
             SPnonlineq,
@@ -97,7 +97,7 @@ def calcSPmain(R, IsotopeStandards, initialguess=None, lowerbounds=None, upperbo
     isol[2] = R[:, 1] - isol[0] - isol[1]
 
     # Calculate 18R (d) for the fourth column of isol
-    isol[3] = IsotopeStandards.R18VSMOW * (isol[2] / IsotopeStandards.R17VSMOW) ** (1 / IsotopeStandards.O17slope)
+    isol[3] = 0.0020052 * (isol[2] / 0.0003799) ** (1 / 0.516)
 
     # set column labels for isol
     isol = isol.rename(columns={0: "15Ralpha", 1: "15Rbeta", 2: "17R", 3: "18R"})

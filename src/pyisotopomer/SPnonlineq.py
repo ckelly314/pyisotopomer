@@ -12,7 +12,7 @@ python version by Colette L. Kelly (clkelly@stanford.edu).
 """
 
 
-def SPnonlineq(f, R, IsotopeStandards):
+def SPnonlineq(f, R):
     """
     USAGE: v = least_squares(SPnonlineq, x0, bounds=bounds... args=args)
         Please see calcSPmain.py for definitions of these variables.
@@ -44,7 +44,7 @@ def SPnonlineq(f, R, IsotopeStandards):
     # f[0] = 15Ralpha = a, and f[2] = 15Rbeta = b
     F = [
         (f[0] + f[1]) * (y - f[0] - f[1])
-        + (IsotopeStandards.R18VSMOW) * ((y - f[0] - f[1]) / IsotopeStandards.R17VSMOW) ** (1 / IsotopeStandards.O17slope)
+        + (0.0020052) * ((y - f[0] - f[1]) / 0.0003799) ** (1 / 0.516)
         + f[0] * f[1]
         - z,
         (1 - g) * f[0]

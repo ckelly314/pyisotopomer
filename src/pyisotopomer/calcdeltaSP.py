@@ -15,7 +15,7 @@ import numpy as np
 import pandas as pd
 
 
-def calcdeltaSP(isol, IsotopeStandards):
+def calcdeltaSP(isol):
     """
     USAGE: deltaVals = calcdeltaSP(isol)
 
@@ -35,8 +35,8 @@ def calcdeltaSP(isol, IsotopeStandards):
     """
 
     # Calculate delta values of 15Nalpha and 15Nbeta referenced to AIR
-    d15NalphaAir = 1000 * (isol["15Ralpha"] / IsotopeStandards.R15Air - 1)
-    d15NbetaAir = 1000 * (isol["15Rbeta"] / IsotopeStandards.R15Air - 1)
+    d15NalphaAir = 1000 * (isol["15Ralpha"] / 0.0036765 - 1)
+    d15NbetaAir = 1000 * (isol["15Rbeta"] / 0.0036765 - 1)
 
     # Calculate 15N site preference referenced to AIR
     SP = d15NalphaAir - d15NbetaAir
@@ -45,8 +45,8 @@ def calcdeltaSP(isol, IsotopeStandards):
     d15Nbulk = (d15NalphaAir + d15NbetaAir) / 2
 
     # Calculate d17O and d18O referenced to VSMOW
-    d17O = 1000 * (isol["17R"] / IsotopeStandards.R17VSMOW - 1)
-    d18O = 1000 * (isol["18R"] / IsotopeStandards.R18VSMOW - 1)
+    d17O = 1000 * (isol["17R"] / 0.0003799 - 1)
+    d18O = 1000 * (isol["18R"] / 0.0020052 - 1)
 
     # Create array of isotope data and return
     deltaVals = np.array([d15NalphaAir, d15NbetaAir, SP, d15Nbulk, d17O, d18O]).T

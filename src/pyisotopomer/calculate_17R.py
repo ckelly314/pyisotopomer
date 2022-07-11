@@ -27,14 +27,13 @@ def bulknonlineq(f, R):
     x = R[0]  # size-corrected 31R
     y = R[1]  # size-corrected 45R
     z = R[2]  # size-corrected 46R
-    D17O = R[3]
 
     # solve two equations with two unknowns
     # f[0] = 15R, and f[1] = 17R
     F = [
         2 * f[0] + f[1] - y,  # 45R = 2*15R + 17R
         # 46R ~ 18R + 2*15R*17R + 15R^2
-        0.002052 * ((f[1] / 0.0003799) ) ** (1 / 0.516)  # 18R expressed in terms of 17R
+        0.0020052 * (f[1] / 0.0003799) ** (1 / 0.516)  # 18R expressed in terms of 17R
         + 2 * f[0] * f[1]  # 2*15R*17R
         + f[0] ** 2  # 15R^2
         - z,
@@ -51,15 +50,15 @@ def calcdeltabulk(isol):
     # Calculate d15N referenced to AIR
     d15N = 1000 * (
         isol["15Rbulk"] / 0.0036765 - 1
-    )
+    )  # 15R(air-N2) = 0.0036782 [De Bièvre et al., 1996]
 
     # Calculate d17O and d18O referenced to VSMOW
     d17O = 1000 * (
         isol["17R"] / 0.0003799 - 1
-    )
+    )  # 17R(VSMOW) = 0.0003799 [Li et al., 1988]
     d18O = 1000 * (
-        isol["18R"] / 0.002052 - 1
-    )
+        isol["18R"] / 0.0020052 - 1
+    )  # 18R(VSMOW) = 0.0020052 [Baertschi, 1976]
 
     # Create array of isotope data and return
     deltaVals = np.array([d15N, d17O, d18O]).T
@@ -79,6 +78,7 @@ def calculate_17R(R):
     for n in range(len(R)):
         row = np.array(R[n][:])
         args = (row,)
+
         v = least_squares(
             bulknonlineq,
             x0,
@@ -94,17 +94,13 @@ def calculate_17R(R):
         #  first column is 15Rav, second column is 17R
         isol[n][:] = v.x
 
-
     # convert to Pandas DataFrame to save out - is this necessary?
     saveout = pd.DataFrame(isol).rename(columns={0: "15Rbulk", 1: "17R"})
 
-    saveout["D17O"] = R[:, 3]
-
     # calculate r18 from r17
-    saveout["18R"] = 0.002052 * ((saveout["17R"] / 0.0003799)) ** (1 / 0.516)  # 18R expressed in terms of 17R
-
-    print((saveout["18R"]/0.002052 - 1)*1000)
-    #print(IsotopeStandards.R18VSMOW)
+    saveout["18R"] = 0.0020052 * (saveout["17R"] / 0.0003799) ** (
+        1 / 0.516
+    )  # 18R expressed in terms of 17R
 
     saveout.to_csv("normalized_ratios.csv")  # saveout isotope ratios to .csv file
     # want the delta values as check values

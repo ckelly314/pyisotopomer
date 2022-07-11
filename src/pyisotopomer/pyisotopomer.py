@@ -11,7 +11,6 @@ simplify IRMS scrambling and isotopomer calculations.
 import numpy as np
 import pandas as pd
 import datetime as dt
-from .isotopestandards import IsotopeStandards
 from .calcSPmain import calcSPmain
 from .calcdeltaSP import calcdeltaSP
 from .concentrations import concentrations
@@ -90,6 +89,7 @@ class Scrambling:
         upperbounds=None,
         weights=False,
         O17slope = None,
+        O17excess = None,
         R15Air = None,
         R17VSMOW = None,
         R18VSMOW = None,
@@ -107,13 +107,7 @@ class Scrambling:
 
         self.outputfile = outputfile
 
-        self.IsotopeStandards = IsotopeStandards(
-            O17slope=O17slope,
-            R15Air=R15Air,
-            R17VSMOW = R17VSMOW,
-            R18VSMOW = R18VSMOW)
-
-        self.inputobj = ScramblingInput(inputfile, self.IsotopeStandards, **Refs)
+        self.inputobj = ScramblingInput(inputfile, **Refs)
 
         self.outputs, self.pairings, self.alloutputs = parseoutput(
             self.inputobj,
@@ -202,6 +196,7 @@ class Isotopomers:
         lowerbounds=None,
         upperbounds=None,
         O17slope = None,
+        O17excess = None,
         R15Air = None,
         R17VSMOW = None,
         R18VSMOW = None,
@@ -216,21 +211,15 @@ class Isotopomers:
         else:
             outputfile = outputfile
 
-        self.IsotopeStandards = IsotopeStandards(
-            O17slope=O17slope,
-            R15Air=R15Air,
-            R17VSMOW = R17VSMOW,
-            R18VSMOW = R18VSMOW)
 
         self.R = IsotopomerInput(inputfile, tabname).ratiosscrambling
         self.isotoperatios = calcSPmain(
             self.R,
-            self.IsotopeStandards,
             initialguess=initialguess,
             lowerbounds=lowerbounds,
             upperbounds=upperbounds,
         )
-        self.deltavals = calcdeltaSP(self.isotoperatios, self.IsotopeStandards)
+        self.deltavals = calcdeltaSP(self.isotoperatios)
 
         if saveout == True:
             self.saveoutput(self.deltavals, outputfile)
