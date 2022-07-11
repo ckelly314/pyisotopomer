@@ -4,3 +4,4 @@ pyisotopomer/__pycache__
 pyisotopomer/~$*
 pyisotopomer/verification/~$*
 src/pyisotopomer/__pycache__/*.pyc
+src/pyisotopomer/__pycache__/

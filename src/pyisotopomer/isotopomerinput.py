@@ -82,6 +82,7 @@ class IsotopomerInput:
                     "size corrected 31R",
                     "size corrected 45R",
                     "size corrected 46R",
+                    "D17O",
                     "gamma",
                     "kappa",
                 ]

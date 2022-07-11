@@ -213,6 +213,7 @@ class Isotopomers:
 
 
         self.R = IsotopomerInput(inputfile, tabname).ratiosscrambling
+        #print(self.R[:,3])
         self.isotoperatios = calcSPmain(
             self.R,
             initialguess=initialguess,

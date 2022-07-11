@@ -36,15 +36,16 @@ def SPnonlineq(f, R):
     x = R[0]  # size-corrected 31R
     y = R[1]  # size-corrected 45R
     z = R[2]  # size-corrected 46R
+    D17O = R[3]
 
-    g = R[3]  # gamma scrambling coefficient
-    k = R[4]  # gamma scrambling coefficient
+    g = R[4]  # gamma scrambling coefficient
+    k = R[5]  # gamma scrambling coefficient
 
     # solve two equations with two unknowns
     # f[0] = 15Ralpha = a, and f[2] = 15Rbeta = b
     F = [
         (f[0] + f[1]) * (y - f[0] - f[1])
-        + (0.0020052) * ((y - f[0] - f[1]) / 0.0003799) ** (1 / 0.516)
+        + (0.0020052) * (((y - f[0] - f[1]) / 0.0003799)/(D17O/1000 + 1)) ** (1 / 0.516)
         + f[0] * f[1]
         - z,
         (1 - g) * f[0]

@@ -79,7 +79,7 @@ class ScramblingInput:
         # for input to calcSPmain
         return np.array(
             data[
-                ["size corrected 31R", "size corrected 45R", "size corrected 46R"]
+                ["size corrected 31R", "size corrected 45R", "size corrected 46R", "D17O"]
             ].dropna()
         )
 

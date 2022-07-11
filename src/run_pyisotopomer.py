@@ -47,4 +47,4 @@ deltavals = Isotopomers(
     R18VSMOW = None
 )
 
-print(deltavals.deltavals.tail())
+print(deltavals.deltavals.head())

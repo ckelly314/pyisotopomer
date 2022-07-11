@@ -27,13 +27,14 @@ def bulknonlineq(f, R):
     x = R[0]  # size-corrected 31R
     y = R[1]  # size-corrected 45R
     z = R[2]  # size-corrected 46R
+    D17O = R[3]
 
     # solve two equations with two unknowns
     # f[0] = 15R, and f[1] = 17R
     F = [
         2 * f[0] + f[1] - y,  # 45R = 2*15R + 17R
         # 46R ~ 18R + 2*15R*17R + 15R^2
-        0.0020052 * (f[1] / 0.0003799) ** (1 / 0.516)  # 18R expressed in terms of 17R
+        0.0020052 * ((f[1] / 0.0003799)/ (D17O/1000 + 1)) ** (1 / 0.516)  # 18R expressed in terms of 17R
         + 2 * f[0] * f[1]  # 2*15R*17R
         + f[0] ** 2  # 15R^2
         - z,
@@ -97,8 +98,10 @@ def calculate_17R(R):
     # convert to Pandas DataFrame to save out - is this necessary?
     saveout = pd.DataFrame(isol).rename(columns={0: "15Rbulk", 1: "17R"})
 
+    saveout["D17O"] = R[:,3]
+
     # calculate r18 from r17
-    saveout["18R"] = 0.0020052 * (saveout["17R"] / 0.0003799) ** (
+    saveout["18R"] = 0.0020052 * ((saveout["17R"] / 0.0003799)/(saveout["D17O"]/1000 + 1)) ** (
         1 / 0.516
     )  # 18R expressed in terms of 17R
 
