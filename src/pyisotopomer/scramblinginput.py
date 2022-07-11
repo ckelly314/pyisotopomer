@@ -41,7 +41,7 @@ class ScramblingInput:
     @author: Colette L. Kelly (clkelly@stanford.edu).
     """
 
-    def __init__(self, filename, **Refs):
+    def __init__(self, filename, IsotopeStandards, **Refs):
 
         self.filename = filename
 
@@ -61,7 +61,7 @@ class ScramblingInput:
         self.sizecorrected = self.parseratios(self.data)
 
         # calculate 17R from 45R and 46R and add to self.data
-        r17array = calculate_17R(self.sizecorrected)
+        r17array = calculate_17R(self.sizecorrected, IsotopeStandards)
         self.data["15Rbulk"] = r17array[:, 0]
         self.data["17R"] = r17array[:, 1]
 
@@ -79,7 +79,7 @@ class ScramblingInput:
         # for input to calcSPmain
         return np.array(
             data[
-                ["size corrected 31R", "size corrected 45R", "size corrected 46R"]
+                ["size corrected 31R", "size corrected 45R", "size corrected 46R", "D17O"]
             ].dropna()
         )
 
@@ -162,16 +162,16 @@ class ScramblingInput:
                 R = np.array(
                     output[
                         [
-                            "size corrected 31R_1",
-                            "size corrected 45R_1",
-                            "size corrected 46R_1",
-                            "15Rbulk_1",
-                            "17R_1",
-                            "size corrected 31R_2",
-                            "size corrected 45R_2",
-                            "size corrected 46R_2",
-                            "15Rbulk_2",
-                            "17R_2",
+                            "size corrected 31R_1", # 0
+                            "size corrected 45R_1", # 1
+                            "size corrected 46R_1", # 2
+                            "15Rbulk_1",            # 3
+                            "17R_1",                # 4
+                            "size corrected 31R_2", # 5
+                            "size corrected 45R_2", # 6
+                            "size corrected 46R_2", # 7
+                            "15Rbulk_2",            # 8
+                            "17R_2",                # 9
                         ]
                     ]
                 )
