@@ -11,9 +11,9 @@ simplify IRMS scrambling and isotopomer calculations.
 import numpy as np
 import pandas as pd
 import datetime as dt
+from .isotopestandards import IsotopeStandards
 from .calcSPmain import calcSPmain
 from .calcdeltaSP import calcdeltaSP
-from .concentrations import concentrations
 from .scramblinginput import ScramblingInput
 from .isotopomerinput import IsotopomerInput
 from .parseoutput import parseoutput
@@ -57,8 +57,19 @@ class Scrambling:
         :param upperbounds: Upper bounds for automate_gk_solver.
         If None, default to [1.0, 1.0].
         :type upperbounds: list or Numpy array
+        :param O17beta: adjustable beta parameter for 17O/18O mass-dependent relation.
+        :type O17beta: float
+        :param R15Air: adjustable 15/14R of Air.
+        :type R15Air: float
+        :param R17VSMOW: adjustable 17/16R of VSMOW.
+        :type R17VSMOW: float
+        :param R18VSMOW: adjustable 18/16R of VSMOW.
+        :type R18VSMOW: float
 
     OUTPUT:
+        :param IsotopeStandards: IsotopeStandards class from isotopestandards.py,
+        containing 15RAir, 18RVSMOW, 17RVSMOW, and beta for the 18O/17O relation.
+        :type isotopestandards: Class
         :param inputobj: Input class from parseinput.py
         :type inputobj: Class
         :param outputs: Tables of scrambling coefficients for each pairing of ref. materials.
@@ -88,8 +99,7 @@ class Scrambling:
         lowerbounds=None,
         upperbounds=None,
         weights=False,
-        O17slope = None,
-        O17excess = None,
+        O17beta = None,
         R15Air = None,
         R17VSMOW = None,
         R18VSMOW = None,
@@ -105,9 +115,14 @@ class Scrambling:
         else:
             outputfile = outputfile
 
+        self.IsotopeStandards = IsotopeStandards(O17beta = O17beta,
+                    R15Air = R15Air,
+                    R17VSMOW = R17VSMOW,
+                    R18VSMOW = R18VSMOW)
+
         self.outputfile = outputfile
 
-        self.inputobj = ScramblingInput(inputfile, **Refs)
+        self.inputobj = ScramblingInput(inputfile, self.IsotopeStandards, **Refs)
 
         self.outputs, self.pairings, self.alloutputs = parseoutput(
             self.inputobj,
@@ -170,8 +185,19 @@ class Isotopomers:
         :param upperbounds: Upper bounds for calcSPmain.py
         If None, default to [1.0, 1.0].
         :type upperbounds: list or Numpy array
+        :param O17beta: adjustable beta parameter for 17O/18O mass-dependent relation.
+        :type O17beta: float
+        :param R15Air: adjustable 15/14R of Air.
+        :type R15Air: float
+        :param R17VSMOW: adjustable 17/16R of VSMOW.
+        :type R17VSMOW: float
+        :param R18VSMOW: adjustable 18/16R of VSMOW.
+        :type R18VSMOW: float
 
-    OUTPUT:
+    OUTPUT
+        :param IsotopeStandards: IsotopeStandards class from isotopestandards.py,
+        containing 15RAir, 18RVSMOW, 17RVSMOW, and beta for the 18O/17O relation.
+        :type isotopestandards: Class
         :param R: Size-corrected 31R, 45R, and 46R, gamma, and kappa.
         :type R: Numpy array.
         :param isotoperatios: Pandas DataFrame object with  dimensions n x 4,
@@ -195,8 +221,7 @@ class Isotopomers:
         initialguess=None,
         lowerbounds=None,
         upperbounds=None,
-        O17slope = None,
-        O17excess = None,
+        O17beta = None,
         R15Air = None,
         R17VSMOW = None,
         R18VSMOW = None,
@@ -211,16 +236,21 @@ class Isotopomers:
         else:
             outputfile = outputfile
 
+        self.IsotopeStandards = IsotopeStandards(O17beta = O17beta,
+                    R15Air = R15Air,
+                    R17VSMOW = R17VSMOW,
+                    R18VSMOW = R18VSMOW)
 
         self.R = IsotopomerInput(inputfile, tabname).ratiosscrambling
-        #print(self.R[:,3])
+
         self.isotoperatios = calcSPmain(
             self.R,
+            self.IsotopeStandards,
             initialguess=initialguess,
             lowerbounds=lowerbounds,
             upperbounds=upperbounds,
         )
-        self.deltavals = calcdeltaSP(self.isotoperatios)
+        self.deltavals = calcdeltaSP(self.isotoperatios, self.IsotopeStandards)
 
         if saveout == True:
             self.saveoutput(self.deltavals, outputfile)

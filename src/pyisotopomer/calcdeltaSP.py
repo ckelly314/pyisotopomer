@@ -15,7 +15,7 @@ import numpy as np
 import pandas as pd
 
 
-def calcdeltaSP(isol):
+def calcdeltaSP(isol, isotopestandards):
     """
     USAGE: deltaVals = calcdeltaSP(isol)
 
@@ -24,19 +24,26 @@ def calcdeltaSP(isol):
         values in per mil notation referenced to AIR (for N) and VSMOW (for O).
 
     INPUT:
-        isol = array with dimensions n x 4 where n is the number of
-        measurements.  The three columns are 15Ralpha, 15Rbeta, 17R and 18R
-        from left to right.
+        :param isol: pandas DataFrame with dimensions n x 45where n is the number of measurements.
+        The five columns are 15Ralpha, 15Rbeta, 17R, 18R, and D17O.
+        :type isol: Pandas DataFrame
+        :param IsotopeStandards: IsotopeStandards class from isotopestandards.py,
+        containing 15RAir, 18RVSMOW, 17RVSMOW, and beta for the 18O/17O relation.
+        :type isotopestandards: Class
 
     OUTPUT:
-        deltaVals = array with dimensions n x 6 where n is the number of
+       deltaVals = array with dimensions n x 6 where n is the number of
        measurements.  The six columns are d15Nalpha, d15Nbeta, 15N site pref,
        d15Nbulk, d17O and d18O from left to right.
     """
 
+    R15Air = isotopestandards.R15Air
+    R17VSMOW = isotopestandards.R17VSMOW
+    R18VSMOW = isotopestandards.R18VSMOW
+
     # Calculate delta values of 15Nalpha and 15Nbeta referenced to AIR
-    d15NalphaAir = 1000 * (isol["15Ralpha"] / 0.0036765 - 1)
-    d15NbetaAir = 1000 * (isol["15Rbeta"] / 0.0036765 - 1)
+    d15NalphaAir = 1000 * (isol["15Ralpha"] / R15Air - 1)
+    d15NbetaAir = 1000 * (isol["15Rbeta"] / R15Air - 1)
 
     # Calculate 15N site preference referenced to AIR
     SP = d15NalphaAir - d15NbetaAir
@@ -45,8 +52,8 @@ def calcdeltaSP(isol):
     d15Nbulk = (d15NalphaAir + d15NbetaAir) / 2
 
     # Calculate d17O and d18O referenced to VSMOW
-    d17O = 1000 * (isol["17R"] / 0.0003799 - 1)
-    d18O = 1000 * (isol["18R"] / 0.0020052 - 1)
+    d17O = 1000 * (isol["17R"] / R17VSMOW - 1)
+    d18O = 1000 * (isol["18R"] / R18VSMOW - 1)
 
     # Create array of isotope data and return
     deltaVals = np.array([d15NalphaAir, d15NbetaAir, SP, d15Nbulk, d17O, d18O]).T

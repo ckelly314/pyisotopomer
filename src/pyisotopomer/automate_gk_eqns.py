@@ -31,6 +31,9 @@ def automate_gk_eqns(f, R, isotopeconstants, ref1, ref2, weights):
         The six columns are 31R, 45R, 46R, 15Rbulk, and 17R for reference #1, then
         the same for reference #2, from left to right.
         :type R: numpy array, dtype=float
+        :param isotopeconstants: ref_tag, d15Na, and d15Nb of reference materials
+            entered into the "scale_normalization" tab of the excel template
+        :type isotopeconstants: Pandas Dataframe
         :param ref1: string or number containing name of reference material #1,
         as written in constants.csv
         :type ref1: str, int, or float

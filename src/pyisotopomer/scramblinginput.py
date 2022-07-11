@@ -30,6 +30,9 @@ class ScramblingInput:
     INPUT:
         :param filename: filename for spreadsheet template, e.g. "00_excel_template.xlsx"
         :type R: string
+        :param isotopestandards: IsotopeStandards class from isotopestandards.py,
+        containing 15RAir, 18RVSMOW, 17RVSMOW, and beta for the 18O/17O relation.
+        :type isotopestandards: Class
         :param *Refs: reference materials contained in the spreadsheet, e.g. "ATM", "S2", "B6"
         :type *Refs: string
 
@@ -41,7 +44,7 @@ class ScramblingInput:
     @author: Colette L. Kelly (clkelly@stanford.edu).
     """
 
-    def __init__(self, filename, **Refs):
+    def __init__(self, filename, isotopestandards, **Refs):
 
         self.filename = filename
 
@@ -61,7 +64,7 @@ class ScramblingInput:
         self.sizecorrected = self.parseratios(self.data)
 
         # calculate 17R from 45R and 46R and add to self.data
-        r17array = calculate_17R(self.sizecorrected)
+        r17array = calculate_17R(self.sizecorrected, isotopestandards)
         self.data["15Rbulk"] = r17array[:, 0]
         self.data["17R"] = r17array[:, 1]
 

@@ -34,6 +34,9 @@ def automate_gk_solver(R, isotopeconstants, ref1, ref2, x0=None, lb=None, ub=Non
         The six columns are 31R, 45R, 46R, 15Rbulk, and 17R for reference #1, then
         the same for reference #2, from left to right.
         :type R: numpy array, dtype=float
+        :param isotopeconstants: ref_tag, d15Na, and d15Nb of reference materials
+            entered into the "scale_normalization" tab of the excel template
+        :type isotopeconstants: Pandas Dataframe
         :param x0: initial guess for gamma and kappa (e.g. x0=np.array([0.1, 0.1], dtype=float))
         :type x0: numpy array, dtype=float
         :param lb: lower bounds for solver (e.g. lb=np.array([0.0, 0.0], dtype=float))

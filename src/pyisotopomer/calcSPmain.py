@@ -17,7 +17,7 @@ from scipy.optimize import least_squares
 from .SPnonlineq import SPnonlineq
 
 
-def calcSPmain(R, initialguess=None, lowerbounds=None, upperbounds=None):
+def calcSPmain(R, isotopestandards, initialguess=None, lowerbounds=None, upperbounds=None):
     """
     USAGE: isotoperatios = calcSPmain(R)
 
@@ -30,6 +30,9 @@ def calcSPmain(R, initialguess=None, lowerbounds=None, upperbounds=None):
         measurements.  The three columns are 31R, 45R, 46R, gamma,
         and kappa, from left to right.
         :type R: numpy array, dtype=float
+        :param IsotopeStandards: IsotopeStandards class from isotopestandards.py,
+        containing 15RAir, 18RVSMOW, 17RVSMOW, and beta for the 18O/17O relation.
+        :type isotopestandards: Class
         :param initialguess: Initial guess for 15Ralpha and 15Rbeta
         If None, default to [0.0037, 0.0037].
         :type initialguess: list or Numpy array
@@ -40,8 +43,8 @@ def calcSPmain(R, initialguess=None, lowerbounds=None, upperbounds=None):
         If None, default to [1.0, 1.0].
         :type upperbounds: list or Numpy array
     OUTPUT:
-        :returns: pandas DataFrame with dimensions n x 4 where n is the number of measurements.
-        The four columns are 15Ralpha, 15Rbeta, 17R and 18R from left to right.
+        :returns: pandas DataFrame with dimensions n x 45where n is the number of measurements.
+        The five columns are 15Ralpha, 15Rbeta, 17R, 18R, and D17O.
 
     @author: Colette L. Kelly (clkelly@stanford.edu).
     """
@@ -65,6 +68,10 @@ def calcSPmain(R, initialguess=None, lowerbounds=None, upperbounds=None):
     elif upperbounds is None:
         ub = np.array([1.0, 1.0], dtype=float)
 
+    beta = isotopestandards.O17beta
+    R17VSMOW = isotopestandards.R17VSMOW
+    R18VSMOW = isotopestandards.R18VSMOW
+
     #  python: need to set up empty dataframe to which we'll add values
     isol = pd.DataFrame([])
 
@@ -77,7 +84,7 @@ def calcSPmain(R, initialguess=None, lowerbounds=None, upperbounds=None):
     for n in range(len(R)):
         #  python: scipy.optimize.least_squares instead of matlab "lsqnonlin"
         row = np.array(R[n][:])
-        args = (row,)
+        args = (row,isotopestandards)
         # v = least_squares(automate_gk_eqns, x0, bounds=bounds,args=args)
         v = least_squares(
             SPnonlineq,
@@ -93,13 +100,16 @@ def calcSPmain(R, initialguess=None, lowerbounds=None, upperbounds=None):
         #  first column is gamma, second column is kappa
         isol = isol.append([v.x])
 
-    # Calculate 17R (c) for the third column of isol
-    isol[2] = R[:, 1] - isol[0] - isol[1]
+    # set column labels for isol
+    isol = isol.rename(columns={0: "15Ralpha", 1: "15Rbeta"})
+
+    # Calculate 17R
+    isol["17R"] = R[:, 1] - isol["15Ralpha"] - isol["15Rbeta"]
+
+    # add D17O
+    isol["D17O"] = R[:, 3]
 
     # Calculate 18R (d) for the fourth column of isol
-    isol[3] = 0.0020052 * (isol[2] / 0.0003799) ** (1 / 0.516)
-
-    # set column labels for isol
-    isol = isol.rename(columns={0: "15Ralpha", 1: "15Rbeta", 2: "17R", 3: "18R"})
+    isol["18R"] = R18VSMOW * ((isol["17R"] / R17VSMOW)/(isol["D17O"]/1000 + 1)) ** (1 / beta)
 
     return isol

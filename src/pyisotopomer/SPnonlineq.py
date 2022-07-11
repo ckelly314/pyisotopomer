@@ -12,7 +12,7 @@ python version by Colette L. Kelly (clkelly@stanford.edu).
 """
 
 
-def SPnonlineq(f, R):
+def SPnonlineq(f, R, isotopestandards):
     """
     USAGE: v = least_squares(SPnonlineq, x0, bounds=bounds... args=args)
         Please see calcSPmain.py for definitions of these variables.
@@ -22,9 +22,11 @@ def SPnonlineq(f, R):
         15R beta (see Frame and Casciotti, 2010, Appendix B).
 
     INPUT:
-        R = array with dimensions n x 5 where n is the number of
-        measurements.  The three columns are 31R, 45R, 46R, gamma,
+        R = array with dimensions n x 6 where n is the number of
+        measurements.  The three columns are 31R, 45R, 46R, D17O, gamma,
         and kappa, from left to right.
+        isotopestandards = IsotopeStandards class from isotopestandards.py,
+        containing 15RAir, 18RVSMOW, 17RVSMOW, and beta for the 18O/17O relation.
 
     OUTPUT:
         F = array with dimensions n x 2 where n is the number of
@@ -41,11 +43,15 @@ def SPnonlineq(f, R):
     g = R[4]  # gamma scrambling coefficient
     k = R[5]  # gamma scrambling coefficient
 
+    beta = isotopestandards.O17beta
+    R17VSMOW = isotopestandards.R17VSMOW
+    R18VSMOW = isotopestandards.R18VSMOW
+
     # solve two equations with two unknowns
     # f[0] = 15Ralpha = a, and f[2] = 15Rbeta = b
     F = [
         (f[0] + f[1]) * (y - f[0] - f[1])
-        + (0.0020052) * (((y - f[0] - f[1]) / 0.0003799)/(D17O/1000 + 1)) ** (1 / 0.516)
+        + (R18VSMOW) * (((y - f[0] - f[1]) / R17VSMOW)/(D17O/1000 + 1)) ** (1 / beta)
         + f[0] * f[1]
         - z,
         (1 - g) * f[0]

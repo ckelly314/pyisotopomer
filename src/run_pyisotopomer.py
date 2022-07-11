@@ -25,7 +25,7 @@ gk = Scrambling(
     ref1="ATM",  # you can list as many reference materials as you want
     #ref2="S2",
     ref3="B6",
-    O17slope=None,
+    O17beta=None,
     R15Air=None,
     R17VSMOW = None,
     R18VSMOW = None
@@ -41,10 +41,10 @@ deltavals = Isotopomers(
     initialguess=[0.0037, 0.0037],
     lowerbounds=[0.0, 0.0],
     upperbounds=[1.0, 1.0],
-    O17slope=None,
+    O17beta=None,
     R15Air=None,
     R17VSMOW = None,
-    R18VSMOW = None
+    R18VSMOW = None,
 )
 
 print(deltavals.deltavals.head())

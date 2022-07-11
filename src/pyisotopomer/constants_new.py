@@ -20,9 +20,12 @@ def constants_new(isotopeconstants, ref1, ref2):
     Return 15Ralpha and 15Rbeta for the two reference materials used to
     calibrate scrambling.
 
-    USAGE: a, b, a2, b2 = constants('ATM', 'S2')
+    USAGE: a, b, a2, b2 = constants_new(isotopeconstants, ref1, ref2)
 
     INPUT:
+        :param isotopeconstants: ref_tag, d15Na, and d15Nb of reference materials
+            entered into the "scale_normalization" tab of the excel template
+        :type isotopeconstants: Pandas Dataframe
         :param ref1: name of first reference material used for scrambling calibration
         :type ref1: string
         :param ref2: name of second reference material used for scrambling calibration
