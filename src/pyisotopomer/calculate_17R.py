@@ -18,7 +18,7 @@ import numpy as np
 from scipy.optimize import least_squares
 
 
-def bulknonlineq(f, R, IsotopeStandards):
+def bulknonlineq(f, R):
     """
     Equations to solver for 15Rav, 18R and 17R from 45R and 46R.
     """
@@ -34,7 +34,7 @@ def bulknonlineq(f, R, IsotopeStandards):
     F = [
         2 * f[0] + f[1] - y,  # 45R = 2*15R + 17R
         # 46R ~ 18R + 2*15R*17R + 15R^2
-        IsotopeStandards.R18VSMOW * ((f[1] / IsotopeStandards.R17VSMOW) ) ** (1 / IsotopeStandards.O17slope)  # 18R expressed in terms of 17R
+        0.002052 * ((f[1] / 0.0003799) ) ** (1 / 0.516)  # 18R expressed in terms of 17R
         + 2 * f[0] * f[1]  # 2*15R*17R
         + f[0] ** 2  # 15R^2
         - z,
@@ -43,22 +43,22 @@ def bulknonlineq(f, R, IsotopeStandards):
     return F
 
 
-def calcdeltabulk(isol, IsotopeStandards):
+def calcdeltabulk(isol):
     """
     Convert 15Rav, 18R and 17R to delta values.
     """
 
     # Calculate d15N referenced to AIR
     d15N = 1000 * (
-        isol["15Rbulk"] / IsotopeStandards.R15Air - 1
+        isol["15Rbulk"] / 0.0036765 - 1
     )
 
     # Calculate d17O and d18O referenced to VSMOW
     d17O = 1000 * (
-        isol["17R"] / IsotopeStandards.R17VSMOW - 1
+        isol["17R"] / 0.0003799 - 1
     )
     d18O = 1000 * (
-        isol["18R"] / IsotopeStandards.R18VSMOW - 1
+        isol["18R"] / 0.002052 - 1
     )
 
     # Create array of isotope data and return
@@ -68,9 +68,9 @@ def calcdeltabulk(isol, IsotopeStandards):
     return deltaVals
 
 
-def calculate_17R(R, IsotopeStandards):
+def calculate_17R(R):
 
-    x0 = np.array([IsotopeStandards.R15Air, IsotopeStandards.R17VSMOW])  # initial guess for 15Rav and 17R
+    x0 = np.array([0.0036765, 0.0003799])  # initial guess for 15Rav and 17R
 
     isol = np.zeros((len(R), 2))  # set up numpy array to populate with solutions.
 
@@ -78,8 +78,7 @@ def calculate_17R(R, IsotopeStandards):
 
     for n in range(len(R)):
         row = np.array(R[n][:])
-        args = (row, IsotopeStandards)
-
+        args = (row,)
         v = least_squares(
             bulknonlineq,
             x0,
@@ -102,15 +101,13 @@ def calculate_17R(R, IsotopeStandards):
     saveout["D17O"] = R[:, 3]
 
     # calculate r18 from r17
-    saveout["18R"] = IsotopeStandards.R18VSMOW * ((saveout["17R"] / IsotopeStandards.R17VSMOW)) ** (
-        1 / IsotopeStandards.O17slope
-    )  # 18R expressed in terms of 17R
+    saveout["18R"] = 0.002052 * ((saveout["17R"] / 0.0003799)) ** (1 / 0.516)  # 18R expressed in terms of 17R
 
     print((saveout["18R"]/0.002052 - 1)*1000)
     #print(IsotopeStandards.R18VSMOW)
 
     saveout.to_csv("normalized_ratios.csv")  # saveout isotope ratios to .csv file
     # want the delta values as check values
-    calcdeltabulk(saveout, IsotopeStandards).to_csv("normalized_deltas.csv")
+    calcdeltabulk(saveout).to_csv("normalized_deltas.csv")
 
     return isol
