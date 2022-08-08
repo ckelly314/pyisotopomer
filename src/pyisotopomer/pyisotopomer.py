@@ -110,8 +110,8 @@ class Scrambling:
         if outputfile is None:
             today = dt.datetime.now().strftime("%y%m%d")
             outputfile = f"{today}_scrambling_output.xlsx"
-            if saveout == True:
-                print(f"output saved as {today}_scrambling_output.xlsx")
+            #if saveout == True:
+            #    print(f"output saved as {today}_scrambling_output.xlsx")
         else:
             outputfile = outputfile
 
@@ -154,7 +154,7 @@ class Scrambling:
                 df.to_excel(writer, sheet_name=name)
 
     def __repr__(self):
-        return f"<Gamma: {self.scrambling_mean[0]:.4}, Kappa: {self.scrambling_mean[1]:.4}>"
+        return f"output saved as {self.outputfile}"
 
 
 class Isotopomers:

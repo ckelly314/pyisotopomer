@@ -31,8 +31,6 @@ gk = Scrambling(
     R18VSMOW = None
 )
 
-print(gk.scrambling_mean)
-
 deltavals = Isotopomers(
     inputfile="00_Python_template_v2.xlsx",
     # extra keyword arguments:
@@ -46,5 +44,3 @@ deltavals = Isotopomers(
     R17VSMOW = None,
     R18VSMOW = None,
 )
-
-print(deltavals.deltavals.head())
