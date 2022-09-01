@@ -12,7 +12,7 @@ File: run_pyisotopomer.py
 from pyisotopomer import Scrambling, Isotopomers
 
 gk = Scrambling(
-    inputfile="00_Python_template_v2.xlsx",  # change to appropriate file name
+    inputfile="00_Python_template_v3.xlsx",  # change to appropriate file name
     # extra keyword arguments:
     tabname="size_correction",
     saveout=True,
@@ -32,7 +32,7 @@ gk = Scrambling(
 )
 
 deltavals = Isotopomers(
-    inputfile="00_Python_template_v2.xlsx",
+    inputfile="00_Python_template_v3.xlsx",
     # extra keyword arguments:
     saveout=True,
     outputfile="example_isotopomer_output.csv",

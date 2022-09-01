@@ -136,6 +136,11 @@ def calculate_17R(R, isotopestandards):
         #  first column is 15Rav, second column is 17R
         isol[n][:] = v.x
 
+    r17array  = np.zeros((len(R), 3))
+    r17array[:,0] = isol[:,0]
+    r17array[:,1] = isol[:,1]
+    r17array[:,2] = R17VSMOW*((isol[:,1] / R18VSMOW)**beta)*(R[:,3]/1000 + 1)
+
     # convert to Pandas DataFrame to save out - is this necessary?
     saveout = pd.DataFrame(isol).rename(columns={0: "15Rbulk", 1: "18R"})
 
@@ -152,4 +157,4 @@ def calculate_17R(R, isotopestandards):
     # want the delta values as check values
     calcdeltabulk(saveout, isotopestandards).to_csv("normalized_deltas.csv")
 
-    return isol
+    return r17array

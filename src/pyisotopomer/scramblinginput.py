@@ -66,7 +66,7 @@ class ScramblingInput:
         # calculate 17R from 45R and 46R and add to self.data
         r17array = calculate_17R(self.sizecorrected, isotopestandards)
         self.data["15Rbulk"] = r17array[:, 0]
-        self.data["17R"] = r17array[:, 1]
+        self.data["17R"] = r17array[:, 2]
 
         # subset of data to be used for Scrambling
         self.pairings, self.scrambleinput = self.parsescrambling(self.data, **Refs)
