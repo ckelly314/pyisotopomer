@@ -3,9 +3,10 @@ File: calculate_17R_v2.py
 ------------------------------------
 Created on Wednesday, August 31 2022
 
-Solve for 15Rbulk and 17R values from measured 45R and 46R
-of reference materials, to obtain 17R values consistent with
-both 45R and 46R to use in scrambling calculation.
+Solve for 15Rbulk and 18R values from measured 45R and 46R
+of reference materials, then calculate 17R from 18R.
+Obtain 17R values consistent with both 45R and 46R to use in
+scrambling calculation.
 
 @author: Colette L. Kelly (clkelly@stanford.edu).
 """
@@ -35,15 +36,15 @@ def bulknonlineq(f, R, isotopestandards):
 
     # solve two equations with two unknowns
     # f[0] = 15R, and f[1] = 18R
-    F = [ 
-        2 * f[0] + R17VSMOW*((f[1] / R18VSMOW)**beta)*(D17O/1000 + 1) - y,  # 45R = 2*15R + 17R
-        #2 * f[0] + f[1] - y,  # 45R = 2*15R + 17R
+    F = [  # 45R = 2*15R + 17R
+        2 * f[0]
+        + R17VSMOW * ((f[1] / R18VSMOW) ** beta) * (D17O / 1000 + 1)
+        - y,  # phrase 17R in terms of 18R
         # 46R ~ 18R + 2*15R*17R + 15R^2
-        f[1] + 2 * f[0] * (R17VSMOW*((f[1] / R18VSMOW)**beta)*(D17O/1000 + 1)) + f[0] ** 2 - z,
-        #R18VSMOW * ((f[1] / R17VSMOW)/ (D17O/1000 + 1)) ** (1 / beta)  # 18R expressed in terms of 17R
-        #+ 2 * f[0] * f[1]  # 2*15R*17R
-        #+ f[0] ** 2  # 15R^2
-        #- z,
+        f[1]
+        + 2 * f[0] * (R17VSMOW * ((f[1] / R18VSMOW) ** beta) * (D17O / 1000 + 1))
+        + f[0] ** 2
+        - z,
     ]
 
     return F
@@ -60,17 +61,11 @@ def calcdeltabulk(isol, isotopestandards):
     R18VSMOW = isotopestandards.R18VSMOW
 
     # Calculate d15N referenced to AIR
-    d15N = 1000 * (
-        isol["15Rbulk"] / R15Air - 1
-    )
+    d15N = 1000 * (isol["15Rbulk"] / R15Air - 1)
 
     # Calculate d17O and d18O referenced to VSMOW
-    d17O = 1000 * (
-        isol["17R"] / R17VSMOW - 1
-    )
-    d18O = 1000 * (
-        isol["18R"] / R18VSMOW - 1
-    )
+    d17O = 1000 * (isol["17R"] / R17VSMOW - 1)
+    d18O = 1000 * (isol["18R"] / R18VSMOW - 1)
 
     # Create array of isotope data and return
     deltaVals = np.array([d15N, d17O, d18O]).T
@@ -105,8 +100,9 @@ def calculate_17R(R, isotopestandards):
 
     @author: Colette L. Kelly (clkelly@stanford.edu).
     """
-    x0 = np.array([0.0036765, 0.002094030360])  # initial guess for 15Rav and 18R
-    #x0 = np.array([0.0036765, 0.0003799])  # initial guess for 15Rav and 17R
+    x0 = np.array(
+        [0.0036765, 0.002094030360]
+    )  # 18R initial guess is that of atmospheric N2O
 
     isol = np.zeros((len(R), 2))  # set up numpy array to populate with solutions.
 
@@ -119,7 +115,7 @@ def calculate_17R(R, isotopestandards):
 
     for n in range(len(R)):
         row = np.array(R[n][:])
-        args = (row,isotopestandards)
+        args = (row, isotopestandards)
 
         v = least_squares(
             bulknonlineq,
@@ -136,22 +132,22 @@ def calculate_17R(R, isotopestandards):
         #  first column is 15Rav, second column is 17R
         isol[n][:] = v.x
 
-    r17array  = np.zeros((len(R), 3))
-    r17array[:,0] = isol[:,0]
-    r17array[:,1] = isol[:,1]
-    r17array[:,2] = R17VSMOW*((isol[:,1] / R18VSMOW)**beta)*(R[:,3]/1000 + 1)
+    r17array = np.zeros(
+        (len(R), 3)
+    )  # set up output array with 3 cols, for 15Rav, 17R, and 18R
+    r17array[:, 0] = isol[:, 0]
+    r17array[:, 1] = isol[:, 1]
+    r17array[:, 2] = R17VSMOW * ((isol[:, 1] / R18VSMOW) ** beta) * (R[:, 3] / 1000 + 1)
 
-    # convert to Pandas DataFrame to save out - is this necessary?
+    # convert to Pandas DataFrame to save out
     saveout = pd.DataFrame(isol).rename(columns={0: "15Rbulk", 1: "18R"})
 
-    saveout["D17O"] = R[:,3]
+    saveout["D17O"] = R[:, 3]
 
-    #calculate r17 from r18
-    saveout["17R"] = R17VSMOW*((saveout["18R"] / R18VSMOW)**beta)*(saveout["D17O"]/1000 + 1)
-    # calculate r18 from r17
-    #saveout["18R"] = R18VSMOW * ((saveout["17R"] / R17VSMOW)/(saveout["D17O"]/1000 + 1)) ** (
-    #    1 / beta
-    #)  # 18R expressed in terms of 17R
+    # calculate r17 from r18
+    saveout["17R"] = (
+        R17VSMOW * ((saveout["18R"] / R18VSMOW) ** beta) * (saveout["D17O"] / 1000 + 1)
+    )
 
     saveout.to_csv("normalized_ratios.csv")  # saveout isotope ratios to .csv file
     # want the delta values as check values

@@ -51,7 +51,8 @@ def SPnonlineq(f, R, isotopestandards):
     # f[0] = 15Ralpha = a, and f[2] = 15Rbeta = b
     F = [
         (f[0] + f[1]) * (y - f[0] - f[1])
-        + (R18VSMOW) * (((y - f[0] - f[1]) / R17VSMOW)/(D17O/1000 + 1)) ** (1 / beta)
+        + (R18VSMOW)
+        * (((y - f[0] - f[1]) / R17VSMOW) / (D17O / 1000 + 1)) ** (1 / beta)
         + f[0] * f[1]
         - z,
         (1 - g) * f[0]

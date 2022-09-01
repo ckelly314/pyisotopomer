@@ -10,7 +10,9 @@ isotopomer calculations.
 """
 
 import numpy as np
-from .constants_new import constants_new  # import alpha and beta values for reference materials
+from .constants_new import (
+    constants_new,
+)  # import alpha and beta values for reference materials
 
 
 def automate_gk_eqns(f, R, isotopeconstants, ref1, ref2, weights):

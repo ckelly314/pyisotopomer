@@ -38,7 +38,9 @@ def bulknonlineq(f, R, isotopestandards):
     F = [
         2 * f[0] + f[1] - y,  # 45R = 2*15R + 17R
         # 46R ~ 18R + 2*15R*17R + 15R^2
-        R18VSMOW * ((f[1] / R17VSMOW)/ (D17O/1000 + 1)) ** (1 / beta)  # 18R expressed in terms of 17R
+        R18VSMOW
+        * ((f[1] / R17VSMOW) / (D17O / 1000 + 1))
+        ** (1 / beta)  # 18R expressed in terms of 17R
         + 2 * f[0] * f[1]  # 2*15R*17R
         + f[0] ** 2  # 15R^2
         - z,
@@ -58,17 +60,11 @@ def calcdeltabulk(isol, isotopestandards):
     R18VSMOW = isotopestandards.R18VSMOW
 
     # Calculate d15N referenced to AIR
-    d15N = 1000 * (
-        isol["15Rbulk"] / R15Air - 1
-    )
+    d15N = 1000 * (isol["15Rbulk"] / R15Air - 1)
 
     # Calculate d17O and d18O referenced to VSMOW
-    d17O = 1000 * (
-        isol["17R"] / R17VSMOW - 1
-    )
-    d18O = 1000 * (
-        isol["18R"] / R18VSMOW - 1
-    )
+    d17O = 1000 * (isol["17R"] / R17VSMOW - 1)
+    d18O = 1000 * (isol["18R"] / R18VSMOW - 1)
 
     # Create array of isotope data and return
     deltaVals = np.array([d15N, d17O, d18O]).T
@@ -117,7 +113,7 @@ def calculate_17R(R, isotopestandards):
 
     for n in range(len(R)):
         row = np.array(R[n][:])
-        args = (row,isotopestandards)
+        args = (row, isotopestandards)
 
         v = least_squares(
             bulknonlineq,
@@ -137,10 +133,12 @@ def calculate_17R(R, isotopestandards):
     # convert to Pandas DataFrame to save out - is this necessary?
     saveout = pd.DataFrame(isol).rename(columns={0: "15Rbulk", 1: "17R"})
 
-    saveout["D17O"] = R[:,3]
+    saveout["D17O"] = R[:, 3]
 
     # calculate r18 from r17
-    saveout["18R"] = R18VSMOW * ((saveout["17R"] / R17VSMOW)/(saveout["D17O"]/1000 + 1)) ** (
+    saveout["18R"] = R18VSMOW * (
+        (saveout["17R"] / R17VSMOW) / (saveout["D17O"] / 1000 + 1)
+    ) ** (
         1 / beta
     )  # 18R expressed in terms of 17R
 

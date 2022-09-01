@@ -55,10 +55,14 @@ class ScramblingInput:
             if self.filename[-5:] != ".xlsx":
                 self.filename = self.filename + ".xlsx"
                 self.data = self.readin(self.filename)
-        
+
         # read in d15Na and d15Nb of reference materials from excel template
-        self.isotopeconstants = pd.read_excel(filename, "scale_normalization",
-            skiprows=1, usecols=["ref_tag","d15Na","d15Nb"])
+        self.isotopeconstants = pd.read_excel(
+            filename,
+            "scale_normalization",
+            skiprows=1,
+            usecols=["ref_tag", "d15Na", "d15Nb"],
+        )
 
         # subset of data to be used for Isotopomers
         self.sizecorrected = self.parseratios(self.data)
@@ -74,43 +78,47 @@ class ScramblingInput:
     def readin(self, filename):
         # return Pandas DataFrame of all input data
         data = pd.read_excel(filename, "size_correction", skiprows=1)
-        data = data[['run_date',
-        'ref_tag',
-        'Row',
-        'Identifier 1',
-        'Is Ref _',
-        'd 15N/14N',
-        'd 18O/16O',
-        'd 17O/16O',
-        'Area 44',
-        'Area 30',
-        'BGD 44',
-        'Rt',
-        'FileHeader: Filename',
-        'Time Code',
-        'rR 45N2O/44N2O sam',
-        'rR 46N2O/44N2O sam',
-        'rR 31NO/30NO sam',
-        'rR 45N2O/44N2O std',
-        'rR 46N2O/44N2O std',
-        'rR 31NO/30NO std',
-        '31R',
-        '45R',
-        '46R',
-        'raw 45rR/45rR',
-        'raw 46rR/46rR',
-        'raw 31rR/31rR',
-        'size corrected 31rR/31rR',
-        'size corrected 45rR/45rR',
-        'size corrected 46rR/46rR',
-       'scale decompressed 45rR/45rR',
-       'scale decompressed 46rR/46rR',
-       'size corrected 31R',
-       'size corrected 45R',
-       'size corrected 46R',
-       'D17O',
-       'gamma',
-       'kappa',]]
+        data = data[
+            [
+                "run_date",
+                "ref_tag",
+                "Row",
+                "Identifier 1",
+                "Is Ref _",
+                "d 15N/14N",
+                "d 18O/16O",
+                "d 17O/16O",
+                "Area 44",
+                "Area 30",
+                "BGD 44",
+                "Rt",
+                "FileHeader: Filename",
+                "Time Code",
+                "rR 45N2O/44N2O sam",
+                "rR 46N2O/44N2O sam",
+                "rR 31NO/30NO sam",
+                "rR 45N2O/44N2O std",
+                "rR 46N2O/44N2O std",
+                "rR 31NO/30NO std",
+                "31R",
+                "45R",
+                "46R",
+                "raw 45rR/45rR",
+                "raw 46rR/46rR",
+                "raw 31rR/31rR",
+                "size corrected 31rR/31rR",
+                "size corrected 45rR/45rR",
+                "size corrected 46rR/46rR",
+                "scale decompressed 45rR/45rR",
+                "scale decompressed 46rR/46rR",
+                "size corrected 31R",
+                "size corrected 45R",
+                "size corrected 46R",
+                "D17O",
+                "gamma",
+                "kappa",
+            ]
+        ]
         data = data.dropna(thresh=10)  # need to drop rows of NaNs
         return data
 
@@ -119,7 +127,12 @@ class ScramblingInput:
         # for input to calcSPmain
         return np.array(
             data[
-                ["size corrected 31R", "size corrected 45R", "size corrected 46R", "D17O"]
+                [
+                    "size corrected 31R",
+                    "size corrected 45R",
+                    "size corrected 46R",
+                    "D17O",
+                ]
             ].dropna()
         )
 
@@ -132,7 +145,7 @@ class ScramblingInput:
 
         # remove refs that aren't included in constants
         unmatched = [r for r in Refs if r not in list(self.isotopeconstants.ref_tag)]
-        if len(unmatched)>0:
+        if len(unmatched) > 0:
             print("no matches found for", unmatched)
         Refs = [r for r in Refs if r in list(self.isotopeconstants.ref_tag)]
 

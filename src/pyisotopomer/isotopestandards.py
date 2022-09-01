@@ -8,6 +8,7 @@ Initialize and store isotope standards as adjustable parameters.
 @author: Colette L. Kelly (clkelly@stanford.edu).
 """
 
+
 class IsotopeStandards:
     """
     Initialize and store isotope standards as adjustable parameters.
@@ -34,25 +35,21 @@ class IsotopeStandards:
 
     """
 
-    def __init__(self,
-        O17beta = None,
-        R15Air = None,
-        R17VSMOW = None,
-        R18VSMOW = None):
+    def __init__(self, O17beta=None, R15Air=None, R17VSMOW=None, R18VSMOW=None):
 
         if O17beta is None:
             self.O17beta = 0.516
         else:
             self.O17beta = O17beta
-        
+
         if R15Air is None:
             self.R15Air = 0.0036765  # [De Bièvre et al., 1996]
         else:
             self.R15Air = R15Air
-        
+
         if R17VSMOW is None:
             self.R17VSMOW = 0.0003799  #  [Li et al., 1988]
-        else: 
+        else:
             self.R17VSMOW = R17VSMOW
 
         if R18VSMOW is None:

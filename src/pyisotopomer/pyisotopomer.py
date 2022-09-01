@@ -99,10 +99,10 @@ class Scrambling:
         lowerbounds=None,
         upperbounds=None,
         weights=False,
-        O17beta = None,
-        R15Air = None,
-        R17VSMOW = None,
-        R18VSMOW = None,
+        O17beta=None,
+        R15Air=None,
+        R17VSMOW=None,
+        R18VSMOW=None,
         **Refs,
     ):
 
@@ -110,15 +110,14 @@ class Scrambling:
         if outputfile is None:
             today = dt.datetime.now().strftime("%y%m%d")
             outputfile = f"{today}_scrambling_output.xlsx"
-            #if saveout == True:
+            # if saveout == True:
             #    print(f"output saved as {today}_scrambling_output.xlsx")
         else:
             outputfile = outputfile
 
-        self.IsotopeStandards = IsotopeStandards(O17beta = O17beta,
-                    R15Air = R15Air,
-                    R17VSMOW = R17VSMOW,
-                    R18VSMOW = R18VSMOW)
+        self.IsotopeStandards = IsotopeStandards(
+            O17beta=O17beta, R15Air=R15Air, R17VSMOW=R17VSMOW, R18VSMOW=R18VSMOW
+        )
 
         self.outputfile = outputfile
 
@@ -221,10 +220,10 @@ class Isotopomers:
         initialguess=None,
         lowerbounds=None,
         upperbounds=None,
-        O17beta = None,
-        R15Air = None,
-        R17VSMOW = None,
-        R18VSMOW = None,
+        O17beta=None,
+        R15Air=None,
+        R17VSMOW=None,
+        R18VSMOW=None,
     ):
 
         # default arguments
@@ -236,10 +235,9 @@ class Isotopomers:
         else:
             outputfile = outputfile
 
-        self.IsotopeStandards = IsotopeStandards(O17beta = O17beta,
-                    R15Air = R15Air,
-                    R17VSMOW = R17VSMOW,
-                    R18VSMOW = R18VSMOW)
+        self.IsotopeStandards = IsotopeStandards(
+            O17beta=O17beta, R15Air=R15Air, R17VSMOW=R17VSMOW, R18VSMOW=R18VSMOW
+        )
 
         self.R = IsotopomerInput(inputfile, tabname).ratiosscrambling
 

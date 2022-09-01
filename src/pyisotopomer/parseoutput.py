@@ -115,7 +115,9 @@ def parseoutput(
             if (
                 method == "algebraic"
             ):  # Calculate gamma and kappa explicitly from algebraic solution
-                gk = algebraic_gk_eqns(R, inputobj.isotopeconstants, ref1=ref1, ref2=ref2)
+                gk = algebraic_gk_eqns(
+                    R, inputobj.isotopeconstants, ref1=ref1, ref2=ref2
+                )
             elif (
                 method == "least_squares"
             ):  # Run function that iteratively solves for gamma and kappa

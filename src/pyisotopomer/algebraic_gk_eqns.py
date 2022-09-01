@@ -10,7 +10,9 @@ Algebraic solutions for gamma and kappa.
 
 import pandas as pd
 import numpy as np
-from .constants_new import constants_new  # import alpha and beta values for reference materials
+from .constants_new import (
+    constants_new,
+)  # import alpha and beta values for reference materials
 
 
 def algebraic_gk_eqns(R, isotopeconstants, ref1, ref2):
