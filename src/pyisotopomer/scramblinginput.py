@@ -13,7 +13,7 @@ from excel template.
 import pandas as pd
 import numpy as np
 from itertools import combinations
-from .calculate_17R import calculate_17R
+from .calculate_17R_v2 import calculate_17R
 
 
 class ScramblingInput:
