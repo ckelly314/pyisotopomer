@@ -55,7 +55,7 @@ def automate_gk_solver(
     @author: Colette L. Kelly (clkelly@stanford.edu).
     """
     #  python: need to set up empty dataframe to which we'll add values
-    gk = pd.DataFrame([])
+    gk = np.zeros((len(R), 2))  # set up numpy array to populate with solutions.
 
     #  an approximate initial solution: initial guess for gamma and kappa
     if x0 is not None:  # check if solver has been given an x0 parameter
@@ -122,8 +122,8 @@ def automate_gk_solver(
 
         #  create a new array from the iterated solutions
         #  first column is gamma, second column is kappa
-        gk = gk.append([v.x])
+        gk[n][:] = v.x
 
-    gk = gk.rename(columns={0: "gamma", 1: "kappa"})
+    gk = pd.DataFrame(gk).rename(columns={0: "gamma", 1: "kappa"})
 
     return gk

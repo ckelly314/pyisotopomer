@@ -140,7 +140,7 @@ def parseoutput(
                 # write each output dataframe to a separate sheet in the output spreadsheet
                 outputdfs.append(df)
                 dfnames.append(f"{ref1}-{ref2}")
-                maindf = maindf.append(df)
+                maindf = pd.concat([maindf,df])
 
             except AttributeError:
                 print(f"{ref1} and/or {ref2} have not been entered in constants.csv")

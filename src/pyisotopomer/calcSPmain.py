@@ -75,7 +75,8 @@ def calcSPmain(
     R18VSMOW = isotopestandards.R18VSMOW
 
     #  python: need to set up empty dataframe to which we'll add values
-    isol = pd.DataFrame([])
+    #isol = pd.DataFrame([])
+    isol = np.zeros((len(R), 2))  # set up numpy array to populate with solutions.
 
     bounds = (lb, ub)
 
@@ -100,10 +101,10 @@ def calcSPmain(
 
         #  create a new array from the iterated solutions
         #  first column is gamma, second column is kappa
-        isol = isol.append([v.x])
+        isol[n][:] = v.x
 
     # set column labels for isol
-    isol = isol.rename(columns={0: "15Ralpha", 1: "15Rbeta"})
+    isol = pd.DataFrame(isol).rename(columns={0: "15Ralpha", 1: "15Rbeta"})
 
     # Calculate 17R
     isol["17R"] = R[:, 1] - isol["15Ralpha"] - isol["15Rbeta"]
