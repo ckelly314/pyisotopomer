@@ -10,6 +10,7 @@ src/pyisotopomer/automate_gk_solver.py
 src/pyisotopomer/calcSPmain.py
 src/pyisotopomer/calcdeltaSP.py
 src/pyisotopomer/calculate_17R.py
+src/pyisotopomer/calculate_17R_v2.py
 src/pyisotopomer/constants_new.py
 src/pyisotopomer/isotopestandards.py
 src/pyisotopomer/isotopomerinput.py

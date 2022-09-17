@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: pyisotopomer
-Version: 0.0.7
+Version: 0.0.8
 Summary: Nitrous oxide isotopocule data corrections in Python
 Home-page: https://github.com/ckelly314/pyisotopomer
 Author: Colette L. Kelly
@@ -70,7 +70,7 @@ You can install and run pyisotopomer locally on your computer, or you can run it
 
 ## Pre-processing
 
-Download the data correction [template](https://docs.google.com/spreadsheets/d/1YMyaIXTMbX56r5_1C3ovAb_GBVsQJXfr/edit?usp=sharing&ouid=104573000701514802850&rtpof=true&sd=true).
+Download the data correction [template](https://docs.google.com/spreadsheets/d/1b7aLuZZj5rE5fukQMdZ68gLGAl5GvE9v/edit?usp=sharing&ouid=104573000701514802850&rtpof=true&sd=true).
 
 Export IRMS data in Isodat, with separate export templates for the sample peak and designated reference peak for each sample.
 
@@ -86,9 +86,9 @@ Replace the values in row 7, columns W-Y, with your size correction slopes (the 
 
 Go to the "scale_normalization" tab of the excel template. Columns A-F contain the pre-loaded delta values for a set of reference gases. If your reference gases are not listed, add their calibrated delta values in columns A-F, then copy the calculations in columns G-N. Columns M and N contain the "known" 45/44R and 46/44R for each reference material, normalized to the 45/44 and 46/44 of your N<sub>2</sub>O reference tank.
 
-Columns Q and R are the "known" 45rR/45rR and 46rR/46rR for each reference material. CHANGE these values so that they point to the appropriate values in columns M and N. Columns S and T are references to the size corrected 45rR/45rR and 46rR/46rR of each sample in your run. Drag these cells down to include all of the reference materials in your run. Delete #NUM values in columns W and X. Columns Y and Z contain the λ factors needed to scale-normalize the measured 45rR/45rR and 46rR/46rR of the data. These should be close to 1 (if not, check for problem reference materials that are throwing off the calibration).
+Columns Q and R are the "known" 45rR/45rR and 46rR/46rR for each reference material you've run. CHANGE these values so that they point to the appropriate values in columns M and N. Columns S and T are references to the size corrected 45rR/45rR and 46rR/46rR of each sample in your run. Drag these cells down to include all of the reference materials in your run. Delete #NUM values in columns W and X. Columns Y and Z contain the λ factors and intercepts needed to scale-normalize the measured 45rR/45rR and 46rR/46rR of the data. The lambda factors (row 3) should be close to 1, and the intercepts (row 4) should be close to 0 (if not, check for problem reference materials that are throwing off the calibration).
 
-Return to the "size_correction" tab of the excel template. Columns AI and AJ contain the scale-normalized 45rR/45rR and 46rR/46rR of each sample.
+Return to the "size_correction" tab of the excel template. The values in row 11, columns W-X should be the lambda factors and intercepts calculated in the scale_normalization tab. Columns AI and AJ contain the scale-normalized 45rR/45rR and 46rR/46rR of each sample.
 
 The 31R, 45R, and 46R for each sample, normalized to the common reference injection, normalized to a m/z 44 peak area of 20 Vs, and scale-normalized (in the case of 45R and 46R), are found in columns AL-AN. If you know the Δ<sup>17</sup>O of your samples, enter them in Column AO; otherwise, leave these values as 0. Save the correction template with a new name into your current working directory, or, if you're using Google Colab, upload it to your data processing folder in your drive.
 
@@ -98,7 +98,7 @@ Here, two coefficients, γ and κ, are used to describe scrambling in the ion so
 
 Run two (or more) reference gases with known <sup>15</sup>R-α and <sup>15</sup>R-β, prepared in the same format as samples. For the Casciotti lab, this is some amount of N<sub>2</sub>O reference gas injected into a bottle of seawater or DI water that has been purged with He or N2 gas.
 
-Download the data correction [template](https://docs.google.com/spreadsheets/d/1YMyaIXTMbX56r5_1C3ovAb_GBVsQJXfr/edit?usp=sharing&ouid=104573000701514802850&rtpof=true&sd=true). Pre-process the data according to the pyisotopomer [README](https://github.com/ckelly314/pyisotopomer). Save it into your current working directory.
+Download the data correction [template](https://docs.google.com/spreadsheets/d/1b7aLuZZj5rE5fukQMdZ68gLGAl5GvE9v/edit?usp=sharing&ouid=104573000701514802850&rtpof=true&sd=true). Pre-process the data according to the pyisotopomer [README](https://github.com/ckelly314/pyisotopomer). Save it into your current working directory.
 
 Go to the "scale_normalization" tab of the excel template. Make sure it contains all of the reference materials you will use for the scrambling calculation. In column A "ref_tag", enter the names of your reference materials — these can be whatever you want, as long as they contain only alphanumeric characters and are short (15 characters or fewer).
 
@@ -162,7 +162,7 @@ Isotopomers(inputfile = "00_Python_template_v2.xlsx", **kwargs)
 
 The Isotopomers function will create an output file entitled ```{date}_isotopeoutput.csv``` with isotopocule delta values, similar to this [example spreadsheet](https://drive.google.com/file/d/1ZWws_32rjzutNkmD4HYebJBWjjIPRwt1/view?usp=sharing). Copy and paste output data back into working (size correction) spreadsheet in olive-highlighted cells (columns AX-BC).
 
-### Google Colab notebook forthe isotopomer calculation
+### Google Colab notebook for the isotopomer calculation
 
 This [Google Colab notebook](https://drive.google.com/file/d/1hEVvs98ZrpDxzNLJ2D0H6zJjnEs2umiq/view?usp=sharing) contains instructions on how to use the Google Colab environment and example code to run the Isotopomers function of pyisotopomer.
 
