@@ -76,7 +76,7 @@ The 31R, 45R, and 46R for each sample, normalized to the common reference inject
 
 ## Scrambling calibration
 
-Here, two coefficients, γ and κ, are used to describe scrambling in the ion source. This is described in further detail in [Frame and Casciotti, 2010](https://www.biogeosciences.net/7/2695/2010/). Below is a description of how to calculate these coefficients in pyisotopomer.
+Here, two coefficients, γ and κ, are used to describe scrambling in the ion source. This is described in further detail in [Frame and Casciotti, 2010](https://www.biogeosciences.net/7/2695/2010/). The ion source chemistry, and thus scrambling behavior, of an IRMS is likely change over time. Because of this, we recommend running the scrambling calibration on a day-to-day basis, then calculating a running average of these daily means to calculate isotopocules. Below is a description of how to perform the scrambling calibration in pyisotopomer.
 
 Run two (or more) reference gases with known <sup>15</sup>R-α and <sup>15</sup>R-β, prepared in the same format as samples. For the Casciotti lab, this is some amount of N<sub>2</sub>O reference gas injected into a bottle of seawater or DI water that has been purged with He or N2 gas.
 
