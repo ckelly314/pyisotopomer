@@ -13,6 +13,7 @@ python version by Colette L. Kelly (clkelly@stanford.edu).
 
 import pandas as pd
 import numpy as np
+import warnings
 from scipy.optimize import least_squares
 from .SPnonlineq import SPnonlineq
 
@@ -88,17 +89,29 @@ def calcSPmain(
         #  python: scipy.optimize.least_squares instead of matlab "lsqnonlin"
         row = np.array(R[n][:])
         args = (row, isotopestandards)
-        # v = least_squares(automate_gk_eqns, x0, bounds=bounds,args=args)
-        v = least_squares(
-            SPnonlineq,
-            x0,
-            bounds=bounds,
-            ftol=1e-15,
-            xtol=1e-15,
-            max_nfev=2000,
-            args=args,
-        )
-
+        try: # try different initial guesses to account for samples w/ extreme delta values
+            with warnings.catch_warnings(): # suppress RuntimeWarning when it can't find a solution
+                warnings.simplefilter("ignore")
+            v = least_squares(
+                SPnonlineq,
+                x0,
+                bounds=bounds,
+                ftol=1e-15,
+                xtol=1e-15,
+                max_nfev=2000,
+                args=args,
+            )
+        except ValueError: # try finding a solution with initial guess = 0,0
+            print(f"row {n+3}: initial guess set to 0")
+            v = least_squares(
+                SPnonlineq,
+                np.array([0.0, 0.0]),
+                bounds=bounds,
+                ftol=1e-15,
+                xtol=1e-15,
+                max_nfev=2000,
+                args=args,
+            )
         #  create a new array from the iterated solutions
         #  first column is gamma, second column is kappa
         isol[n][:] = v.x
