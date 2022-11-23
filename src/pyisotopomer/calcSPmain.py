@@ -92,15 +92,15 @@ def calcSPmain(
         try: # try different initial guesses to account for samples w/ extreme delta values
             with warnings.catch_warnings(): # suppress RuntimeWarning when it can't find a solution
                 warnings.simplefilter("ignore")
-            v = least_squares(
-                SPnonlineq,
-                x0,
-                bounds=bounds,
-                ftol=1e-15,
-                xtol=1e-15,
-                max_nfev=2000,
-                args=args,
-            )
+                v = least_squares(
+                    SPnonlineq,
+                    x0,
+                    bounds=bounds,
+                    ftol=1e-15,
+                    xtol=1e-15,
+                    max_nfev=2000,
+                    args=args,
+                )
         except ValueError: # try finding a solution with initial guess = 0,0
             print(f"row {n+3}: initial guess set to 0")
             v = least_squares(

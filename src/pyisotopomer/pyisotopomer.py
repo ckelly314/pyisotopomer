@@ -115,6 +115,8 @@ class Scrambling:
         else:
             outputfile = outputfile
 
+        self.saveout = saveout # store saveout for use in repr function
+
         self.IsotopeStandards = IsotopeStandards(
             O17beta=O17beta, R15Air=R15Air, R17VSMOW=R17VSMOW, R18VSMOW=R18VSMOW
         )
@@ -153,7 +155,10 @@ class Scrambling:
                 df.to_excel(writer, sheet_name=name)
 
     def __repr__(self):
-        return f"output saved as {self.outputfile}"
+        if self.saveout==True:
+            return f"output saved as {self.outputfile}"
+        else:
+            return f"{self.scrambling_mean}"
 
 
 class Isotopomers:
@@ -239,8 +244,8 @@ class Isotopomers:
             O17beta=O17beta, R15Air=R15Air, R17VSMOW=R17VSMOW, R18VSMOW=R18VSMOW
         )
 
+        # core isotopomer functions
         self.R = IsotopomerInput(inputfile, tabname).ratiosscrambling
-
         self.isotoperatios = calcSPmain(
             self.R,
             self.IsotopeStandards,
@@ -249,6 +254,13 @@ class Isotopomers:
             upperbounds=upperbounds,
         )
         self.deltavals = calcdeltaSP(self.isotoperatios, self.IsotopeStandards)
+
+        # additional columns for identification & QC
+        self.data = IsotopomerInput(inputfile, tabname).data
+        self.deltavals["run_date"] = self.data['run_date']
+        self.deltavals['Identifier 1'] = self.data['Identifier 1']
+        self.deltavals["gamma"] = self.R[:,4]
+        self.deltavals["kappa"] = self.R[:,5]
 
         if saveout == True:
             self.saveoutput(self.deltavals, outputfile)
