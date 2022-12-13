@@ -13,9 +13,11 @@ import pandas as pd
 import datetime as dt
 from .isotopestandards import IsotopeStandards
 from .calcSPmain import calcSPmain
+from .tracerSPmain import tracerSPmain
 from .calcdeltaSP import calcdeltaSP
 from .scramblinginput import ScramblingInput
 from .isotopomerinput import IsotopomerInput
+from .tracerinput import TracerInput
 from .parseoutput import parseoutput
 
 
@@ -27,7 +29,7 @@ class Scrambling:
 
     DESCRIPTION:
         Takes an input spreadsheet of size-corrected reference materials,
-        following the format of the template "00_Python_template.xlsx".
+        following the format of the template "00_Python_template_v3.xlsx".
         Generates all possible pairings of reference materials.
         Uses paired reference materials to calculate IRMS
         scrambling coefficients.
@@ -293,6 +295,119 @@ class Isotopomers:
         allconcentrations = allconcentrations.rename(columns=keys)
 
         return allconcentrations
+
+    def __repr__(self):
+
+        return f"""< First row:
+d15Na: {self.deltavals.d15Na[0]:.4}
+d15Nb: {self.deltavals.d15Nb[0]:.4}
+d15Nbulk: {self.deltavals.d15Nbulk[0]:.4}
+SP: {self.deltavals.SP[0]:.4}
+d18O: {self.deltavals.d18O[0]:.4}>
+                """
+
+class Tracers:
+    """
+    Read in the isotopomers template spreadsheet and calculate isotopomers.
+
+    USAGE: deltavals = Isotopomers(inputfile = "00_Python_template.xlsx", scrambling=[0.17, 0.08])
+
+    DESCRIPTION:
+        Uses values of 31R, 45R and 46R to calculate 15Ralpha, 15R beta, 17R
+        and 18R.
+
+    INPUT:
+        :param inputfile: Spreadsheet of size-corrected reference materials,
+        following the format of "00_Python_template.xlsx".
+        :type inputfile: .xlsx file
+        :param scrambling: Scrambling coefficients to use to correct this sample set.
+        :type scrambling: List or Numpy array.
+        :param saveout: If True, save output .xlsx file of scrambling results.
+        :type saveout: Bool
+        :param outputfile: Output filename. If None and saveout=True, default to
+            "{date}__isotopeoutput.csv"
+        :type outputfile: String
+        :param initialguess: Initial guess for 15Ralpha and 15Rbeta
+        If None, default to [0.0037, 0.0037].
+        :type initialguess: list or Numpy array
+        :param lowerbounds: Lower bounds for calcSPmain.py
+        If None, default to [0.0, 0.0].
+        :type lowerbounds: list or Numpy array
+        :param upperbounds: Upper bounds for calcSPmain.py
+        If None, default to [1.0, 1.0].
+        :type upperbounds: list or Numpy array
+
+    OUTPUT:
+        :param scrambling: Scrambling coefficients to use to correct this sample set.
+        :type scrambling: Numpy array.
+        :param R: Size-corrected 31R, 45R, and 46R from which to calculate delta vals.
+        :type R: Numpy array.
+        :param isotoperatios: Pandas DataFrame object with  dimensions n x 4,
+            where n is the number of measurements.  The four columns are
+            15Ralpha, 15Rbeta, 17R and 18R from left to right.
+        :type isotoperatios: Pandas DataFrame
+        :param deltavals: Pandas DataFrame object with dimensions n x 6,
+            where n is the number of measurements.  The six columns are d15Nalpha,
+            d15Nbeta, site preference, d15Nbulk, d17O and d18O from left to right.
+        :type deltavals: Pandas DataFrame
+
+    @author: Colette L. Kelly (clkelly@stanford.edu).
+    """
+
+    def __init__(
+        self,
+        inputfile,
+        tabname=None,
+        saveout=True,
+        outputfile=None,
+        initialguess=None,
+        lowerbounds=None,
+        upperbounds=None,
+        O17beta=None,
+        R15Air=None,
+        R17VSMOW=None,
+        R18VSMOW=None):
+
+        # default arguments
+        if outputfile is None:
+            today = dt.datetime.now().strftime("%y%m%d")
+            outputfile = f"{today}_isotopeoutput.csv"
+            print(f"output saved as {today}_isotopeoutput.csv")
+        else:
+            outputfile = outputfile
+
+        self.IsotopeStandards = IsotopeStandards(
+            O17beta=O17beta, R15Air=R15Air, R17VSMOW=R17VSMOW, R18VSMOW=R18VSMOW
+        )
+
+        #self.scrambling = self.check_scrambling(scrambling)
+        self.R = TracerInput(inputfile, tabname).sizecorrected
+
+        self.isotoperatios = tracerSPmain(
+            self.R,
+            self.IsotopeStandards,
+            initialguess=initialguess,
+            lowerbounds=lowerbounds,
+            upperbounds=upperbounds
+            )
+        self.deltavals = calcdeltaSP(self.isotoperatios, self.IsotopeStandards)
+
+        # additional columns for identification & QC
+        self.data = TracerInput(inputfile, tabname).data
+        self.deltavals["run_date"] = self.data['run_date']
+        self.deltavals['Identifier 1'] = self.data['Identifier 1']
+        self.deltavals["gamma"] = self.R[:,4]
+        self.deltavals["kappa"] = self.R[:,5]
+
+        if saveout == True:
+            self.saveoutput(self.deltavals, outputfile)
+        else:
+            pass
+
+    def saveoutput(self, deltavals, outputfile):
+        # Create a commma delimited text file containing the output data
+        # The columns from left to right are gamma and kappa
+        deltavals.to_csv(path_or_buf=f"{outputfile}", header=True, index=False)
 
     def __repr__(self):
 

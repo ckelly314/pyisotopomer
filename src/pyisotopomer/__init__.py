@@ -14,3 +14,4 @@ from .parseoutput import parseoutput
 from .isotopomerinput import IsotopomerInput
 from .pyisotopomer import Scrambling
 from .pyisotopomer import Isotopomers
+from .pyisotopomer import Tracers

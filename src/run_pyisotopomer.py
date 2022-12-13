@@ -44,3 +44,7 @@ deltavals = Isotopomers(
     R17VSMOW=None,
     R18VSMOW=None,
 )
+
+from pyisotopomer import Tracers
+
+Tracers(inputfile="00_Tracer_template.xlsx", outputfile = "tracer_output.csv")

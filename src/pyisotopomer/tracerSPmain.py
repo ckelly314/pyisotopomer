@@ -1,35 +1,37 @@
 """
 File: calcSPmain.py
 ---------------------------
-Created on Weds April 14th, 2021
+Created on Tues Dec 13th, 2022
 
-Functions to solve for N2O isotopocule values.
+Functions to solve for N2O isotopocule values in 15N-labeled
+tracer experiments.
 
-@author: Cara Manning (cama@pml.ac.uk),
-python version by Colette L. Kelly (clkelly@stanford.edu).
+@author: Colette L. Kelly (clkelly@stanford.edu).
 """
 
 import pandas as pd
 import numpy as np
 import warnings
 from scipy.optimize import least_squares
-from .SPnonlineq import SPnonlineq
+from .tracernonlineq import tracernonlineq
 
 
-def calcSPmain(
-    R, isotopestandards, initialguess=None, lowerbounds=None, upperbounds=None
-):
+def tracerSPmain(R, isotopestandards, initialguess=None, lowerbounds=None, upperbounds=None):
     """
-    USAGE: isotoperatios = calcSPmain(R)
+    Calculate gamma and kappa from measured rR31/30 and r45/44, given known a, b, 17R.
+
+    USAGE: gk = automate_gk_solver(R,ref1=ref1, ref2=ref2)
 
     DESCRIPTION:
-        Calculate 15Ralpha, 15Rbeta, 17R, and 18R from size-corrected isotope ratios
-        and scrambling coefficients.
+        Uses known values of alpha, beta, and 17R for two sample gases and one
+        standard gas, plus measured rR31/30 for sample and standard gases,
+        to calculate scrambling coefficients gamma and kappa.
 
     INPUT:
-        :param R: array with dimensions n x 5 where n is the number of
-        measurements.  The three columns are 31R, 45R, 46R, gamma,
-        and kappa, from left to right.
+        :param R: array with dimensions n x 8 where n is the number of
+        measurements.  The three columns are 31R, 45R, 46R, cap17O, gamma,
+        kappa, delta17O (calculated from t0's), and 46R added (calculated from t0s),
+        from left to right.
         :type R: numpy array, dtype=float
         :param IsotopeStandards: IsotopeStandards class from isotopestandards.py,
         containing 15RAir, 18RVSMOW, 17RVSMOW, and beta for the 18O/17O relation.
@@ -44,8 +46,8 @@ def calcSPmain(
         If None, default to [1.0, 1.0].
         :type upperbounds: list or Numpy array
     OUTPUT:
-        :returns: pandas DataFrame with dimensions n x 45where n is the number of measurements.
-        The five columns are 15Ralpha, 15Rbeta, 17R, 18R, and D17O.
+        :returns: pandas DataFrame with dimensions n x 4 where n is the number of measurements.
+        The four columns are 15Ralpha, 15Rbeta, 17R and 18R from left to right.
 
     @author: Colette L. Kelly (clkelly@stanford.edu).
     """
@@ -73,7 +75,7 @@ def calcSPmain(
     R17VSMOW = isotopestandards.R17VSMOW
     R18VSMOW = isotopestandards.R18VSMOW
 
-    #  python: need to set up empty dataframe to which we'll add values
+        #  python: need to set up empty dataframe to which we'll add values
     #isol = pd.DataFrame([])
     isol = np.zeros((len(R), 2))  # set up numpy array to populate with solutions.
 
@@ -91,7 +93,7 @@ def calcSPmain(
             with warnings.catch_warnings(): # suppress RuntimeWarning when it can't find a solution
                 warnings.simplefilter("ignore")
                 v = least_squares(
-                    SPnonlineq,
+                    tracernonlineq,
                     x0,
                     bounds=bounds,
                     ftol=1e-15,
@@ -102,7 +104,7 @@ def calcSPmain(
         except ValueError: # try finding a solution with initial guess = 0,0
             print(f"row {n+3}: initial guess set to 0")
             v = least_squares(
-                SPnonlineq,
+                tracernonlineq,
                 np.array([0.0, 0.0]),
                 bounds=bounds,
                 ftol=1e-15,
