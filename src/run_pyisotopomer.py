@@ -9,7 +9,7 @@ File: run_pyisotopomer.py
 @author: Colette L. Kelly (clkelly@stanford.edu).
 """
 
-from pyisotopomer import Scrambling, Isotopomers
+from pyisotopomer import Scrambling, Isotopomers, Tracers
 
 gk = Scrambling(
     inputfile="00_Python_template_v3.xlsx",  # change to appropriate file name
@@ -45,6 +45,14 @@ deltavals = Isotopomers(
     R18VSMOW=None,
 )
 
-from pyisotopomer import Tracers
-
-Tracers(inputfile="00_Tracer_template.xlsx", outputfile = "tracer_output.csv")
+tracers = Tracers(inputfile="00_Tracer_template.xlsx",
+    # extra keyword arguments:
+    saveout=True,
+    outputfile="example_isotopomer_output.csv",
+    initialguess=[0.0037, 0.0037],
+    lowerbounds=[0.0, 0.0],
+    upperbounds=[1.0, 1.0],
+    O17beta=None,
+    R15Air=None,
+    R17VSMOW=None,
+    R18VSMOW=None,)

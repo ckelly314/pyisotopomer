@@ -264,6 +264,9 @@ class Isotopomers:
         self.deltavals["gamma"] = self.R[:,4]
         self.deltavals["kappa"] = self.R[:,5]
 
+        self.deltavals = self.deltavals[['run_date','Identifier 1',
+        "d15Na", "d15Nb", "SP", "d15Nbulk", "d17O", "d18O"]]
+
         if saveout == True:
             self.saveoutput(self.deltavals, outputfile)
         else:
@@ -273,28 +276,6 @@ class Isotopomers:
         # Create a commma delimited text file containing the output data
         # The columns from left to right are gamma and kappa
         deltavals.to_csv(path_or_buf=f"{outputfile}", header=True, index=False)
-
-    def get_concentrations(
-        self, peakarea44, sampleweight, conversionslope, conversionint=None
-    ):
-        # obtain concentrations of masses 44, 45alpha, 45beta, and 46N2O
-        allconcentrations = concentrations(
-            peakarea44,
-            sampleweight,
-            conversionslope,
-            conversionint,
-            isotoperatios=self.isol,
-        )
-
-        keys = {
-            "15Ralpha": "45N2Oalpha",
-            "15Rbeta": "45N2Obeta",
-            "17R": "N217O",
-            "18R": "46N2O",
-        }
-        allconcentrations = allconcentrations.rename(columns=keys)
-
-        return allconcentrations
 
     def __repr__(self):
 
@@ -318,10 +299,8 @@ class Tracers:
 
     INPUT:
         :param inputfile: Spreadsheet of size-corrected reference materials,
-        following the format of "00_Python_template.xlsx".
+        following the format of "00_Tracer_template.xlsx".
         :type inputfile: .xlsx file
-        :param scrambling: Scrambling coefficients to use to correct this sample set.
-        :type scrambling: List or Numpy array.
         :param saveout: If True, save output .xlsx file of scrambling results.
         :type saveout: Bool
         :param outputfile: Output filename. If None and saveout=True, default to
@@ -336,11 +315,20 @@ class Tracers:
         :param upperbounds: Upper bounds for calcSPmain.py
         If None, default to [1.0, 1.0].
         :type upperbounds: list or Numpy array
+        :param O17beta: adjustable beta parameter for 17O/18O mass-dependent relation.
+        :type O17beta: float
+        :param R15Air: adjustable 15/14R of Air.
+        :type R15Air: float
+        :param R17VSMOW: adjustable 17/16R of VSMOW.
+        :type R17VSMOW: float
+        :param R18VSMOW: adjustable 18/16R of VSMOW.
+        :type R18VSMOW: float
 
-    OUTPUT:
-        :param scrambling: Scrambling coefficients to use to correct this sample set.
-        :type scrambling: Numpy array.
-        :param R: Size-corrected 31R, 45R, and 46R from which to calculate delta vals.
+    OUTPUT
+        :param IsotopeStandards: IsotopeStandards class from isotopestandards.py,
+        containing 15RAir, 18RVSMOW, 17RVSMOW, and beta for the 18O/17O relation.
+        :type isotopestandards: Class
+        :param R: Size-corrected 31R, 45R, and 46R, gamma, and kappa.
         :type R: Numpy array.
         :param isotoperatios: Pandas DataFrame object with  dimensions n x 4,
             where n is the number of measurements.  The four columns are
@@ -394,10 +382,16 @@ class Tracers:
 
         # additional columns for identification & QC
         self.data = TracerInput(inputfile, tabname).data
+        self.deltavals["15Ralpha"] = self.isotoperatios["15Ralpha"]
+        self.deltavals["15Rbeta"] = self.isotoperatios["15Rbeta"]
         self.deltavals["run_date"] = self.data['run_date']
         self.deltavals['Identifier 1'] = self.data['Identifier 1']
         self.deltavals["gamma"] = self.R[:,4]
         self.deltavals["kappa"] = self.R[:,5]
+
+        self.deltavals = self.deltavals[['run_date','Identifier 1',
+        "d15Na", "d15Nb", "SP", "d15Nbulk", "d17O", "d18O",
+        "15Ralpha","15Rbeta"]]
 
         if saveout == True:
             self.saveoutput(self.deltavals, outputfile)
