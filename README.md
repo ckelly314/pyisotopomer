@@ -76,7 +76,7 @@ The 31R, 45R, and 46R for each sample, normalized to the common reference inject
 
 ## Scrambling calibration
 
-Here, two coefficients, γ and κ, are used to describe scrambling in the ion source. This is described in further detail in [Frame and Casciotti, 2010](https://www.biogeosciences.net/7/2695/2010/). The ion source chemistry, and thus scrambling behavior, of an IRMS is likely change over time. Because of this, we recommend running the scrambling calibration on a day-to-day basis, then calculating a running average of these daily means to calculate isotopocules. Below is a description of how to perform the scrambling calibration in pyisotopomer.
+Here, two coefficients, $γ$ and $κ$, are used to describe scrambling in the ion source. This is described in further detail in [Frame and Casciotti, 2010](https://www.biogeosciences.net/7/2695/2010/). The ion source chemistry, and thus scrambling behavior, of an IRMS is likely change over time. Because of this, we recommend running the scrambling calibration on a day-to-day basis, then calculating a running average of these daily means to calculate isotopocules. Below is a description of how to perform the scrambling calibration in pyisotopomer.
 
 Run two (or more) reference gases with known <sup>15</sup>R-α and <sup>15</sup>R-β, prepared in the same format as samples. For the Casciotti lab, this is some amount of N<sub>2</sub>O reference gas injected into a bottle of seawater or DI water that has been purged with He or N2 gas.
 
@@ -90,14 +90,14 @@ DO NOT MODIFY COLUMN HEADERS IN THE CORRECTION TEMPLATE. Save the correction tem
 
 ### Choice of Method
 
-Pyisotopomer contains two methods for the calculation of γ and κ: a direct calculation of γ and κ based on the algebraic re-arrangement of the equation for <sup>31</sup>R, and a least-squares solver method. Given the right reference materials, it is not necessary to use a numerical algorithm to solve for γ and κ; algebraic manipulations can provide exact and unique solutions for each coefficient. This algebraic solution is the default method of calculation of γ and κ in pyisotopomer. It should be noted that this algebraic solution produces consistent results only when the site preferences of the two reference materials used in the calculation are sufficiently distinct — otherwise, it will return values of γ and κ that vary widely and may not fall in the range of plausible values (i.e., they are either negative or greater than one).
+Pyisotopomer contains two methods for the calculation of $γ$ and $κ$: a direct calculation of $γ$ and $κ$ based on the algebraic re-arrangement of the equation for <sup>31</sup>R, and a least-squares solver method. Given the right reference materials, it is not necessary to use a numerical algorithm to solve for $γ$ and $κ$; algebraic manipulations can provide exact and unique solutions for each coefficient. This algebraic solution is the default method of calculation of $γ$ and $κ$ in pyisotopomer. It should be noted that this algebraic solution produces consistent results only when the site preferences of the two reference materials used in the calculation are sufficiently distinct — otherwise, it will return values of $γ$ and $κ$ that vary widely and may not fall in the range of plausible values (i.e., they are either negative or greater than one).
 
 In the event that the user has yet to obtain reference materials that are different enough in their site preferences to produce consistent results with the algebraic method, the least squares approach can be used as a temporary alternative, with the following caveats and modifications:
- - The least squares solver finds a local minimum close to the initial guess for γ and κ. As such, if the solver is fed an initial guess other than the absolute minimum calculated from the algebraic solution, it will find the “wrong” scrambling coefficients.
+ - The least squares solver finds a local minimum close to the initial guess for $γ$ and $κ$. As such, if the solver is fed an initial guess other than the absolute minimum calculated from the algebraic solution, it will find the “wrong” scrambling coefficients.
  - Using these “wrong” scrambling coefficients is OK if your unknowns are close in their delta values to those of the reference materials, but will have a deleterious effect as the unknowns diverge in their isotopomer values from the reference materials.
- - If the least squares solver is fed the correct γ and κ as an initial guess, it will converge on that solution — although this is still not as robust as simply running reference materials of sufficiently distinct site preferences and calculating γ and κ algebraically.
+ - If the least squares solver is fed the correct $γ$ and $κ$ as an initial guess, it will converge on that solution — although this is still not as robust as simply running reference materials of sufficiently distinct site preferences and calculating $γ$ and $κ$ algebraically.
 
-The algebraic method is the default and does not require any modifications to the call to the Scrambling function. To change to the least squares method, specify it with the "method" keyword argument. If you have an _a priori_ initial guess for γ and κ, enter it using the "initialguess" keyword argument.
+The algebraic method is the default and does not require any modifications to the call to the Scrambling function. To change to the least squares method, specify it with the "method" keyword argument. If you have an _a priori_ initial guess for $γ$ and $κ$, enter it using the "initialguess" keyword argument.
 
 To calculate scrambling with the algebraic method, modify the "inputfile" keyword to reflect the name of your excel data corrections spreadsheet, then run the following code:
 
@@ -128,13 +128,13 @@ colette$ python run_pyisotopomer.py
 
 ## Calculating isotopomers
 
-Size-correct your data (including all samples and standards), as above. Enter the appropriate γ and κ in columns AP-AQ of the excel template. These should be a running average of γ and κ, calculated using a window of \~10 reference material pairings (see below).
+Size-correct your data (including all samples and standards), as above. Enter the appropriate $γ$ and $κ$ in columns AP-AQ of the excel template. These should be a running average of $γ$ and $κ$, calculated using a window of \~10 reference material pairings (see below).
 
 DO NOT MODIFY COLUMN HEADERS IN THE CORRECTION TEMPLATE. Save the correction template into your current working directory.
 
 ### How to think about scrambling when calculating isotopomers
 
-You will need to enter the appropriate scrambling coefficients in the excel template. These scrambling coefficients should represent a running average of γ and κ calculated from at least 10 pairings of reference materials (e.g. a week's worth, if unknowns are bookended by reference materials) run alongside unknowns. This is because a small standard deviation in the scrambling coefficients can lead to a large error in site preference, so it is advisable to run sufficient reference materials to bring down the standard deviation of γ and κ. To calculate these running averages, it can be helpful to keep a spreadsheet with a running log of scrambling coefficients.
+You will need to enter the appropriate scrambling coefficients in the excel template. These scrambling coefficients should represent a running average of $γ$ and $κ$ calculated from at least 10 pairings of reference materials (e.g. a week's worth, if unknowns are bookended by reference materials) run alongside unknowns. This is because a small standard deviation in the scrambling coefficients can lead to a large error in site preference, so it is advisable to run sufficient reference materials to bring down the standard deviation of $γ$ and $κ$. To calculate these running averages, it can be helpful to keep a spreadsheet with a running log of scrambling coefficients.
 
 To calculate isotopomers, modify the "inputfile" keyword to reflect the name of your excel data corrections spreadsheet, then run the following code:
 
