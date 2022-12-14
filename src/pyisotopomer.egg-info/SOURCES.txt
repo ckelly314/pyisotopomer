@@ -17,6 +17,9 @@ src/pyisotopomer/isotopomerinput.py
 src/pyisotopomer/parseoutput.py
 src/pyisotopomer/pyisotopomer.py
 src/pyisotopomer/scramblinginput.py
+src/pyisotopomer/tracerSPmain.py
+src/pyisotopomer/tracerinput.py
+src/pyisotopomer/tracernonlineq.py
 src/pyisotopomer.egg-info/PKG-INFO
 src/pyisotopomer.egg-info/SOURCES.txt
 src/pyisotopomer.egg-info/dependency_links.txt
