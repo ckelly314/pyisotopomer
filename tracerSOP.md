@@ -15,10 +15,7 @@ In natural abundance samples, pyisotopomer solves the following four equations f
 
 $$
 \begin{align}
-
-^{45}R &= ^{15}R^{\alpha} + ^{15}R^{\beta} + ^{17}R \\
-
-^{31}R &= \frac{(1-γ)}{1+γ^{15}R^α}
-
+ 45R &= ^{15}R^{\alpha} + ^{15}R^{\beta} + ^{17}R \\
+ 45R &= ^{15}R^{\alpha} + ^{15}R^{\beta} + ^{17}R \\
 \end{align}
-$$
+$$$
