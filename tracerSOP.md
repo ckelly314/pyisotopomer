@@ -14,6 +14,7 @@ The accumulation of <sup>15</sup>N<sup>15</sup>N<sup>16</sup>O in tracer experim
 In natural abundance samples, pyisotopomer solves the following four equations to obtain $^{15}R^{\alpha}$ and $^{15}R^{\beta}$:
 
 $$
+\begin{align}
  ^{45}R &= ^{15}R^{\alpha} + ^{15}R^{\beta} + ^{17}R 
  ^{46}R &= (^{15}R^{\alpha} + ^{15}R^{\beta})^{17}R + ^{18}R + (^{15}R^{\alpha} )(^{15}R^{\beta} ) \\
 ^{17}R/^{17}R_{VSMOW} &= (^{18}R/^{17}R_{VSMOW})^{\beta} \\
