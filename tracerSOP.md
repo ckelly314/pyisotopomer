@@ -11,15 +11,6 @@
 The accumulation of <sup>15</sup>N<sup>15</sup>N<sup>16</sup>O in tracer experiments requires extra steps in the data processing pipeline. Here we describe these extra steps and link to the relevant code and data processing template.
 
 
-<sup>31</sup>R = {(1-γ)<over>1+γ<sup>15</sup>R<sup>α</sup>}
-
-<mfrac linethickness="2">
-   <mfrac>
-      <mi> a </mi>
-      <mi> b </mi>
-   </mfrac>
-   <mfrac>
-      <mi> c </mi>
-      <mi> d </mi>
-   </mfrac>
-</mfrac>
+$$
+^{31}R = \frac{(1-γ)}{1+γ^{15}R^α}
+$$$
