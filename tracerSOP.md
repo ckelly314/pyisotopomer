@@ -15,7 +15,7 @@ In natural abundance samples, pyisotopomer solves the following four equations t
 
 $$
 \begin{align}
- ^{45}R &= ^{15}R^{\alpha} + ^{15}R^{\beta} + ^{17}R 
+ ^{45}R &= ^{15}R^{\alpha} + ^{15}R^{\beta} + ^{17}R \\
  ^{46}R &= (^{15}R^{\alpha} + ^{15}R^{\beta})^{17}R + ^{18}R + (^{15}R^{\alpha} )(^{15}R^{\beta} ) \\
 ^{17}R/^{17}R_{VSMOW} &= (^{18}R/^{17}R_{VSMOW})^{\beta} \\
  ^{31}R &= \frac{(1-\gamma)^{15}R^{\alpha} + \gamma^{15}R^{\beta} + (^{15}R^{\alpha} )(^{15}R^{\beta} ) + ^{17}R(1+\gamma^{15}R^{\alpha}+(1-\gamma)^{15}R^{\beta})}{1 + \gamma^{15}R^{\alpha} + (1-\gamma)^{15}R^{\beta}} \\
@@ -27,7 +27,8 @@ In these equations, the term $(^{15}R^{\alpha} )(^{15}R^{\beta} )$ represents th
 To do this, we can add a term to the equations for the $^{46}R$ and $^{31}R$ ion currents:
 
 $$
- ^{46}R &= (^{15}R^{\alpha} + ^{15}R^{\beta})^{17}R + ^{18}R + (^{15}R^{\alpha} )(^{15}R^{\beta} ) + ^{15}N^{15}N^{16}O_{excess}\\
+\begin{align}
+ ^{46}R &= (^{15}R^{\alpha} + ^{15}R^{\beta})^{17}R + ^{18}R + (^{15}R^{\alpha} )(^{15}R^{\beta} ) + ^{15}N^{15}N^{16}O_{excess} \\
  ^{31}R &= \frac{(1-\gamma)^{15}R^{\alpha} + \gamma^{15}R^{\beta} + (^{15}R^{\alpha} )(^{15}R^{\beta} ) + ^{17}R(1+\gamma^{15}R^{\alpha}+(1-\gamma)^{15}R^{\beta}) + ^{15}N^{15}N^{16}O_{excess}}{1 + \gamma^{15}R^{\alpha} + (1-\gamma)^{15}R^{\beta}} \\
 \end{align}
 $$
