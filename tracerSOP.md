@@ -12,3 +12,14 @@ The accumulation of <sup>15</sup>N<sup>15</sup>N<sup>16</sup>O in tracer experim
 
 
 <sup>31</sup>R = {(1-γ)<over>1+γ<sup>15</sup>R<sup>α</sup>}
+
+<mfrac linethickness="2">
+   <mfrac>
+      <mi> a </mi>
+      <mi> b </mi>
+   </mfrac>
+   <mfrac>
+      <mi> c </mi>
+      <mi> d </mi>
+   </mfrac>
+</mfrac>
