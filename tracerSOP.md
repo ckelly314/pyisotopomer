@@ -1,4 +1,4 @@
-# Processing 15N-labeled samples
+# Processing $^{15}N$-labeled samples
 
 [![pypi badge](https://img.shields.io/pypi/v/pyisotopomer.svg?style=popout)](https://pypi.org/project/pyisotopomer)
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5031218.svg)](https://doi.org/10.5281/zenodo.5031218)
