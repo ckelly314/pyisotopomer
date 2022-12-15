@@ -8,7 +8,7 @@
 
 ## Theory
 
-The accumulation of <sup>15</sup>N<sup>15</sup>N<sup>16</sup>O in tracer experiments requires extra steps in the data processing pipeline. Here we describe these extra steps and link to the relevant code and data processing template.
+The accumulation of $^{15}N^{15}N^{16}O$ in tracer experiments requires extra steps in the data processing pipeline. Here we describe these extra steps and link to the relevant code and data processing template.
 
 
 In natural abundance samples, pyisotopomer solves the following four equations to obtain $^{15}R^{\alpha}$ and $^{15}R^{\beta}$:
@@ -33,9 +33,34 @@ $$
 \end{align}
 $$
 
-Where $^{15}N^{15}N^{16}R_{excess}$ represents the amount of $^{15}N^{15}N^{16}O$ in excess of that predicted by $(^{15}R^{\alpha} )(^{15}R^{\beta} )$, which is approximately equal to the amount of $^{15}N^{15}N^{16}O$ added to the sample over the course of the experiment.
+Where $^{15}N^{15}N^{16}O_{excess}$ represents the amount of $^{15}N^{15}N^{16}O$ in excess of that predicted by $(^{15}R^{\alpha} )(^{15}R^{\beta} )$, which is approximately equal to the amount of $^{15}N^{15}N^{16}O$ added to the sample over the course of the experiment.
 
-Note that in the equation for $^{31}R$, we account for the yield of $^{31}NO^+$ from $^{15}N^{15}N^{16}O$, but we do not account for the yield of $^{30}N_2^+$ from $^{15}N^{15}N^{16}O$. This is because the numerator and denominator for $^{31}R$ are normalized to the yield of $^{30}NO^+$ from $^{14}N^{14}N^{16}O$ (thus, the 1 in the denominator); since both the numerator and denominator are both multiplied by this yield, it cancels out, but the equation is still implicitly in terms of the fragmentation of $N_2O$ to $NO^+$. To account for the fragmentation of $N_2O$ to $N_2$, we would need to measure the more abundant masses of $N_2$, i.e. m/z ratios 28 and 29.
+Note that in the equation for $^{31}R$, we account for the yield of $^{31}NO^+$ from $^{15}N^{15}N^{16}O$, but we do not account for the yield of $^{30}N_2^+$ from $^{15}N^{15}N^{16}O$. This is because the numerator and denominator for $^{31}R$ are normalized to the yield of $^{30}NO^+$ from $^{14}N^{14}N^{16}O$ (thus, the 1 in the denominator); since both the numerator and denominator are both multiplied by this yield, it cancels out, but the equation is still implicitly in terms of the fragmentation of $N_2O$ to $NO^+$. To account for the fragmentation of $N_2O$ to $N_2$, we would need to measure the more abundant masses of $N_2$, i.e. m/z ratios 28 and 29. However, we expect the yield of $^{30}N_2^+$ from $^{15}N^{15}N^{16}O$ to be small.
+
+To quantify $^{15}N^{15}N^{16}O_{excess}$ in tracer samples, we assume that any increase in $^{46}R$ over the course of the experiment is due to added $^{15}N^{15}N^{16}O$, i.e. that $\delta^{18}O$ remains constant. This should be a reasonable assumption — while denitrification and $N_2O$ consumption will cause natural abundance-level increases in $\delta^{18}O$ and thus $^{46}R$ (10's of per mil), $N_2O$ production from $^{15}N$-labeled substrates will cause much greater increases in $^{46}R$ (100's to 1,000's of per mil). We calculate the term $^{15}N^{15}N^{16}O_{excess}$ by subtracting the mean $^{46}R$ at t0 from the measured $^{46}R$ in later timepoints in the tracer excel template. Then, the "Tracers" function in pyisotopomer takes this $^{15}N^{15}N^{16}O_{excess}$ into account when calculating isotopomers.
+
+If you do NOT account for $^{15}N^{15}N^{16}O_{excess}$, i.e., use the natural abundance version of pyisotopomer for tracer samples, you will find that later timepoints in experiments with a lot of produced $^{15}N^{15}N^{16}O$ will have anomalously high values of $\delta^{15}N^{\alpha}$ and $\delta^{18}O$. This is because the code is trying to find sources of the excess $^{31}R$ and $^{46}R$ coming from $^{15}N^{15}N^{16}O$.
 
 ## Data Corrections
 
+1) Calculate scrambling normally, as described in the pyisotopomer [documentation](https://github.com/ckelly314/pyisotopomer))
+
+2) Process all experimental samples normally, with the natural abundance version of pyisotopomer, as described in the [documentation](https://github.com/ckelly314/pyisotopomer)).
+
+3) Download the tracer excel [template](https://github.com/ckelly314/pyisotopomer/blob/master/pyisotopomer_examples/00_Tracer_template.xlsx).
+
+4) Group samples by experiment (i.e., all of the samples for a $^{15}N$-labeled ammonium experiment) and sort them by timepoint. Fill in columns A-C with the run date, sample ID, and incubation time for each sample. 
+
+5) For each sample, copy and paste the $\delta^{17}O$ calculated with the natural abundance version of pyisotopomer in Step 2 into column D. Copy and paste the scale-normalized, size-corrected $^{31}R$, $^{45}R$, and $^{46}R$ into columns E-G. If you are able to measure $\Delta^{17}O$ in your samples, enter these values in column H; otherwise, leave the values at 0 (note this is $^{17}O$ EXCESS, which is different from $\delta^{17}O$). According to run date, copy and paste the appropriate values of $\gamma$ and $\kappa$ into columns I and J. Copy and paste concentration data into column Y.
+
+6) Column K calculates the average $\delta^{17}O$ in the t0 samples. Modify the formula in column K to reflect the average values in column D for t0 samples. Column L should contain $^{46}R - ^{46}R_{t0}$ for each sample, where $^{46}R_{t0}$ is the average $^{46}R$ measured in t0 samples.
+
+7) To calculate isotopomers, navigate to the directory containing the tracer excel template, and run:
+
+```Python
+Tracers(inputfile = "00_Tracer_template_v2.xlsx", **kwargs)
+```
+
+(replace "00_Tracer_template_v2.xlsx" with the name of your excel template)
+
+This should create an output file with both isotopomer delta values and isotoper ratios. Copy and paste these values into columns O-V. Isotopomer concentrations are calculated in columns AA-AC.
