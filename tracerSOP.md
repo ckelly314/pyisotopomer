@@ -43,24 +43,24 @@ If you do NOT account for $^{15}N^{15}N^{16}O_{excess}$, i.e., use the natural a
 
 ## Data Corrections
 
-1) Calculate scrambling normally, as described in the pyisotopomer [documentation](https://github.com/ckelly314/pyisotopomer))
+1) Calculate scrambling normally, as described in the pyisotopomer [documentation](https://github.com/ckelly314/pyisotopomer)
 
-2) Process all experimental samples normally, with the natural abundance version of pyisotopomer, as described in the [documentation](https://github.com/ckelly314/pyisotopomer)).
+2) Process all experimental samples normally, with the natural abundance version of pyisotopomer, as described in the [documentation](https://github.com/ckelly314/pyisotopomer).
 
 3) Download the tracer excel [template](https://github.com/ckelly314/pyisotopomer/blob/master/pyisotopomer_examples/00_Tracer_template.xlsx).
 
-4) Group samples by experiment (i.e., all of the samples for a $^{15}N$-labeled ammonium experiment) and sort them by timepoint. Fill in columns A-C with the run date, sample ID, and incubation time for each sample. 
+4) Group samples by experiment (i.e., all of the samples for a $^{15}N$-labeled ammonium experiment) and sort them by timepoint. In the tracer template, fill in columns A-C with the run date, sample ID, and incubation time for each sample. 
 
 5) For each sample, copy and paste the $\delta^{17}O$ calculated with the natural abundance version of pyisotopomer in Step 2 into column D. Copy and paste the scale-normalized, size-corrected $^{31}R$, $^{45}R$, and $^{46}R$ into columns E-G. If you are able to measure $\Delta^{17}O$ in your samples, enter these values in column H; otherwise, leave the values at 0 (note this is $^{17}O$ EXCESS, which is different from $\delta^{17}O$). According to run date, copy and paste the appropriate values of $\gamma$ and $\kappa$ into columns I and J. Copy and paste concentration data into column Y.
 
-6) Column K calculates the average $\delta^{17}O$ in the t0 samples. Modify the formula in column K to reflect the average values in column D for t0 samples. Column L should contain $^{46}R - ^{46}R_{t0}$ for each sample, where $^{46}R_{t0}$ is the average $^{46}R$ measured in t0 samples.
+6) Column K calculates the average t0 $\delta^{17}O$. Modify the formula in column K to reflect the average values in column D for t0 samples. Column L should contain $^{46}R - ^{46}R_{t0}$ for each sample, where $^{46}R_{t0}$ is the average $^{46}R$ measured in t0 samples.
 
-7) To calculate isotopomers, navigate to the directory containing the tracer excel template, and run:
+7) To calculate isotopomers, navigate to the directory containing the tracer template, and run:
 
 ```Python
-Tracers(inputfile = "00_Tracer_template_v2.xlsx", **kwargs)
+Tracers(inputfile = "00_Tracer_template.xlsx", **kwargs)
 ```
 
-(replace "00_Tracer_template_v2.xlsx" with the name of your excel template)
+(replace "00_Tracer_template.xlsx" with the name of your excel template)
 
 This should create an output file with both isotopomer delta values and isotoper ratios. Copy and paste these values into columns O-V. Isotopomer concentrations are calculated in columns AA-AC.

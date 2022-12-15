@@ -11,7 +11,7 @@ pyisotopomer is a Python toolbox for processing nitrous oxide ($N_2O$) isotopome
 
 ## Intro
 
-While the scrambling calibration is an integral part of obtaining high-quality $N_2O$  isotopocule data from isotope ratio mass spectrometry, this calibration is part of a larger data processing pipeline. The scrambling calibration and isotopocule calculation steps can be performed in pyisotopomer.
+While the scrambling calibration is an integral part of obtaining high-quality $N_2O$ isotopocule data from isotope ratio mass spectrometry, this calibration is part of a larger data processing pipeline. The scrambling calibration and isotopocule calculation steps can be performed in pyisotopomer. Additional steps are required for $^{15}N$-labeled samples (see the [documentation](https://github.com/ckelly314/pyisotopomer/blob/master/tracerSOP.md)).
 
 ![](flowchart_new.jpg)
 
