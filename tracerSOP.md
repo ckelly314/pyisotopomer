@@ -51,9 +51,11 @@ If you do NOT account for $^{15}N^{15}N^{16}O_{excess}$, i.e., use the natural a
 
 4) Group samples by experiment (i.e., all of the samples for a $^{15}N$-labeled ammonium experiment) and sort them by timepoint. In the tracer template, fill in columns A-C with the run date, sample ID, and incubation time for each sample. 
 
-5) For each sample, copy and paste the $\delta^{17}O$ calculated with the natural abundance version of pyisotopomer in Step 2 into column D. Copy and paste the scale-normalized, size-corrected $^{31}R$, $^{45}R$, and $^{46}R$ into columns E-G. If you are able to measure $\Delta^{17}O$ in your samples, enter these values in column H; otherwise, leave the values at 0 (note this is $^{17}O$ EXCESS, which is different from $\delta^{17}O$). According to run date, copy and paste the appropriate values of $\gamma$ and $\kappa$ into columns I and J. Copy and paste concentration data into column Y.
+5) For each sample, copy and paste the $\delta^{15}N^{\alpha}$, $\delta^{15}N^{\beta}$, and $\delta^{17}O$ calculated with the natural abundance version of pyisotopomer in Step 2 into columns D-F. Column G contains $(^{15}R^{\alpha})(^{15}R^{\beta})$ calculated from $\delta^{15}N^{\alpha}$ and $\delta^{15}N^{\beta}$.
 
-6) Column K calculates the average t0 $\delta^{17}O$. Modify the formula in column K to reflect the average values in column D for t0 samples. Column L should contain $^{46}R - ^{46}R_{t0}$ for each sample, where $^{46}R_{t0}$ is the average $^{46}R$ measured in t0 samples.
+6) Copy and paste the run date and ID for each sample in columns H and I. Copy and paste the scale-normalized, size-corrected $^{31}R$, $^{45}R$, and $^{46}R$ into columns J-L. If you are able to measure $\Delta^{17}O$ in your samples, enter these values in column M; otherwise, leave the values at 0 (note this is $^{17}O$ EXCESS, which is different from $\delta^{17}O$). According to run date, copy and paste the appropriate values of $\gamma$ and $\kappa$ into columns N and O. Copy and paste concentration data into column AE.
+
+6) Column P calculates the average t0 $\delta^{17}O$. Modify the formula in column P to reflect the average values in column F for t0 samples. Column Q calculates the average t0 $(^{15}R^{\alpha})(^{15}R^{\beta})$. Modify the formula in column Q to reflect the average values in column G for t0 samples. Column R should contain $^{46}R - ^{46}R_{t0}$ for each sample, where $^{46}R_{t0}$ is the average $^{46}R$ measured in t0 samples.
 
 7) To calculate isotopomers, navigate to the directory containing the tracer template, and run:
 
@@ -63,4 +65,4 @@ Tracers(inputfile = "00_Tracer_template.xlsx", **kwargs)
 
 (replace "00_Tracer_template.xlsx" with the name of your excel template)
 
-This should create an output file with both isotopomer delta values and isotoper ratios. Copy and paste these values into columns O-V. Isotopomer concentrations are calculated in columns AA-AC.
+This should create an output file with both isotopomer delta values and isotoper ratios. Copy and paste these values into columns U-AC. Isotopomer concentrations are calculated in columns AG-AI.
