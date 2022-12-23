@@ -44,7 +44,8 @@ def tracernonlineq(f, R, isotopestandards): #, scrambling):
     k = R[5]  # gamma scrambling coefficient
 
     delta17O = R[6]
-    r15addition = R[7]
+    ab = R[7]
+    r15addition = R[8]
 
     # known 17R
     r17 = (delta17O/1000 + 1)*0.0003799
@@ -56,20 +57,20 @@ def tracernonlineq(f, R, isotopestandards): #, scrambling):
     # solve two equations with two unknowns
     # f[0] = 15Ralpha = a, and f[2] = 15Rbeta = b
     F = [
-        (f[0] + f[1]) * (y - f[0] - f[1]) # replacing (y - f[0] - f[1]) w/ r17 shouldn't make a difference
+        (f[0] + f[1]) * r17 # 46R equation
         +(R18VSMOW)
-        * (((y - f[0] - f[1]) / R17VSMOW) / (D17O / 1000 + 1)) ** (1 / beta)
-        + f[0] * f[1] # a*b term - assuming that a*b at this timepoint ~ a*b at t0
+        * ((r17 / R17VSMOW) / (D17O / 1000 + 1)) ** (1 / beta)
+        + ab # a*b at t0
         + r15addition # added 46R
         - z,
 
-        f[0] + f[1] + r17 - y, #  this is how we hold d17O (and d18O) constant
+        f[0] + f[1] + r17 - y, # 45 R equation
 
-        (1 - g) * f[0]
+        (1 - g) * f[0] # 31R equation
         + k * f[1]
-        + f[0] * f[1] # a*b term
+        + ab
         + r15addition
-        + (y - f[0] - f[1]) * (1 + g * f[0] + (1 - k) * f[1])
+        + (r17) * (1 + g * f[0] + (1 - k) * f[1])
         - x * (1 + g * f[0] + (1 - k) * f[1]),
     ]
 
