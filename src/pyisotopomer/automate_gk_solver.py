@@ -16,6 +16,7 @@ from scipy.optimize import least_squares
 from .automate_gk_eqns import (
     automate_gk_eqns,
 )  # import alpha and beta values for reference materials
+from .check31r import check31r
 
 
 def automate_gk_solver(
@@ -49,13 +50,14 @@ def automate_gk_solver(
         :type weights: bool
 
     OUTPUT:
-        :returns: Pandas DataFrame with dimensions n x 2 where n is the number of measurements.
-        The two columns are gamma and kappa from left to right.
+        :returns: Pandas DataFrame with dimensions n x 4, where n is the number of measurements.
+        The four columns are gamma, kappa, ref 1 31R error, and ref 2 31R error,
+        from left to right.
 
     @author: Colette L. Kelly (clkelly@stanford.edu).
     """
     #  python: need to set up empty dataframe to which we'll add values
-    gk = np.zeros((len(R), 2))  # set up numpy array to populate with solutions.
+    gk = np.zeros((len(R), 4))  # set up numpy array to populate with solutions
 
     #  an approximate initial solution: initial guess for gamma and kappa
     if x0 is not None:  # check if solver has been given an x0 parameter
@@ -120,10 +122,15 @@ def automate_gk_solver(
             args=args,
         )
 
-        #  create a new array from the iterated solutions
-        #  first column is gamma, second column is kappa
-        gk[n][:] = v.x
+        error = check31r(v.x, row,
+            isotopeconstants,
+            ref1,
+            ref2)
 
-    gk = pd.DataFrame(gk).rename(columns={0: "gamma", 1: "kappa"})
+        #  fill in array  with the iterated solutions & corresponding error
+        gk[n][:2] = v.x #  first column is gamma, second column is kappa
+        gk[n][2:] = error # third & fourth columns are ref 1 31R error & ref 2 31R error
 
-    return gk
+    gkdf = pd.DataFrame(gk).rename(columns={0: "gamma", 1: "kappa", 2:"error1", 3:"error2"})
+
+    return gkdf

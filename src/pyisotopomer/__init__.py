@@ -6,8 +6,8 @@ from .isotopestandards import IsotopeStandards
 
 # from .calculate_17R import calculate_17R
 from .calculate_17R_v2 import calculate_17R
-from .algebraic_gk_eqns import algebraic_gk_eqns
 from .automate_gk_eqns import automate_gk_eqns
+from .algebraic_gk_eqns import algebraic_gk_eqns
 from .automate_gk_solver import automate_gk_solver
 from .scramblinginput import ScramblingInput
 from .parseoutput import parseoutput

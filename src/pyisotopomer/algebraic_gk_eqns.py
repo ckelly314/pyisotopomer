@@ -13,6 +13,10 @@ import numpy as np
 from .constants_new import (
     constants_new,
 )  # import alpha and beta values for reference materials
+from .automate_gk_eqns import (
+    automate_gk_eqns,
+)
+from .check31r import check31r
 
 
 def algebraic_gk_eqns(R, isotopeconstants, ref1, ref2):
@@ -42,26 +46,17 @@ def algebraic_gk_eqns(R, isotopeconstants, ref1, ref2):
         :type ref1: str, int, or float
 
     OUTPUT:
-        :returns: Pandas DataFrame with dimensions n x 2 where n is the number of measurements.
-        The two columns are gamma and kappa from left to right.
+        :returns: Pandas DataFrame with dimensions n x 4, where n is the number of measurements.
+        The four columns are gamma, kappa, ref 1 31R error, and ref 2 31R error,
+        from left to right.
 
     @author: Colette L. Kelly (clkelly@stanford.edu).
     """
     # these are the alpha and beta values for the two reference materials
-    # they are specified in constants.py
+    # they are specified in the data correction spreadsheet
     a, b, a2, b2 = constants_new(isotopeconstants, ref1, ref2)
 
-    # calculate difference in SPs of reference materials and print warning if too small
-    spdiff = (a - b - a2 + b2) * 1000 / 0.0036765
-    if np.abs(spdiff) < 50:
-        print(
-            "Difference in reference materials SPs may be too small for consistent results with the algebraic method."
-        )
-        print("Try setting method='least_squares'")
-        print(f"SP1 - SP2 = {spdiff:.4} per mille")
-
-    gammas = []  # add to these lists as we loop through the rows of the input array
-    kappas = []
+    gk = np.zeros((len(R), 4))  # set up numpy array to populate with solutions
 
     for n in range(len(R)):
         # I'm still not sure why, but looping through the rows prevents an IndexError
@@ -90,12 +85,18 @@ def algebraic_gk_eqns(R, isotopeconstants, ref1, ref2):
         )
 
         # print(gamma1 - gamma2) # the two gamma values should be within machine precision of each other
-        gammas.append(gamma1)
-        kappas.append(kappa)
+
+        error = check31r([gamma1, kappa],
+            row,
+            isotopeconstants,
+            ref1,
+            ref2)
+
+        gk[n][0] = gamma1 # populate numpy array with solutions
+        gk[n][1] = kappa
+        gk[n][2:] = error # 31R error for gamma and kappa solutions, (31R_calculated/31Rmeasured - 1)*1000
 
     # return a dataframe of gamma and kappa values, same format as automate_gk_solver.py
-    gk = pd.DataFrame([])
-    gk["gamma"] = gammas
-    gk["kappa"] = kappas
+    gkdf = pd.DataFrame(gk).rename(columns={0: "gamma", 1: "kappa", 2:"error1", 3:"error2"})
 
-    return gk
+    return gkdf

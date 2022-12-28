@@ -1,10 +1,10 @@
 """
-File: automate_gk_eqns.py
+File: check31r.py
 ---------------------------------
-Created on Thurs March 25th, 2021
+Created on Tues Dec 27th, 2022
 
-Equations to solve for IRMS scrambling coefficients to be used in
-isotopomer calculations.
+Check accuracy of gamma and kappa by comparing calculated 31R
+to measured 31R.
 
 @author: Colette L. Kelly (clkelly@stanford.edu).
 """
@@ -15,19 +15,22 @@ from .constants_new import (
 )  # import alpha and beta values for reference materials
 
 
-def automate_gk_eqns(f, R, isotopeconstants, ref1, ref2, weights):
+def check31r(f, R, isotopeconstants, ref1, ref2):
     """
-    Calculates gamma and kappa from measured rR31/30, given known a, b, 17R.
+    Calculates error in 31R from gamma and kappa values.
 
-    USAGE: v = least_squares(automate_gk_eqns, x0, bounds=bounds... args=args)
-        See automate_gk_solver for solver arg descriptions.
+    USAGE: error = check31r([gamma1, kappa],
+            row,
+            isotopeconstants,
+            ref1,
+            ref2)
 
     DESCRIPTION:
-        Sets up equations as in Frame and Casciotti (2010), Appendix B,
-        to iteratively solve for gamma and kappa (scrambling coefficients).
+        Calculates 31R from eqn. (10) in Kelly et al. (in revision for RCMS);
+        compares calculated 31R to measured 31R used to calculate gamma and kappa.
 
     INPUT:
-        :param f: guesses for g and k
+        :param f: gamma and kappa
         :type f: list
         :param R: array with dimensions n x 10 where n is the number of reference pairs.
         The six columns are 31R, 45R, 46R, 15Rbulk, and 17R for reference #1, then
@@ -42,23 +45,18 @@ def automate_gk_eqns(f, R, isotopeconstants, ref1, ref2, weights):
         :param ref2: string or number containing name of reference material #2,
         as written in constants.csv
         :type ref1: str, int, or float
-        :param weights: list or array containing weights for each reference material
-        to be multiplied by their respective cost equations
-        :type weights: list or array [weight1, weight2]
 
     OUTPUT:
-        :returns: [gamma, kappa]
+        :returns: Numpy Array with dimensions n x 2 where n is the number of measurements.
+        The two columns are 31R error for ref 1 and ref 2, equal to (31R_calculated/31Rmeasured - 1)*1000
 
     @author: Colette L. Kelly (clkelly@stanford.edu).
     """
-
     # rename inputted data
     x = R[0]  # size-corrected 31/30 ratio for reference material #1
-    y = R[1]  # size-corrected 45/44 ratio for reference material #1
     r17 = R[4]  # 17R calculated iteratively from 45R and 46R for reference material #1
 
     x2 = R[5]  # size-corrected 31/30 ratio for reference material #2
-    y2 = R[6]  # size-corrected 45/44 ratio for reference material #2
     r172 = R[9]  # 17R calculated iteratively from 45R and 46R for reference material #2
 
     # these are the alpha and beta values for the two reference materials
@@ -67,23 +65,24 @@ def automate_gk_eqns(f, R, isotopeconstants, ref1, ref2, weights):
 
     # solve two equations with two unknowns
     # f[0] = gamma, and f[1] = kappa
-    cost = (
-        weights[0]
-        * (
-            (1 - f[0]) * a
+    calculated31r = [ # calculate 31R from gamma, kappa, 15Ralpha, 15Rbeta, and 17R in eqn. (10)
+        ((1 - f[0]) * a
             + f[1] * b
             + a * b
-            + (r17) * (1 + f[0] * a + (1 - f[1]) * b)
-            - x * (1 + f[0] * a + (1 - f[1]) * b)
-        ),
-        weights[1]
-        * (
+            + (r17) * (1 + f[0] * a + (1 - f[1]) * b))/
+            (1 + f[0] * a + (1 - f[1]) * b)
+        ,
+        (
             (1 - f[0]) * a2
             + f[1] * b2
             + a2 * b2
-            + (r172) * (1 + f[0] * a2 + (1 - f[1]) * b2)
-            - x2 * (1 + f[0] * a2 + (1 - f[1]) * b2)
-        ),
-    )
+            + (r172) * (1 + f[0] * a2 + (1 - f[1]) * b2))
+            /(1 + f[0] * a2 + (1 - f[1]) * b2)
+        ,
+    ]
 
-    return cost
+    # express 31R error in per mil, where 31R error = (31R_calculated/31Rmeasured - 1)*1000
+    error = np.array((calculated31r[0]/x-1)*1000,
+        (calculated31r[1]/x2-1)*1000)
+
+    return error
