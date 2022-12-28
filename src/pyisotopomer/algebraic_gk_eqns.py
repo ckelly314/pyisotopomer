@@ -86,17 +86,17 @@ def algebraic_gk_eqns(R, isotopeconstants, ref1, ref2):
 
         # print(gamma1 - gamma2) # the two gamma values should be within machine precision of each other
 
-        error = check31r([gamma1, kappa],
-            row,
-            isotopeconstants,
-            ref1,
-            ref2)
+        error = check31r([gamma1, kappa], row, isotopeconstants, ref1, ref2)
 
-        gk[n][0] = gamma1 # populate numpy array with solutions
+        gk[n][0] = gamma1  # populate numpy array with solutions
         gk[n][1] = kappa
-        gk[n][2:] = error # 31R error for gamma and kappa solutions, (31R_calculated/31Rmeasured - 1)*1000
+        gk[n][
+            2:
+        ] = error  # 31R error for gamma and kappa solutions, (31R_calculated/31Rmeasured - 1)*1000
 
     # return a dataframe of gamma and kappa values, same format as automate_gk_solver.py
-    gkdf = pd.DataFrame(gk).rename(columns={0: "gamma", 1: "kappa", 2:"error1", 3:"error2"})
+    gkdf = pd.DataFrame(gk).rename(
+        columns={0: "gamma", 1: "kappa", 2: "error1", 3: "error2"}
+    )
 
     return gkdf

@@ -122,15 +122,16 @@ def automate_gk_solver(
             args=args,
         )
 
-        error = check31r(v.x, row,
-            isotopeconstants,
-            ref1,
-            ref2)
+        error = check31r(v.x, row, isotopeconstants, ref1, ref2)
 
         #  fill in array  with the iterated solutions & corresponding error
-        gk[n][:2] = v.x #  first column is gamma, second column is kappa
-        gk[n][2:] = error # third & fourth columns are ref 1 31R error & ref 2 31R error
+        gk[n][:2] = v.x  #  first column is gamma, second column is kappa
+        gk[n][
+            2:
+        ] = error  # third & fourth columns are ref 1 31R error & ref 2 31R error
 
-    gkdf = pd.DataFrame(gk).rename(columns={0: "gamma", 1: "kappa", 2:"error1", 3:"error2"})
+    gkdf = pd.DataFrame(gk).rename(
+        columns={0: "gamma", 1: "kappa", 2: "error1", 3: "error2"}
+    )
 
     return gkdf

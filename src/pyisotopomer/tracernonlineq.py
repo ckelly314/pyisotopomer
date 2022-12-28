@@ -10,7 +10,7 @@ tracer experiments.
 """
 
 
-def tracernonlineq(f, R, isotopestandards): #, scrambling):
+def tracernonlineq(f, R, isotopestandards):  # , scrambling):
     """
     USAGE: v = least_squares(SPnonlineq, x0, bounds=bounds... args=args)
         Please see calcSPmain.py for definitions of these variables.
@@ -48,7 +48,7 @@ def tracernonlineq(f, R, isotopestandards): #, scrambling):
     r15addition = R[8]
 
     # known 17R
-    r17 = (delta17O/1000 + 1)*0.0003799
+    r17 = (delta17O / 1000 + 1) * 0.0003799
 
     beta = isotopestandards.O17beta
     R17VSMOW = isotopestandards.R17VSMOW
@@ -57,16 +57,13 @@ def tracernonlineq(f, R, isotopestandards): #, scrambling):
     # solve two equations with two unknowns
     # f[0] = 15Ralpha = a, and f[2] = 15Rbeta = b
     F = [
-        (f[0] + f[1]) * r17 # 46R equation
-        +(R18VSMOW)
-        * ((r17 / R17VSMOW) / (D17O / 1000 + 1)) ** (1 / beta)
-        + ab # a*b at t0
-        + r15addition # added 46R
+        (f[0] + f[1]) * r17  # 46R equation
+        + (R18VSMOW) * ((r17 / R17VSMOW) / (D17O / 1000 + 1)) ** (1 / beta)
+        + ab  # a*b at t0
+        + r15addition  # added 46R
         - z,
-
-        f[0] + f[1] + r17 - y, # 45 R equation
-
-        (1 - g) * f[0] # 31R equation
+        f[0] + f[1] + r17 - y,  # 45 R equation
+        (1 - g) * f[0]  # 31R equation
         + k * f[1]
         + ab
         + r15addition

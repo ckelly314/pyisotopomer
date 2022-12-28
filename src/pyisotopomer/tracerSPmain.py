@@ -16,7 +16,9 @@ from scipy.optimize import least_squares
 from .tracernonlineq import tracernonlineq
 
 
-def tracerSPmain(R, isotopestandards, initialguess=None, lowerbounds=None, upperbounds=None):
+def tracerSPmain(
+    R, isotopestandards, initialguess=None, lowerbounds=None, upperbounds=None
+):
     """
     Calculate gamma and kappa from measured rR31/30 and r45/44, given known a, b, 17R.
 
@@ -75,8 +77,8 @@ def tracerSPmain(R, isotopestandards, initialguess=None, lowerbounds=None, upper
     R17VSMOW = isotopestandards.R17VSMOW
     R18VSMOW = isotopestandards.R18VSMOW
 
-        #  python: need to set up empty dataframe to which we'll add values
-    #isol = pd.DataFrame([])
+    #  python: need to set up empty dataframe to which we'll add values
+    # isol = pd.DataFrame([])
     isol = np.zeros((len(R), 2))  # set up numpy array to populate with solutions.
 
     bounds = (lb, ub)
@@ -89,8 +91,8 @@ def tracerSPmain(R, isotopestandards, initialguess=None, lowerbounds=None, upper
         #  python: scipy.optimize.least_squares instead of matlab "lsqnonlin"
         row = np.array(R[n][:])
         args = (row, isotopestandards)
-        try: # try different initial guesses to account for samples w/ extreme delta values
-            with warnings.catch_warnings(): # suppress RuntimeWarning when it can't find a solution
+        try:  # try different initial guesses to account for samples w/ extreme delta values
+            with warnings.catch_warnings():  # suppress RuntimeWarning when it can't find a solution
                 warnings.simplefilter("ignore")
                 v = least_squares(
                     tracernonlineq,
@@ -101,7 +103,7 @@ def tracerSPmain(R, isotopestandards, initialguess=None, lowerbounds=None, upper
                     max_nfev=2000,
                     args=args,
                 )
-        except ValueError: # try finding a solution with initial guess = 0,0
+        except ValueError:  # try finding a solution with initial guess = 0,0
             print(f"row {n+3}: initial guess set to 0")
             v = least_squares(
                 tracernonlineq,

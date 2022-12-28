@@ -62,8 +62,17 @@ class TracerInput:
         # for input to calcSPmain
         return np.array(
             data[
-                ["size corrected 31R", "size corrected 45R", "size corrected 46R", 
-                 "D17O", "gamma", "kappa", "delta17O","ab_t0", "46R excess"]
+                [
+                    "size corrected 31R",
+                    "size corrected 45R",
+                    "size corrected 46R",
+                    "D17O",
+                    "gamma",
+                    "kappa",
+                    "delta17O",
+                    "ab_t0",
+                    "46R excess",
+                ]
             ].dropna()
         )
 

@@ -117,7 +117,7 @@ class Scrambling:
         else:
             outputfile = outputfile
 
-        self.saveout = saveout # store saveout for use in repr function
+        self.saveout = saveout  # store saveout for use in repr function
 
         self.IsotopeStandards = IsotopeStandards(
             O17beta=O17beta, R15Air=R15Air, R17VSMOW=R17VSMOW, R18VSMOW=R18VSMOW
@@ -157,7 +157,7 @@ class Scrambling:
                 df.to_excel(writer, sheet_name=name)
 
     def __repr__(self):
-        if self.saveout==True:
+        if self.saveout == True:
             return f"output saved as {self.outputfile}"
         else:
             return f"{self.scrambling_mean}"
@@ -259,13 +259,23 @@ class Isotopomers:
 
         # additional columns for identification & QC
         self.data = IsotopomerInput(inputfile, tabname).data
-        self.deltavals["run_date"] = self.data['run_date']
-        self.deltavals['Identifier 1'] = self.data['Identifier 1']
-        self.deltavals["gamma"] = self.R[:,4]
-        self.deltavals["kappa"] = self.R[:,5]
+        self.deltavals["run_date"] = self.data["run_date"]
+        self.deltavals["Identifier 1"] = self.data["Identifier 1"]
+        self.deltavals["gamma"] = self.R[:, 4]
+        self.deltavals["kappa"] = self.R[:, 5]
 
-        self.deltavals = self.deltavals[['run_date','Identifier 1',
-        "d15Na", "d15Nb", "SP", "d15Nbulk", "d17O", "d18O"]]
+        self.deltavals = self.deltavals[
+            [
+                "run_date",
+                "Identifier 1",
+                "d15Na",
+                "d15Nb",
+                "SP",
+                "d15Nbulk",
+                "d17O",
+                "d18O",
+            ]
+        ]
 
         if saveout == True:
             self.saveoutput(self.deltavals, outputfile)
@@ -286,6 +296,7 @@ d15Nbulk: {self.deltavals.d15Nbulk[0]:.4}
 SP: {self.deltavals.SP[0]:.4}
 d18O: {self.deltavals.d18O[0]:.4}>
                 """
+
 
 class Tracers:
     """
@@ -354,7 +365,8 @@ class Tracers:
         O17beta=None,
         R15Air=None,
         R17VSMOW=None,
-        R18VSMOW=None):
+        R18VSMOW=None,
+    ):
 
         # default arguments
         if outputfile is None:
@@ -368,7 +380,7 @@ class Tracers:
             O17beta=O17beta, R15Air=R15Air, R17VSMOW=R17VSMOW, R18VSMOW=R18VSMOW
         )
 
-        #self.scrambling = self.check_scrambling(scrambling)
+        # self.scrambling = self.check_scrambling(scrambling)
         self.R = TracerInput(inputfile, tabname).sizecorrected
 
         self.isotoperatios = tracerSPmain(
@@ -376,22 +388,33 @@ class Tracers:
             self.IsotopeStandards,
             initialguess=initialguess,
             lowerbounds=lowerbounds,
-            upperbounds=upperbounds
-            )
+            upperbounds=upperbounds,
+        )
         self.deltavals = calcdeltaSP(self.isotoperatios, self.IsotopeStandards)
 
         # additional columns for identification & QC
         self.data = TracerInput(inputfile, tabname).data
         self.deltavals["15Ralpha"] = self.isotoperatios["15Ralpha"]
         self.deltavals["15Rbeta"] = self.isotoperatios["15Rbeta"]
-        self.deltavals["run_date"] = self.data['run_date']
-        self.deltavals['Identifier 1'] = self.data['Identifier 1']
-        self.deltavals["gamma"] = self.R[:,4]
-        self.deltavals["kappa"] = self.R[:,5]
+        self.deltavals["run_date"] = self.data["run_date"]
+        self.deltavals["Identifier 1"] = self.data["Identifier 1"]
+        self.deltavals["gamma"] = self.R[:, 4]
+        self.deltavals["kappa"] = self.R[:, 5]
 
-        self.deltavals = self.deltavals[['run_date','Identifier 1',
-        "d15Na", "d15Nb", "SP", "d15Nbulk", "d17O", "d18O",
-        "15Ralpha","15Rbeta"]]
+        self.deltavals = self.deltavals[
+            [
+                "run_date",
+                "Identifier 1",
+                "d15Na",
+                "d15Nb",
+                "SP",
+                "d15Nbulk",
+                "d17O",
+                "d18O",
+                "15Ralpha",
+                "15Rbeta",
+            ]
+        ]
 
         if saveout == True:
             self.saveoutput(self.deltavals, outputfile)

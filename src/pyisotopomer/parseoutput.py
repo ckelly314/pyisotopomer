@@ -101,10 +101,10 @@ def parseoutput(
         )
     )
 
-    if method=="algebraic":
+    if method == "algebraic":
         # print out message confirming that scrambling was calculated with analytical solution
         print("scrambling calculated with analytical solution")
-    elif method=="least_squares":
+    elif method == "least_squares":
         # print out message confirming that scrambling was calculated with analytical solution
         print("scrambling calculated with least squares solver")
 
@@ -119,12 +119,16 @@ def parseoutput(
         key, [ref1, ref2, R, df] = inputobj.scrambleinput.popitem()
 
         try:  # use Try and Except arguements to handle cases where constants.csv isn't properly set up
-            if method == "algebraic":  # Calculate gamma and kappa explicitly from algebraic solution
+            if (
+                method == "algebraic"
+            ):  # Calculate gamma and kappa explicitly from algebraic solution
                 gk = algebraic_gk_eqns(
                     R, inputobj.isotopeconstants, ref1=ref1, ref2=ref2
                 )
 
-            elif method == "least_squares":  # Run function that iteratively solves for gamma and kappa
+            elif (
+                method == "least_squares"
+            ):  # Run function that iteratively solves for gamma and kappa
                 gk = automate_gk_solver(
                     R,
                     inputobj.isotopeconstants,
@@ -140,13 +144,17 @@ def parseoutput(
                 # attach scrambling coeffs to output dataframe
                 df["gamma"] = np.array(gk.gamma)
                 df["kappa"] = np.array(gk.kappa)
-                df["error31r_ref1_permil"] = np.array(gk.error1) # 31R error for ref 1 = (31R_calculated/31Rmeasured - 1)*1000
-                df["error31r_ref2_permil"] = np.array(gk.error2) # 31R error for ref 2 = (31R_calculated/31Rmeasured - 1)*1000
+                df["error31r_ref1_permil"] = np.array(
+                    gk.error1
+                )  # 31R error for ref 1 = (31R_calculated/31Rmeasured - 1)*1000
+                df["error31r_ref2_permil"] = np.array(
+                    gk.error2
+                )  # 31R error for ref 2 = (31R_calculated/31Rmeasured - 1)*1000
 
                 # write each output dataframe to a separate sheet in the output spreadsheet
                 outputdfs.append(df)
                 dfnames.append(f"{ref1}-{ref2}")
-                maindf = pd.concat([maindf,df])
+                maindf = pd.concat([maindf, df])
 
             except AttributeError:
                 print(f"{ref1} and/or {ref2} have not been entered in constants.csv")
