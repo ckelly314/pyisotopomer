@@ -48,7 +48,7 @@ deltavals = Isotopomers(
 tracers = Tracers(inputfile="00_Tracer_template.xlsx",
     # extra keyword arguments:
     saveout=True,
-    outputfile="example_isotopomer_output.csv",
+    outputfile="example_tracer_output.csv",
     initialguess=[0.0037, 0.0037],
     lowerbounds=[0.0, 0.0],
     upperbounds=[1.0, 1.0],
