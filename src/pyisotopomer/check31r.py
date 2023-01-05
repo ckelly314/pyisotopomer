@@ -65,8 +65,8 @@ def check31r(f, R, isotopeconstants, ref1, ref2):
 
     # solve two equations with two unknowns
     # f[0] = gamma, and f[1] = kappa
-    calculated31r = (
-        [  # calculate 31R from gamma, kappa, 15Ralpha, 15Rbeta, and 17R in eqn. (10)
+    
+    calculated31r = [  # calculate 31R from gamma, kappa, 15Ralpha, 15Rbeta, and 17R in eqn. (10)
             (
                 (1 - f[0]) * a
                 + f[1] * b
@@ -82,11 +82,12 @@ def check31r(f, R, isotopeconstants, ref1, ref2):
             )
             / (1 + f[0] * a2 + (1 - f[1]) * b2),
         ]
-    )
 
     # express 31R error in per mil, where 31R error = (31R_calculated/31Rmeasured - 1)*1000
     error = np.array(
-        (calculated31r[0] / x - 1) * 1000, (calculated31r[1] / x2 - 1) * 1000
+        [(calculated31r[0] / x - 1) * 1000, (calculated31r[1] / x2 - 1) * 1000]
     )
+
+    print(error)
 
     return error
