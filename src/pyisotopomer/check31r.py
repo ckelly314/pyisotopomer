@@ -88,6 +88,4 @@ def check31r(f, R, isotopeconstants, ref1, ref2):
         [(calculated31r[0] / x - 1) * 1000, (calculated31r[1] / x2 - 1) * 1000]
     )
 
-    print(error)
-
     return error
