@@ -18,7 +18,7 @@ $$
  ^{45}R &= ^{15}R^{\alpha} + ^{15}R^{\beta} + ^{17}R \\
  ^{46}R &= (^{15}R^{\alpha} + ^{15}R^{\beta})^{17}R + ^{18}R + (^{15}R^{\alpha} )(^{15}R^{\beta} ) \\
 ^{17}R/^{17}R_{VSMOW} &= (^{18}R/^{17}R_{VSMOW})^{\beta} \\
- ^{31}R &= \frac{(1-\gamma)^{15}R^{\alpha} + \gamma^{15}R^{\beta} + (^{15}R^{\alpha} )(^{15}R^{\beta} ) + ^{17}R[1+\gamma^{15}R^{\alpha}+(1-\gamma)^{15}R^{\beta}]}{1 + \gamma^{15}R^{\alpha} + (1-\gamma)^{15}R^{\beta}} \\
+ ^{31}R &= \frac{(1-\gamma)^{15}R^{\alpha} + \kappa^{15}R^{\beta} + (^{15}R^{\alpha} )(^{15}R^{\beta} ) + ^{17}R[1+\gamma^{15}R^{\alpha}+(1-\kappa)^{15}R^{\beta}]}{1 + \gamma^{15}R^{\alpha} + (1-\kappa)^{15}R^{\beta}} \\
 \end{align}
 $$
 
@@ -28,12 +28,12 @@ To do this, we can add a term to the equations for the $^{46}R$ and $^{31}R$ ion
 
 $$
 \begin{align}
- ^{46}R &= (^{15}R^{\alpha} + ^{15}R^{\beta})^{17}R + ^{18}R + (^{15}R^{\alpha} )(^{15}R^{\beta} ) + ^{15}N^{15}N^{16}O_{excess} \\
- ^{31}R &= \frac{(1-\gamma)^{15}R^{\alpha} + \gamma^{15}R^{\beta} + (^{15}R^{\alpha} )(^{15}R^{\beta} ) + ^{17}R(1+\gamma^{15}R^{\alpha}+(1-\gamma)^{15}R^{\beta}) + ^{15}N^{15}N^{16}O_{excess}}{1 + \gamma^{15}R^{\alpha} + (1-\gamma)^{15}R^{\beta}} \\
+ ^{46}R &= (^{15}R^{\alpha} + ^{15}R^{\beta})^{17}R + ^{18}R + (^{15}R^{\alpha} )(^{15}R^{\beta} )_{t0} + ^{15}N^{15}N^{16}O_{excess} \\
+ ^{31}R &= \frac{(1-\gamma)^{15}R^{\alpha} + \kappa^{15}R^{\beta} + (^{15}R^{\alpha} )(^{15}R^{\beta} )_{t0} + ^{17}R(1+\gamma^{15}R^{\alpha}+(1-\kappa)^{15}R^{\beta}) + ^{15}N^{15}N^{16}O_{excess}}{1 + \gamma^{15}R^{\alpha} + (1-\kappa)^{15}R^{\beta}} \\
 \end{align}
 $$
 
-Where $^{15}N^{15}N^{16}O_{excess}$ represents the amount of $^{15}N^{15}N^{16}O$ in excess of that predicted by $(^{15}R^{\alpha} )(^{15}R^{\beta} )$, which is approximately equal to the amount of $^{15}N^{15}N^{16}O$ added to the sample over the course of the experiment.
+The term $(^{15}R^{\alpha} )(^{15}R^{\beta} )_{t0}$ represents the background $^{15}N^{15}N^{16}O$, calculated from $^{15}R^{\alpha}$ and $^{15}R^{\beta}$ at t0. $^{15}N^{15}N^{16}O_{excess}$ represents the amount of $^{15}N^{15}N^{16}O$ added to the sample over the course of the experiment.
 
 Note that in the equation for $^{31}R$, we account for the yield of $^{31}NO^+$ from $^{15}N^{15}N^{16}O$, but we do not account for the yield of $^{30}N_2^+$ from $^{15}N^{15}N^{16}O$. This is because the numerator and denominator for $^{31}R$ are normalized to the yield of $^{30}NO^+$ from $^{14}N^{14}N^{16}O$ (thus, the 1 in the denominator); since both the numerator and denominator are both multiplied by this yield, it cancels out, but the equation is still implicitly in terms of the fragmentation of $N_2O$ to $NO^+$. To account for the fragmentation of $N_2O$ to $N_2$, we would need to measure the more abundant masses of $N_2$, i.e. m/z ratios 28 and 29. However, we expect the yield of $^{30}N_2^+$ from $^{15}N^{15}N^{16}O$ to be small.
 
