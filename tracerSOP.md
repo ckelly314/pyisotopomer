@@ -37,7 +37,7 @@ Where:
 $$
 \begin{align}
 (^{15}R^{\alpha} )(^{15}R^{\beta} )_{t0} &= background ^{15}N^{15}N^{16}O \\
-^{15}N^{15}N^{16}O_{excess} &= ^{46}R - ^{46}R_{t0} &= ^{15}N^{15}N^{16}O added to the sample over the course of the experiment\\
+^{15}N^{15}N^{16}O_{excess} &= ^{46}R - ^{46}R_{t0} \\
 \end{align}
 $$ 
 
