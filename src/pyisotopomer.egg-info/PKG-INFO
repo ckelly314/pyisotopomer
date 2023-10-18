@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: pyisotopomer
-Version: 1.0.4
+Version: 1.0.5
 Summary: Nitrous oxide isotopocule data corrections in Python
 Home-page: https://github.com/ckelly314/pyisotopomer
 Author: Colette L. Kelly
@@ -15,23 +15,29 @@ Classifier: Intended Audience :: Science/Research
 Classifier: Topic :: Scientific/Engineering :: Chemistry
 Description-Content-Type: text/markdown
 License-File: LICENSE
+Requires-Dist: numpy
+Requires-Dist: pandas
+Requires-Dist: scipy
+Requires-Dist: datetime
+Requires-Dist: openpyxl
+Requires-Dist: jupyter
 
 # pyisotopomer
 
 [![pypi badge](https://img.shields.io/pypi/v/pyisotopomer.svg?style=popout)](https://pypi.org/project/pyisotopomer)
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.5031218.svg)](https://doi.org/10.5281/zenodo.5031218)
+[![DOI](https://zenodo.org/badge/370495607.svg)](https://zenodo.org/badge/latestdoi/370495607)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
 Hello!!
 
-pyisotopomer is a Python toolbox for processing nitrous oxide ($N_2O$) isotopomer data. Its core is a package of scripts to correct for scrambling in the ion source during isotope ratio mass spectrometry. If you're unsure about how to install and run Python on your computer, you can easily run pyisotopomer on your Google Drive using Google Colab - see [Running pyisotopomer in Google Colab](#Running-pyisotopomer-in-Google-Colab) below.
+pyisotopomer is a Python toolbox for processing nitrous oxide (N<sub>2</sub>O) isotopomer data. Its core is a package of scripts to correct for scrambling in the ion source during isotope ratio mass spectrometry. If you're unsure about how to install and run Python on your computer, you can easily run pyisotopomer on your Google Drive using Google Colab - see [Running pyisotopomer in Google Colab](#Running-pyisotopomer-in-Google-Colab) below. A preprint of the accompanying publication is available on Authorea: [https://doi.org/10.22541/au.167458072.24405970/v1](https://doi.org/10.22541/au.167458072.24405970/v1).
 
 ## Intro
 
-While the scrambling calibration is an integral part of obtaining high-quality $N_2O$ isotopocule data from isotope ratio mass spectrometry, this calibration is part of a larger data processing pipeline. The scrambling calibration and isotopocule calculation steps can be performed in pyisotopomer. Additional steps are required for $^{15}N$-labeled samples (see the [documentation](https://github.com/ckelly314/pyisotopomer/blob/master/tracerSOP.md)).
+While the scrambling calibration is an integral part of obtaining high-quality N<sub>2</sub>O isotopocule data from isotope ratio mass spectrometry, this calibration is part of a larger data processing pipeline. The scrambling calibration and isotopocule calculation steps can be performed in pyisotopomer. Additional steps are required for $^{15}N$-labeled samples (see the [documentation](https://github.com/ckelly314/pyisotopomer/blob/master/tracerSOP.md)).
 
-![](flowchart_new.jpg)
+![](Flowchart.jpg)
 
 **Contents:**
 - [pyisotopomer](#pyisotopomer)
@@ -80,11 +86,11 @@ In the "sample" tab, bring all fragment data in line, then delete extra rows. Do
 
 Open the data correction template. In the "size_correction" tab, copy the raw sample data from columns A-O in the sample tab into columns C-Q in the correction template. Copy the "rR" columns from the standards tab (columns M, N, O) into columns S, T, U in the correction template.
 
-Replace the values in row 3, columns W-Y with the appropriate $^{31}R$, $^{45}R$, and $^{46}R$ for your $N_2O$ reference tank (the reference gas used for on-offs/direct injections). The values in the template spreadsheet are specific to the Casciotti Lab's $N_2O$ reference tank. The $^{31}R$ of the direct reference injection can be calculated iteratively with [this template](https://docs.google.com/spreadsheets/d/1_O_XAY46mPgzr14PNBVJNAWj6ulRz8qM/edit?usp=sharing&ouid=104573000701514802850&rtpof=true&sd=true).
+Replace the values in row 3, columns W-Y with the appropriate $^{31}R$, $^{45}R$, and $^{46}R$ for your N<sub>2</sub>O reference tank (the reference gas used for on-offs/direct injections). The values in the template spreadsheet are specific to the Casciotti Lab's N<sub>2</sub>O reference tank. The $^{31}R$ of the direct reference injection can be calculated iteratively with [this template](https://docs.google.com/spreadsheets/d/1_O_XAY46mPgzr14PNBVJNAWj6ulRz8qM/edit?usp=sharing&ouid=104573000701514802850&rtpof=true&sd=true).
 
 Replace the values in row 7, columns W-Y, with your size correction slopes (the values in the template spreadsheet are specific to the linearity of the Casciotti Lab Delta V, as of February-March 2021). Ensure that these size correction slopes are normalized to the m/z 44 peak area. Ensure that they apply to the raw "ratio of ratios" 31rR/31rR, 45rR/45rR, and 45rR/45rR in columns AA-AC. For a description of how to calculate a common size correction slope from three reference materials using dummy variables, check out [this jupyter notebook](https://github.com/ckelly314/pyisotopomer/blob/master/linearity_slopes/linearity_slopes.ipynb).
 
-Go to the "scale_normalization" tab of the excel template. Columns A-F contain the pre-loaded delta values for a set of reference gases. If your reference gases are not listed, add their calibrated delta values in columns A-F, then copy the calculations in columns G-N. Columns M and N contain the "known" 45/44R and 46/44R for each reference material, normalized to the 45/44 and 46/44 of your $N_2O$ reference tank. While only two reference materials are required for this method, it can be helpful to run three or more reference materials to calculate the scale normalization, to ensure that the reference materials bracket the 45/44 and 46/44 of the unknowns.
+Go to the "scale_normalization" tab of the excel template. Columns A-F contain the pre-loaded delta values for a set of reference gases. If your reference gases are not listed, add their calibrated delta values in columns A-F, then copy the calculations in columns G-N. Columns M and N contain the "known" 45/44R and 46/44R for each reference material, normalized to the 45/44 and 46/44 of your N<sub>2</sub>O reference tank. While only two reference materials are required for this method, it can be helpful to run three or more reference materials to calculate the scale normalization, to ensure that the reference materials bracket the 45/44 and 46/44 of the unknowns.
 
 Columns Q and R are the "known" 45rR/45rR and 46rR/46rR for each reference material you've run. CHANGE these values so that they point to the appropriate values in columns M and N. Columns S and T are references to the size corrected 45rR/45rR and 46rR/46rR of each sample in your run. Drag these cells down to include all of the reference materials in your run. Delete #NUM values in columns W and X. Columns Y and Z contain the λ factors and intercepts needed to scale-normalize the measured 45rR/45rR and 46rR/46rR of the data. The lambda factors (row 3) should be close to 1, and the intercepts (row 4) should be close to 0 (if not, check for problem reference materials that are throwing off the calibration).
 
@@ -96,7 +102,7 @@ The 31R, 45R, and 46R for each sample, normalized to the common reference inject
 
 Here, two coefficients, $γ$ and $κ$, are used to describe scrambling in the ion source. This is described in further detail in [Frame and Casciotti, 2010](https://www.biogeosciences.net/7/2695/2010/). The ion source chemistry, and thus scrambling behavior, of an IRMS is likely change over time. Because of this, we recommend running the scrambling calibration on a day-to-day basis, then calculating a running average of these daily means to calculate isotopocules. Below is a description of how to perform the scrambling calibration in pyisotopomer.
 
-Run two (or more) reference gases with known $^{15}R^α$ and $^{15}R^β$, prepared in the same format as samples. For the Casciotti lab, this is some amount of $N_2O$ reference gas injected into a bottle of seawater or DI water that has been purged with He or N2 gas.
+Run two (or more) reference gases with known $^{15}R^α$ and $^{15}R^β$, prepared in the same format as samples. For the Casciotti lab, this is some amount of N<sub>2</sub>O reference gas injected into a bottle of seawater or DI water that has been purged with He or N2 gas.
 
 Download the data correction [template](https://docs.google.com/spreadsheets/d/1b7aLuZZj5rE5fukQMdZ68gLGAl5GvE9v/edit?usp=sharing&ouid=104573000701514802850&rtpof=true&sd=true). Pre-process the data according to the pyisotopomer [README](https://github.com/ckelly314/pyisotopomer). Save it into your current working directory.
 
@@ -176,8 +182,8 @@ colette$ python run_pyisotopomer.py
 
 ## Calculating concentrations
 
-To calculate the concentration of $N_2O$:
+To calculate the concentration of N<sub>2</sub>O:
 
-Go to the "concentration_constants" tab of the excel template. Following the example calibration curve, calculate the ratio of mass 44 peak area to $N_2O$ (nmol/Vs) for your instrument. Update the values in row 2, columns B and D to reflect this calibration.
+Go to the "concentration_constants" tab of the excel template. Following the example calibration curve, calculate the ratio of mass 44 peak area to N<sub>2</sub>O (nmol/Vs) for your instrument. Update the values in row 2, columns B and D to reflect this calibration.
 
-Go to the "size_correction" tab of the excel template. Columns BE-BM contain the concentration calculation for liquid samples — that is, $N_2O$ dissolved in seawater, DI water, or freshwater. Enter the weights of each sample pre- and post- analysis in columns BE-BF. Column BI calculates volume from weight difference using the appropriate density of each sample matrix; ensure that this refers to the correct densities in the "concentration_constants" tab. Column BJ contains the $N_2O$ nmol amount in each sample, and column BL contains the concentration.
+Go to the "size_correction" tab of the excel template. Columns BE-BM contain the concentration calculation for liquid samples — that is, N<sub>2</sub>O dissolved in seawater, DI water, or freshwater. Enter the weights of each sample pre- and post- analysis in columns BE-BF. Column BI calculates volume from weight difference using the appropriate density of each sample matrix; ensure that this refers to the correct densities in the "concentration_constants" tab. Column BJ contains the N<sub>2</sub>O nmol amount in each sample, and column BL contains the concentration.
