@@ -35,16 +35,16 @@ def constants_new(isotopeconstants, ref1, ref2):
         :returns: 15Ralpha #1, 15Rbeta #1, 15Ralpha #2, 15Rbeta #2
 
     """
-    d15Na_1 = float(isotopeconstants[isotopeconstants["ref_tag"] == ref1].d15Na)
+    d15Na_1 = float(isotopeconstants[isotopeconstants["ref_tag"] == ref1].d15Na.iloc[0])
     a = (d15Na_1 / 1000 + 1) * 0.0036765
 
-    d15Nb_1 = float(isotopeconstants[isotopeconstants["ref_tag"] == ref1].d15Nb)
+    d15Nb_1 = float(isotopeconstants[isotopeconstants["ref_tag"] == ref1].d15Nb.iloc[0])
     b = (d15Nb_1 / 1000 + 1) * 0.0036765
 
-    d15Na_2 = float(isotopeconstants[isotopeconstants["ref_tag"] == ref2].d15Na)
+    d15Na_2 = float(isotopeconstants[isotopeconstants["ref_tag"] == ref2].d15Na.iloc[0])
     a2 = (d15Na_2 / 1000 + 1) * 0.0036765
 
-    d15Nb_2 = float(isotopeconstants[isotopeconstants["ref_tag"] == ref2].d15Nb)
+    d15Nb_2 = float(isotopeconstants[isotopeconstants["ref_tag"] == ref2].d15Nb.iloc[0])
     b2 = (d15Nb_2 / 1000 + 1) * 0.0036765
 
     return a, b, a2, b2
