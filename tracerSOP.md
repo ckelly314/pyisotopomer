@@ -24,7 +24,7 @@ $$
 
 In these equations, the term $(^{15}R^{\alpha} )(^{15}R^{\beta} )$ represents the statistically expected contribution of $^{15}N^{15}N^{16}O$ to the $^{46}R$ and $^{31}R$ ion currents. The idea here is that the probability of getting $^{15}N$ in the alpha position is equal to $^{15}R^{\alpha}$, and the probability of getting $^{15}N$ in the beta position is equal to $^{15}R^{\beta}$, so the probability of getting $^{15}N$ in both alpha and beta positions = $(^{15}R^{\alpha} )(^{15}R^{\beta} )$ (see [Kaiser et al., 2004](https://link.springer.com/article/10.1007/s00216-003-2233-2)). This is a reasonable assumption for natural abundance samples, where the concentration of $^{15}N^{15}N^{16}O$ is extremely low. For $^{15}N$-labeled samples, however, we need to account for the production of $^{15}N^{15}N^{16}O$ from  $^{15}N$-labeled substrate.
 
-To do this, we can add a term to the equations for the $^{46}R$ and $^{31}R$ ion currents:
+To do this, we can add a term $^{15}N^{15}N^{16}O_{excess}$ to the equations for the $^{46}R$ and $^{31}R$ ion currents:
 
 $$
 \begin{align}
