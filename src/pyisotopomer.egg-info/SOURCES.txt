@@ -26,3 +26,4 @@ src/pyisotopomer.egg-info/SOURCES.txt
 src/pyisotopomer.egg-info/dependency_links.txt
 src/pyisotopomer.egg-info/requires.txt
 src/pyisotopomer.egg-info/top_level.txt
+src/pyisotopomer.egg-info/.ipynb_checkpoints/PKG-INFO-checkpoint

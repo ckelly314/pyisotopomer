@@ -269,8 +269,8 @@ class Isotopomers:
         # input
 
         if inputfile is not None:
-            self.R = IsotopomerInput(inputfile=inputfile, tabname=tabname).ratiosscrambling
-            self.data = IsotopomerInput(inputfile=inputfile, tabname=tabname).data
+            self.R = IsotopomerInput(filename=inputfile, tabname=tabname).ratiosscrambling
+            self.data = IsotopomerInput(filename=inputfile, tabname=tabname).data
 
         elif inputdf is not None: 
             self.R = IsotopomerInput(datadf=inputdf).ratiosscrambling
