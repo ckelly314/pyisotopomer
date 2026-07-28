@@ -1,4 +1,4 @@
-Metadata-Version: 2.1
+Metadata-Version: 2.4
 Name: pyisotopomer
 Version: 1.0.5
 Summary: Nitrous oxide isotopocule data corrections in Python
@@ -21,6 +21,16 @@ Requires-Dist: scipy
 Requires-Dist: datetime
 Requires-Dist: openpyxl
 Requires-Dist: jupyter
+Dynamic: author
+Dynamic: author-email
+Dynamic: classifier
+Dynamic: description
+Dynamic: description-content-type
+Dynamic: home-page
+Dynamic: license-file
+Dynamic: project-url
+Dynamic: requires-dist
+Dynamic: summary
 
 # pyisotopomer
 
