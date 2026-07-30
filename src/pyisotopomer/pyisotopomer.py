@@ -41,6 +41,10 @@ class Scrambling:
         :param **Refs: Reference materials included in input spreadsheet:
         e.g., ref1="NAME", ref2="NAME", ref3="NAME"
         :type **Refs: Variadic kwargs
+        :param inputdf: Input as a dataframe
+        :type inputdf: Pandas DataFrame
+        :param refdf: Reference material info in dataframe
+        :type refdf: Pandas DataFrame
         :param saveout: If True, save output .xlsx file of scrambling results.
         :type saveout: Bool
         :param outputfile: Output filename. If None and saveout=True, default to
@@ -92,7 +96,9 @@ class Scrambling:
 
     def __init__(
         self,
-        inputfile,
+        inputfile=None,
+        inputdf=None,
+        refdf=None,
         tabname=None,
         saveout=True,
         outputfile=None,
@@ -112,10 +118,11 @@ class Scrambling:
         if outputfile is None:
             today = dt.datetime.now().strftime("%y%m%d")
             outputfile = f"{today}_scrambling_output.xlsx"
-            # if saveout == True:
-            #    print(f"output saved as {today}_scrambling_output.xlsx")
+            if saveout == True:
+               print(f"output saved as {today}_scrambling_output.xlsx")
         else:
             outputfile = outputfile
+            print(f"output saved as {outputfile}")
 
         self.saveout = saveout  # store saveout for use in repr function
 
@@ -125,7 +132,17 @@ class Scrambling:
 
         self.outputfile = outputfile
 
-        self.inputobj = ScramblingInput(inputfile, self.IsotopeStandards, **Refs)
+        if (inputfile is not None) and (inputdf is not None):
+            raise ValueError("Both input file and input dataframe provided")
+        
+        if inputfile is not None:
+            self.inputobj = ScramblingInput(filename=inputfile, isotopestandards=self.IsotopeStandards, **Refs)
+
+        # Adding option to input dataframe directly:
+
+        elif inputdf is not None:
+            self.inputobj = ScramblingInput(datadf=inputdf, refdf=refdf, 
+                                            isotopestandards=self.IsotopeStandards, **Refs)
 
         self.outputs, self.pairings, self.alloutputs = parseoutput(
             self.inputobj,
@@ -158,7 +175,8 @@ class Scrambling:
 
     def __repr__(self):
         if self.saveout == True:
-            return f"output saved as {self.outputfile}"
+            print(f"output saved as {self.outputfile}")
+            
         else:
             return f"{self.scrambling_mean}"
 
@@ -220,7 +238,8 @@ class Isotopomers:
 
     def __init__(
         self,
-        inputfile,
+        inputfile=None,
+        inputdf=None,
         tabname=None,
         saveout=True,
         outputfile=None,
@@ -241,13 +260,24 @@ class Isotopomers:
                 print(f"output saved as {today}_isotopeoutput.csv")
         else:
             outputfile = outputfile
+            print(f"output saved as {outputfile}")
 
         self.IsotopeStandards = IsotopeStandards(
             O17beta=O17beta, R15Air=R15Air, R17VSMOW=R17VSMOW, R18VSMOW=R18VSMOW
         )
 
+        # input
+
+        if inputfile is not None:
+            self.R = IsotopomerInput(filename=inputfile, tabname=tabname).ratiosscrambling
+            self.data = IsotopomerInput(filename=inputfile, tabname=tabname).data
+
+        elif inputdf is not None: 
+            self.R = IsotopomerInput(datadf=inputdf).ratiosscrambling
+            self.data = IsotopomerInput(datadf=inputdf).data
+            
         # core isotopomer functions
-        self.R = IsotopomerInput(inputfile, tabname).ratiosscrambling
+        
         self.isotoperatios = calcSPmain(
             self.R,
             self.IsotopeStandards,
@@ -258,9 +288,9 @@ class Isotopomers:
         self.deltavals = calcdeltaSP(self.isotoperatios, self.IsotopeStandards)
 
         # additional columns for identification & QC
-        self.data = IsotopomerInput(inputfile, tabname).data
-        self.deltavals["run_date"] = self.data["run_date"]
-        self.deltavals["Identifier 1"] = self.data["Identifier 1"]
+
+        self.deltavals["run_date"] = self.data["run_date"].values
+        self.deltavals["Identifier 1"] = self.data["Identifier 1"].values
         self.deltavals["gamma"] = self.R[:, 4]
         self.deltavals["kappa"] = self.R[:, 5]
 
